@@ -1,0 +1,18 @@
+#exportPattern("^[[:alpha:]]+")
+
+
+import(osd, ncdf4, caTools, nnls, graphics, Rcpp)
+importFrom("igraph", "graph.data.frame", "clusters")
+importFrom("signal", "sgolayfilt", "hanning")
+importFrom("HiClimR", "fastCor")
+importFrom("quantreg", "rq")
+importFrom("utils", "getTxtProgressBar", "read.csv","setTxtProgressBar", "txtProgressBar", "write.table")
+importFrom("methods", "new")
+importFrom("stats", "coefficients", "cor", "cov", "dist", "dnorm",
+             "fft", "na.omit", "prcomp", "runmed", "sd")
+importFrom("XML", "xmlParse")
+
+
+export(newExp, setDecPar, setAlPar, alignComp, deconvolveComp, plotAlign, plotProfile, plotSpectra, recMissComp, compInfo, dataList, findComp, identifyComp, idList, alignList, plotChr, sampleInfo, createdt, phenoData, metaData, expClasses,export2MSP, export2CEF, importMSP, importGMD)
+
+exportClasses(RawDataParameters, MetaboSet, eRah_DB)

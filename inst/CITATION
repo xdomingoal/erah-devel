@@ -1,0 +1,19 @@
+citHeader("To cite the eRah package in publications use:")
+
+citEntry(entry="article",
+         author = "X. Domingo-Almenara, et al.",
+         title = "eRah: a computational tool integrating spectral deconvolution and alignment with quantification and identification of metabolites in GC-MS-based metabolomics",
+	 journal = "Anal. Chem.", 
+         year         = 2016,
+         number = 88,
+	pages = "9821-9829",
+         textVersion= "X. Domingo-Almenara, et al. eRah: a computational tool integrating spectral deconvolution and alignment with quantification and identification of metabolites in GC-MS-based metabolomics. Analytical Chemistry, 88 (2016) 9821-9829")
+
+citEntry(entry="article",
+         author = "X. Domingo-Almenara, et al.",
+         title = "Compound identification in gas chromatography/mass spectrometry-based metabolomics by blind source separation.",
+	 journal = "J. Chromatogr. A", 
+         year         = 2015,
+         number = 1409,
+	pages = "226-233",
+         textVersion= "X. Domingo-Almenara, et al. Compound identification in gas chromatography/mass spectrometry-based metabolomics by blind source separation. Journal of Chromatography A, 1409 (2015) 226-233")

@@ -1,0 +1,28 @@
+\name{alignList}
+\alias{alignList}
+\title{Alignment list}
+\description{The list of aligned metabolites and their relative quantification for each sample in a given experiment}
+\usage{
+alignList(object, by.area=TRUE)
+}
+\arguments{
+  \item{object}{A 'MetaboSet' S4 object containing the experiment data. The experiment has to be previously deconvolved, aligned and (optionally) identified.}
+    \item{by.area}{if TRUE (default), eRah outputs quantification by the area of the deconvolved chromatographic peak of each compound. If FALSE, eRah outputs the intensity of the deconvolved chromatographic peak.}
+}
+\details{
+Returns an alignment table containing the list of aligned metabolites and their relative quantification for each sample in a given experiment.}
+
+\value{
+	
+\code{alignList} returns a data frame object:
+	\item{AlignID}{The unique Tag for found metabolite by eRah. Each metabolite found by eRah for a given experiment has an unique AlignID tag number.}
+	\item{Factor}{the Factor tag name. Each metabolite has an unique 'Factor' name to enhance visual interpretation.}
+	\item{tmean}{The mean compound retention time.}
+	\item{FoundIn}{The number of samples in which the compound has been detected (the number of samples where the compound area is non-zero).}	
+	\item{Quantification}{As many columns as samples and as many rows as metabolites, where each column name has the name of each sample.}
+}
+
+\seealso{
+\code{\link{idList}}, \code{\link{dataList}}
+
+}

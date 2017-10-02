@@ -1,0 +1,54 @@
+erah v1.1.0 (Release date: 2017-04-30)
+==============
+* New feature available for processing long chromatograms with larger peaks (> 20 seconds peak width). (Thanks to Dr. P. Fuchsmann and Mr. T. Richter)
+* Improved compatibility to import NIST library files. (Thanks to Mr. T. Richter)
+* Faster baseline removal implementation.
+* Bugs for exporting to CEF files fixed.
+
+erah v1.0.5 (Release date: 2017-01-13)
+==============
+
+* Bug regarding analysis.time parameter now updated.
+* Golm Metabolome Database can now be imported to eRah through importGMD.
+* New function introduced: import MSP-formatted libraries to be used with eRah (Thanks to Dr. Sogin)
+* New function introduced: export spectra to CEF format for comparison with the NIST library through MassHunter interface (Thanks to Dr. Ramirez)
+* Bugs fixed when loading certain CDF and XML files (Thanks to Mr. Nguyen-Phuoc and Mr. Wilkinson)
+* Functions updated to allow compatibility with the Baitmet R package.  
+* Minor bug fixes.
+* Vignette updated.
+
+erah v1.0.4 (Release date: 2016-10-17)
+==============
+
+* New function included: importMSP - importation of the GMD spectra from MSP format 
+
+erah v1.0.3 (Release date: 2016-10-13)
+==============
+
+* Documentation updated.
+* Minor bug fixes.
+* CDF file reading function updated, to assure compatibility with different vendors equipment (Thanks to Dr. Hasler-Sheetal).
+
+
+erah v1.0.2 (Release date: 2016-09-02)
+==============
+
+* Documentation updated.
+* New function included: export2MSP - exportation of spectra into MSP format 
+* Minor bug fixes.
+* Bug with pre-processing filter order, now fixed.
+* Bug that made eRah stop when processing some chromatograms, now fixed.
+
+erah v1.0.1 (Release date: 2016-04-22)
+==============
+
+* Small documentation improvements
+* Minor improvements and bug fixes.
+
+erah v1.0.0 (Release date: 2016-04-15)
+==============
+
+First commit.
+
+
+
