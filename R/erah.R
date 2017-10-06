@@ -1,12 +1,6 @@
 
 globalVariables("mslib")
 
-setMethod("show", "MetaboSet", function(object){
-	cat("A \"MetaboSet\" object containing", length(object@Data@FactorList), "samples \n \n" ,sep=" ")
-	cat("Data processed with", object@Data@Parameters$algorithm, "\n" ,sep=" ")
-	cat("Info attached to this experiment: \n", object@Info)
-})
-
 metaData <- function(object) {object@MetaData@Instrumental}
 phenoData <- function(object) {object@MetaData@Phenotype}
 		
