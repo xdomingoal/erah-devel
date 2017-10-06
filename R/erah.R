@@ -3,9 +3,6 @@ globalVariables("mslib")
 
 metaData <- function(object) {object@MetaData@Instrumental}
 phenoData <- function(object) {object@MetaData@Phenotype}
-		
-	
-#setClass(Class="expClasses",representation= representation(classes.type = "character", classes.summary = "data.frame"))
 
 # setMethod("show", "expClasses", function(object) {
 	# classes.string <- paste(object@classes.type, collapse=", ")

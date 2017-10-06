@@ -15,3 +15,4 @@ URL: http://metabolomicsplatform.com/
 Repository: CRAN
 LazyData: yes
 VignetteBuilder: R.rsp
+RoxygenNote: 6.0.1
