@@ -133,6 +133,15 @@ alignList <- function(object, by.area=TRUE) {
 	}
 }
 
+#' @name  expClasses
+#' @aliases expClasses
+#' @title  Experiment classes
+#' @description The classes of a given experiment.
+#' @usage expClasses(object)
+#' @param object A 'MetaboSet' S4 object containing the experiment.
+#' @details Returns the classes details of the experiment.
+#' @seealso metaData phenoData
+
 expClasses <- function(object)
 {
 	if(nrow(object@MetaData@Phenotype)==0) stop("No Phenotype data has been attached to this experiment.")
