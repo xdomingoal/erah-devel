@@ -42,7 +42,7 @@ ex.dec.par <- setDecPar(min.peak.width = 0.7,
 [1] Xavier Domingo-Almenara, et al., eRah: A Computational Tool Integrating Spectral Deconvolution and Alignment with Quantification and Identification of Metabolites in GC-MS-Based Metabolomics. Analytical Chemistry (2016). DOI: 10.1021/acs.analchem.6b02927
 }
 \seealso{
-newExp deconvolveComp alignComp setAlPar
+\code{\link{newExp}} \code{\link{deconvolveComp}} \code{\link{alignComp}} \code{\link{setAlPar}}
 }
 \author{
 Xavier Domingo-Almenara. xavier.domingo@urv.cat

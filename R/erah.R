@@ -34,7 +34,7 @@ phenoData <- function(object) {object@MetaData@Phenotype}
 #' vignette("eRahManual", package="erah")
 #' @references [1] Xavier Domingo-Almenara, et al., eRah: A Computational Tool Integrating Spectral Deconvolution and Alignment with Quantification and Identification of Metabolites in GC-MS-Based Metabolomics. Analytical Chemistry (2016). DOI: 10.1021/acs.analchem.6b02927 
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
-#' @seealso newExp deconvolveComp alignComp setAlPar
+#' @seealso \code{\link{newExp}} \code{\link{deconvolveComp}} \code{\link{alignComp}} \code{\link{setAlPar}}
 #' @examples \dontrun{
 #' # The following will set eRah for analyzing the chromatograms
 #' #from minutes 5 to 15, and withouth taking into account the masses
@@ -57,6 +57,34 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 	alPar <- new("eRahAlParameters", algorithm="eRah", min.spectra.cor=min.spectra.cor, max.time.dist=max.time.dist/60, mz.range = mz.range, method="eRah")
 	alPar
 }
+
+#' @name newExp
+#' @aliases newExp
+#' @title New Experiment
+#' @description Sets a new experiment for eRah
+#' @usage newExp(instrumental, phenotype = NULL, info = character())
+#' @param instrumental The path where the instrumental .csv file is located.
+#' @param phenotype (optional) The path where the phenotypic .csv file is located.
+#' @param info Experiment description
+#' @details See eRah vignette for more details. To open the vignette, execute the following code in R:
+#' vignette("eRahManual", package="erah")
+#' @return \code{newExp} returns an S4 object of the class 'MetaboSet'.
+#' @references [1] Xavier Domingo-Almenara, et al., eRah: A Computational Tool Integrating Spectral Deconvolution and Alignment with Quantification and Identification of Metabolites in GC-MS-Based Metabolomics. Analytical Chemistry (2016). DOI: 10.1021/acs.analchem.6b02927
+#' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
+#' @examples \dontrun{
+#' # Store all the raw data files in one different folder per class,
+#' # and all the class-folders in one folder, which is the experiment
+#' # folder. Then execute
+#'
+#' createdt(path)
+#'
+#' # where path is the experiment folder path.
+#' # The experiment can be now started by:
+#'
+#' ex <- newExp(instrumental = "path/DEMO_inst.csv", 
+#' phenotype = "path/DEMO_pheno.csv", info = "DEMO Experiment")
+#' }
+#' @seealso \code{\link{createdt}} \code{\link{setDecPar}} \code{\link{setAlPar}}
 
 newExp <- function(instrumental, phenotype=NULL, info=character())
 {
