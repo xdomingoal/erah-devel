@@ -99,6 +99,18 @@ plotSpectra <- function(Experiment, AlignId, n.putative=1, compare=T, id.databas
 	
 }
 
+#' @name plotProfile
+#' @aliases plotProfile
+#' @title Plotting chromatographic profile
+#' @description Plots the chromatophic profiles of the compounds found by eRah.
+#' @usage plotProfile(Experiment,AlignId, per.class = T, xlim = NULL)
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment after being deconolved, aligned and (optionally) identified.
+#' @param AlignId the Id identificator for the compound to be shown.
+#' @param per.class logical. if TRUE the profiles are shown one color per class, if FALSE one color per sample.
+#' @param xlim x axsis (retention time) limits (see \code{\link{plot.default}}).
+#' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
+#' @seealso \code{\link{plotSpectra}} \code{\link{plotAlign}}
+
 plotProfile <- function(Experiment,AlignId, per.class=T, xlim=NULL)
 {	
 	if(!(any(unlist(lapply(Experiment@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned first")
@@ -181,6 +193,17 @@ plotProfile <- function(Experiment,AlignId, per.class=T, xlim=NULL)
 	
 }
 
+#' @name plotAlign
+#' @aliases plotAlign
+#' @title Plotting chromatographic profile with and without alignment
+#' @description Plots the chromatophic profiles of the compounds found by eRah. Similarly to plotProfile, but with two sub-windows, showing the chromatophic profiles before and after alignment.
+#' @usage plotAlign(Experiment,AlignId, per.class = T, xlim = NULL)
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment after being deconolved, aligned and (optionally) identified.
+#' @param AlignId the Id identificator for the compound to be shown.
+#' @param per.class logical. if TRUE the profiles are shown one color per class, if FALSE one color per sample.
+#' @param xlim x axsis (retention time) limits (see \code{\link{plot.default}}).
+#' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
+#' @seealso \code{\link{plotSpectra}} \code{\link{plotProfile}}
 
 plotAlign <- function(Experiment, AlignId, per.class=T, xlim=NULL)
 {	
