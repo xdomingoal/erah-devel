@@ -183,6 +183,27 @@ expClasses <- function(object)
 	#return(new("expClasses", classes.type=samples.class.type, classes.summary=classes.summary))
 }
 
+#' @name dataList
+#' @aliases dataList
+#' @title Data list
+#' @description The final eRah list of aligned and identified metabolites and their relative quantification for each sample in a given experiment
+#' @usage dataList(Experiment, id.database = mslib, by.area = TRUE)
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment data. The experiment has to be previously deconvolved, aligned and identified.
+#' @param id.databaseThe mass-spectra library to be compared with the empirical spectra. By default, the MassBank - Mass Bank of North America (MoNa) database are employed (mslib object).
+#' @param by.area if TRUE (default), eRah outputs quantification by the area of the deconvolved chromatographic peak of each compound. If FALSE, eRah outputs the intensity of the deconvolved chromatographic peak.
+#' @details Returns an identification and alignment table containing the list of aligned and identifed metabolites (names) and their relative quantification for each sample in a given experiment.
+#' @return 
+#' \code{alignList} returns an S3 object:
+#'      \item{AlignID}{The unique Tag for found metabolite by eRah. Each metabolite found by eRah for a given experiment has an unique AlignID tag number.}
+#'      \item{tmean}{The mean compound retention time.}
+#'      \item{FoundIn}{The number of samples in which the compound has been detected (the number of samples where the compound area is non-zero).}
+#'      \item{Name.X}{the name of the Xst/nd/rd... hit. idList return as many X (hits) as n.putative selected with \code{\link{identifyComp}}.}
+#'      \item{MatchFactor.X}{The match factor/score of spectral similarity (spectral correlation).}
+#'      \item{DB.Id.X}{The identification number of the library. Each metbolite in the reference library has a different DB.Id number.}
+#'      \item{CAS.X}{the CAS number of each identified metabolite.}
+#'      \item{Quantification}{As many columns as samples and as many rows as metabolites, where each column name has the name of each sample.}
+#' @seealso \code{\link{idList}} \code{\link{alignList}}
+
 dataList <- function(Experiment, id.database=mslib, by.area=TRUE)
 {
 	ID.table <- idList(Experiment, id.database)	
