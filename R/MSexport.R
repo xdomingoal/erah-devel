@@ -1,3 +1,14 @@
+#' @name export2MSP
+#' @aliases export2MSP
+#' @title Export spectra to MSP
+#' @description Export spectra to MSP format for comparison with the NIST library.
+#' @usage export2MSP(Experiment, export.id = NULL, 
+#' id.database = mslib, store.path = getwd())
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment.
+#' @param export.id If NULL, all the spectra in the experiment will be exported. Otherwise, only the AlignID in export.id will be exported
+#' @param id.database The mass-spectra library used in the experiment.
+#' @param store.path The path where the converted files are to be exported.
+
 export2MSP <- function(Experiment, export.id=NULL, id.database = mslib, store.path=getwd())
 {
 	#Experiment <- ex
@@ -84,6 +95,16 @@ export2MSP <- function(Experiment, export.id=NULL, id.database = mslib, store.pa
 	cat("Spectra saved at: ", store.path, "/ExportMSP", sep="")
 }
 
+#' @name export2CEF
+#' @aliases export2CEF
+#' @title Export spectra to CEF
+#' @description Export spectra to CEF format for comparison with the NIST library through MassHunter interface.
+#' @usage export2CEF(Experiment, export.id = NULL, 
+#' id.database = mslib, store.path = getwd())
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment.
+#' @param export.id If NULL, all the spectra in the experiment will be exported. Otherwise, only the AlignID in export.id will be exported
+#' @param id.database The mass-spectra library used in the experiment.
+#' @param store.path The path where the converted files are to be exported.
 
 export2CEF <- function (Experiment, export.id = NULL, id.database = mslib, store.path = getwd()) 
 {
