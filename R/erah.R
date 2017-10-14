@@ -1,7 +1,24 @@
 
 globalVariables("mslib")
 
+#' @name metaData
+#' @aliases metaData
+#' @title metaData
+#' @description Displays the Experiment metadata
+#' @usage metaData(object)
+#' @param object A 'MetaboSet' S4 object containing the experiment.
+#' @seealso \code{\link{phenoData}}
+
 metaData <- function(object) {object@MetaData@Instrumental}
+
+#' @name phenoData
+#' @aliases phenoData
+#' @title Show phenotype data
+#' @description Displays the Experiment phenotypic data (if included).
+#' @usage phenoData(object)
+#' @param object A 'MetaboSet' S4 object containing the experiment.
+#' @seealso \code{\link{metaData}}
+
 phenoData <- function(object) {object@MetaData@Phenotype}
 
 # setMethod("show", "expClasses", function(object) {
