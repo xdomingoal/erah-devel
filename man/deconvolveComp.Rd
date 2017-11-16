@@ -10,7 +10,7 @@ samples.to.process=NULL, down.sample=FALSE)
   \item{Experiment}{A 'MetaboSet' S4 object containing the experiment data previously created by newExp.}
   \item{decParameters}{The software deconvolution parameters object previously created by setDecPar}
   \item{samples.to.process}{Vector indicating which samples are to be processed.} 
-  \item{down.sample}{If TRUE, chromatograms are down sampled to define one peak with 10 scan points (according to the minimum peak width). This is to process longer chromatograms with wider peak widths (more than 20 seconds peak width and small scans per second values). See details. } 
+  \item{down.sample}{If TRUE, chromatograms are down sampled to define one peak with 10 scan points (according to the minimum peak width). This is to process longer chromatograms with wider peak widths (more than 20 seconds peak width and high scans per second values). See details. } 
 }
 \details{
 See eRah vignette for more details. To open the vignette, execute the following code in R:
