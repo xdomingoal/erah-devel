@@ -182,7 +182,7 @@ getC.rq <- function(winD, target.s)
 }
 
 
-get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.sample)
+get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.sample, virtual.scans.per.second)
 {
 	## Down sampling:
 	if(down.sample){
@@ -194,8 +194,17 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
 		selDownPoints <- sapply(time.seq, function(x) which.min(abs(x-original.time.seq)))
 		sampleRD@data <- sampleRD@data[selDownPoints,]
 	}
-	##
+
+	## Virtualization of scans per second:
 	
+	if(!is.null(virtual.scans.per.second)){
+		chromTime <- 1:nrow(sampleRD@data)*sampleRD@scans.per.second
+		time.seq <- seq(min(chromTime, na.rm=T),max(chromTime, na.rm=T),by=1/(virtual.scans.per.second))
+		chromD <- apply(sampleRD@data,2,function(x) signal::pchip(chromTime, x, time.seq))
+		sampleRD@data <- chromD
+		sampleRD@scans.per.second <- virtual.scans.per.second
+	}					
+					
 	if(length(analysis.window)==1 & analysis.window[1]==0)
 	{
 		from.s <- 1
