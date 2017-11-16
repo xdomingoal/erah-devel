@@ -124,7 +124,7 @@ newExp <- function(instrumental, phenotype=NULL, info=character())
 	sample.container
 }
 
-deconvolveComp <- function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE)
+deconvolveComp <- function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE, virtualScansPerSecond=NULL)
 {
 	plotting=FALSE
 	Number.of.Samples <- nrow(Experiment@MetaData@Instrumental)
@@ -138,7 +138,7 @@ deconvolveComp <- function(Experiment, decParameters, samples.to.process=NULL, d
 	for(index in samples.to.process)
 	{
 		cat("\n Deconvolving compounds from",as.character(Experiment@MetaData@Instrumental$filename[index]),"... Processing", k,"/",length(samples.to.process),"\n")  
-		Experiment <- processSample(Experiment, index, plotting, down.sample)
+		Experiment <- processSample(Experiment, index, plotting, down.sample, virtualScansPerSecond)
 		k <- k + 1
 	}
 	cat("\n Compounds deconvolved \n")
@@ -262,7 +262,7 @@ identifyComp <- function(Experiment, id.database=mslib, mz.range=NULL, n.putativ
 	Experiment
 }
 
-processSample <- function(Experiment, index, plotting, down.sample)
+processSample <- function(Experiment, index, plotting, down.sample, virtualScansPerSecond)
 {
 	if(Experiment@MetaData@DataDirectory=="") {filename <- as.character(Experiment@MetaData@Instrumental$filename[index])
 		}else{filename <- paste(Experiment@MetaData@DataDirectory,"/",Experiment@MetaData@Instrumental$filename[index], sep="")}
@@ -283,6 +283,7 @@ processSample <- function(Experiment, index, plotting, down.sample)
 	Experiment@Data@Parameters$scans.per.second <- sampleObject@scans.per.second
 	sampleObject@avoid.processing.mz <- Experiment@Data@Parameters$avoid.processing.mz
 	sampleObject@min.peak.width <- Experiment@Data@Parameters$min.peak.width*Experiment@Data@Parameters$scans.per.second*60
+	if(!is.null(virtual.scans.per.second)) sampleObject@min.peak.width <- Experiment@Data@Parameters$min.peak.width*virtual.scans.per.second*60
 	sampleObject@min.peak.height <- Experiment@Data@Parameters$min.peak.height
 	sampleObject@noise.threshold <- Experiment@Data@Parameters$noise.threshold
 	#sampleObject@moving.window.length <- Experiment@Data@Parameters$moving.window.length*Experiment@Data@Parameters$scans.per.second*60
@@ -294,7 +295,7 @@ processSample <- function(Experiment, index, plotting, down.sample)
 	
 	
 		sampleObject <- avoid.processing(sampleObject)
-		factor.list <- try(get.factor.list(sampleObject, analysis.window=Experiment@Data@Parameters$analysis.time, plotting, down.sample), silent=F)
+		factor.list <- try(get.factor.list(sampleObject, analysis.window=Experiment@Data@Parameters$analysis.time, plotting, down.sample, virtual.scans.per.second), silent=F)
 		if(class(factor.list)=="try-error") {factor.list <- as.data.frame(NULL); warning("Unable to extract factors from ", Experiment@MetaData@Instrumental$filename[index], ". Data may be corrupted.", sep="")}
 		Experiment@Data@FactorList[[index]] <- factor.list		
 	
