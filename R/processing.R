@@ -151,7 +151,7 @@ getC.tP <- function(winD, target.s)
 	if(is.na(max.I)) max.I <- 0
 	max.I <- sqrt(max.I)
 	if(max.I>max(winD[which.max(Cps),])) max.I <- max(winD[which.max(Cps),])
-	Cps <- Cps*max.I
+	Cps <- suppressWarnings(Cps*max.I)
 	
 	Cps		
 }
@@ -176,7 +176,7 @@ getC.rq <- function(winD, target.s)
 	if(is.na(max.I)) max.I <- 0
 	max.I <- sqrt(max.I)
 	if(max.I>max(winD[which.max(Cps),])) max.I <- max(winD[which.max(Cps),])
-	Cps <- Cps*max.I	
+	Cps <- suppressWarnings(Cps*max.I)	
 	
 	Cps			
 }
