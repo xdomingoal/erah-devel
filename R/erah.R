@@ -283,7 +283,7 @@ processSample <- function(Experiment, index, plotting, down.sample, virtualScans
 	Experiment@Data@Parameters$scans.per.second <- sampleObject@scans.per.second
 	sampleObject@avoid.processing.mz <- Experiment@Data@Parameters$avoid.processing.mz
 	sampleObject@min.peak.width <- Experiment@Data@Parameters$min.peak.width*Experiment@Data@Parameters$scans.per.second*60
-	if(!is.null(virtual.scans.per.second)) sampleObject@min.peak.width <- Experiment@Data@Parameters$min.peak.width*virtual.scans.per.second*60
+	if(!is.null(virtualScansPerSecond)) sampleObject@min.peak.width <- Experiment@Data@Parameters$min.peak.width*virtualScansPerSecond*60
 	sampleObject@min.peak.height <- Experiment@Data@Parameters$min.peak.height
 	sampleObject@noise.threshold <- Experiment@Data@Parameters$noise.threshold
 	#sampleObject@moving.window.length <- Experiment@Data@Parameters$moving.window.length*Experiment@Data@Parameters$scans.per.second*60
