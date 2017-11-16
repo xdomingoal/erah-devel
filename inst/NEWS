@@ -1,5 +1,6 @@
-erah v1.1.0 (Release date: 2017-04-30)
+erah v1.0.6 (Release date: 2017-11-17)
 ==============
+* New feature available for upsampling chromatograms with low scans per second. (Thanks to Mr. Z. Wylde)
 * New feature available for processing long chromatograms with larger peaks (> 20 seconds peak width). (Thanks to Dr. P. Fuchsmann and Mr. T. Richter)
 * Improved compatibility to import NIST library files. (Thanks to Mr. T. Richter)
 * Faster baseline removal implementation.
