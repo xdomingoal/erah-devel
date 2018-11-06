@@ -9,9 +9,9 @@ dataList(Experiment, id.database = mslib, by.area = TRUE)
 \arguments{
 \item{Experiment}{A 'MetaboSet' S4 object containing the experiment data. The experiment has to be previously deconvolved, aligned and identified.}
 
-\item{by.area}{if TRUE (default), eRah outputs quantification by the area of the deconvolved chromatographic peak of each compound. If FALSE, eRah outputs the intensity of the deconvolved chromatographic peak.}
+\item{id.database}{The mass-spectra library to be compared with the empirical spectra. By default, the MassBank - Mass Bank of North America (MoNa) database are employed (mslib object).}
 
-\item{id.databaseThe}{mass-spectra library to be compared with the empirical spectra. By default, the MassBank - Mass Bank of North America (MoNa) database are employed (mslib object).}
+\item{by.area}{if TRUE (default), eRah outputs quantification by the area of the deconvolved chromatographic peak of each compound. If FALSE, eRah outputs the intensity of the deconvolved chromatographic peak.}
 }
 \value{
 \code{alignList} returns an S3 object:

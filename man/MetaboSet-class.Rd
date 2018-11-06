@@ -7,6 +7,9 @@
 \description{
 The MetaboSet class is a single generic class valid for all sorts of metabolomic studies regardless of the experimental platform, the statistical processing and the annotation stage. It is the core operation class of eRah.
 }
+\details{
+MetaboSet
+}
 \section{Slots}{
 
 \describe{

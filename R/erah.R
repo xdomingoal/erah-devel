@@ -42,7 +42,6 @@ phenoData <- function(object) {object@MetaData@Phenotype}
 #' @aliases setDecPar
 #' @title Set Software Parameters
 #' @description Sets Software Parameters for eRah.
-#' @usage setDecPar(min.peak.width, min.peak.height = 2500, noise.threshold = 500,avoid.processing.mz = c(73:75,147:149), compression.coef = 2, analysis.time = 0)
 #' @param min.peak.width Minimum compound peak width (in seconds). This is a critical parameter that conditions the efficiency of eRah. Typically, this should be the half of the mean compound width.
 #' @param min.peak.height Minimum compound peak height
 #' @param noise.threshold Data above this threshold will be considered as noise
@@ -66,8 +65,12 @@ phenoData <- function(object) {object@MetaData@Phenotype}
 #' }
 #' @export
 
-setDecPar <- function(min.peak.width, min.peak.height=2500, noise.threshold=500, avoid.processing.mz=c(73:75,147:149), compression.coef=2, analysis.time=0)
-{
+setDecPar <- function(min.peak.width, 
+                      min.peak.height=2500, 
+                      noise.threshold=500, 
+                      avoid.processing.mz=c(73:75,147:149), 
+                      compression.coef=2, 
+                      analysis.time=0){
   softPar <- new("eRahSoftParameters",algorithm="eRah-OSD", min.peak.width = min.peak.width/60, min.peak.height = min.peak.height, noise.threshold = noise.threshold, avoid.processing.mz = avoid.processing.mz, compression.coef = compression.coef, analysis.time=analysis.time)
   softPar
 }
@@ -189,11 +192,11 @@ newExp <- function(instrumental, phenotype=NULL, info=character())
 #' @aliases deconvolveComp
 #' @title Deconvolution of compounds in samples
 #' @description Deconvolution of GC-MS data
-#' @usage deconvolveComp(Experiment, decParameters,samples.to.process = NULL, down.sample = FALSE)
 #' @param Experiment A 'MetaboSet' S4 object containing the experiment data previously created by newExp.
 #' @param decParameters The software deconvolution parameters object previously created by setDecPar
 #' @param samples.to.process Vector indicating which samples are to be processed.
 #' @param down.sample If TRUE, chromatograms are down sampled to define one peak with 10 scan points (according to the minimum peak width). This is to process longer chromatograms with wider peak widths (more than 20 seconds peak width and small scans per second values). See details.
+#' @param virtualScansPerSecond A virtual scans per second. If chromatograms are downsampled (for example, for a 1 mean peak width a 1 scans per second sampling frequency was used), eRah could not perform as expected. In these cases, the BEST solution is to re-acquire the samples. However, by selecting a different (virtual) scans per second frequency, eRah can upsample the data and process it more effectively.
 #' @details See eRah vignette for more details. To open the vignette, execute the following code in R:
 #' vignette("eRahManual", package="erah")
 #'

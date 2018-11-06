@@ -1,7 +1,7 @@
-#' @name show.MetaboSet
-#' @aliases show.MetaboSet
+#' show-MetaboSet
 #' @title Show MetaboSet object
 #' @description Show MetaboSet object
+#' @param object S4 object of class MetaboSet
 
 setMethod("show", "MetaboSet", function(object){
   cat("A \"MetaboSet\" object containing", length(object@Data@FactorList), "samples \n \n" ,sep = " ")

@@ -211,7 +211,7 @@ expClasses <- function(object)
 #' @description The final eRah list of aligned and identified metabolites and their relative quantification for each sample in a given experiment
 #' @usage dataList(Experiment, id.database = mslib, by.area = TRUE)
 #' @param Experiment A 'MetaboSet' S4 object containing the experiment data. The experiment has to be previously deconvolved, aligned and identified.
-#' @param id.databaseThe mass-spectra library to be compared with the empirical spectra. By default, the MassBank - Mass Bank of North America (MoNa) database are employed (mslib object).
+#' @param id.database The mass-spectra library to be compared with the empirical spectra. By default, the MassBank - Mass Bank of North America (MoNa) database are employed (mslib object).
 #' @param by.area if TRUE (default), eRah outputs quantification by the area of the deconvolved chromatographic peak of each compound. If FALSE, eRah outputs the intensity of the deconvolved chromatographic peak.
 #' @details Returns an identification and alignment table containing the list of aligned and identifed metabolites (names) and their relative quantification for each sample in a given experiment.
 #' @return 

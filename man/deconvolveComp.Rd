@@ -4,7 +4,8 @@
 \alias{deconvolveComp}
 \title{Deconvolution of compounds in samples}
 \usage{
-deconvolveComp(Experiment, decParameters,samples.to.process = NULL, down.sample = FALSE)
+deconvolveComp(Experiment, decParameters, samples.to.process = NULL,
+  down.sample = FALSE, virtualScansPerSecond = NULL)
 }
 \arguments{
 \item{Experiment}{A 'MetaboSet' S4 object containing the experiment data previously created by newExp.}
@@ -14,6 +15,8 @@ deconvolveComp(Experiment, decParameters,samples.to.process = NULL, down.sample 
 \item{samples.to.process}{Vector indicating which samples are to be processed.}
 
 \item{down.sample}{If TRUE, chromatograms are down sampled to define one peak with 10 scan points (according to the minimum peak width). This is to process longer chromatograms with wider peak widths (more than 20 seconds peak width and small scans per second values). See details.}
+
+\item{virtualScansPerSecond}{A virtual scans per second. If chromatograms are downsampled (for example, for a 1 mean peak width a 1 scans per second sampling frequency was used), eRah could not perform as expected. In these cases, the BEST solution is to re-acquire the samples. However, by selecting a different (virtual) scans per second frequency, eRah can upsample the data and process it more effectively.}
 }
 \value{
 The function returns an updated S4 'MetaboSet' class, where the GC-MS samples have been now deconvolved.

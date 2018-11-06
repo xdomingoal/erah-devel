@@ -4,7 +4,9 @@
 \alias{setDecPar}
 \title{Set Software Parameters}
 \usage{
-setDecPar(min.peak.width, min.peak.height = 2500, noise.threshold = 500,avoid.processing.mz = c(73:75,147:149), compression.coef = 2, analysis.time = 0)
+setDecPar(min.peak.width, min.peak.height = 2500,
+  noise.threshold = 500, avoid.processing.mz = c(73:75, 147:149),
+  compression.coef = 2, analysis.time = 0)
 }
 \arguments{
 \item{min.peak.width}{Minimum compound peak width (in seconds). This is a critical parameter that conditions the efficiency of eRah. Typically, this should be the half of the mean compound width.}

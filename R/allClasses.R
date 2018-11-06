@@ -51,9 +51,7 @@ setClass(Class = "Results",
                                          Identification = "data.frame", 
                                          Statistics = "Statistics"))
 
-#' @name MetaboSet-class
-#' @docType class
-#' @aliases MetaboSet-class
+#' MetaboSet
 #' @title Class \code{"MetaboSet"}
 #' @description The MetaboSet class is a single generic class valid for all sorts of metabolomic studies regardless of the experimental platform, the statistical processing and the annotation stage. It is the core operation class of eRah.
 #' @slot Info Slot Info stores the general information of the experiment and the experimental platform used in the analysis of the biological samples.
