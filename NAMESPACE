@@ -3,7 +3,7 @@
 
 import(osd, ncdf4, caTools, nnls, graphics, Rcpp)
 importFrom("igraph", "graph.data.frame", "clusters")
-importFrom("signal", "sgolayfilt", "hanning")
+importFrom("signal", "sgolayfilt", "hanning", "pchip")
 importFrom("HiClimR", "fastCor")
 importFrom("quantreg", "rq")
 importFrom("utils", "getTxtProgressBar", "read.csv","setTxtProgressBar", "txtProgressBar", "write.table")
