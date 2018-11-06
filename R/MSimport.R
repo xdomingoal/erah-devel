@@ -301,6 +301,7 @@ importGMD <- function(filename, DB.name, DB.version, DB.info, type=c("VAR5.ALK",
 #'
 #' For more details, please see the eRah manual.
 #' @export
+#' @importFrom methods new
 
 importMSP <- function(filename, DB.name, DB.version, DB.info)
 {

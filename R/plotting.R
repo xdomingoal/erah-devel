@@ -27,6 +27,7 @@
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotProfile}} \code{\link{plotAlign}}
 #' @export
+#' @importFrom graphics text lines
 
 plotSpectra <- function(Experiment, AlignId, n.putative=1, compare=T, id.database=mslib, comp.db=NULL, return.spectra=F, draw.color="purple", xlim=NULL)
 {
@@ -207,6 +208,7 @@ plotProfile <- function(Experiment,AlignId, per.class=T, xlim=NULL)
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotSpectra}} \code{\link{plotProfile}}
 #' @export
+#' @importFrom graphics par matplot legend
 
 plotAlign <- function(Experiment, AlignId, per.class=T, xlim=NULL)
 {	
@@ -325,6 +327,7 @@ plotAlign <- function(Experiment, AlignId, per.class=T, xlim=NULL)
 #' }
 #' @seealso \code{\link{sampleInfo}}
 #' @export
+#' @importFrom graphics plot
 
 plotChr <- function(Experiment, N.sample=1, type=c("BIC","TIC","EIC"), xlim=NULL, mz=NULL)
 {

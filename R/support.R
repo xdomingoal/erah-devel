@@ -55,6 +55,8 @@ get.max.sign <- function(mat) {
 	apply(mat,2,function(X){if(max(X)>abs(min(X))){return(1)}else{return(-1)}})	
 }
 
+#' @importFrom stats fft
+
 lagFFT <- function(x,y, corr.coef=F)
 {
 	#lag value: the 'lag' positions that vector 'y' has to be displaced to be aligned with 'x'

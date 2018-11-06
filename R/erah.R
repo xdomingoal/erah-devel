@@ -128,6 +128,7 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 #' }
 #' @seealso \code{\link{createdt}} \code{\link{setDecPar}} \code{\link{setAlPar}}
 #' @export
+#' @importFrom utils read.csv
 
 newExp <- function(instrumental, phenotype=NULL, info=character())
 {

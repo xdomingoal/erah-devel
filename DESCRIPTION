@@ -5,7 +5,16 @@ Version: 1.1.0
 Date: 2017-04-30
 Author: Xavier Domingo-Almenara, Sara Samino, Maria Vinaixa, Alexandre Perera, Oscar Yanes
 Depends: R (>= 3.4)
-Imports: osd, ncdf4, caTools, nnls, HiClimR, igraph, signal, quantreg, XML, methods
+Imports: osd, 
+    ncdf4, 
+    caTools, 
+    nnls, 
+    HiClimR, 
+    igraph, 
+    signal, 
+    quantreg, 
+    XML, 
+    methods
 Suggests: 
     mzR,
     knitr,

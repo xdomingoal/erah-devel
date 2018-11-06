@@ -19,9 +19,9 @@
 # }
 
 
-#' @importFrom utils txtProgressBar
-#' @importFrom stats dist
-#' @importFrom stats cor
+#' @importFrom utils txtProgressBar setTxtProgressBar getTxtProgressBar
+#' @importFrom stats dist cor
+#' @importFrom igraph graph.data.frame clusters
 
 align.factors <- function(factors.list, min.spectra.cor, max.time.dist, max.mz, mz.range)
 {				
@@ -278,6 +278,7 @@ create.factorlist.table <- function(object)
 	align.List
 }
 
+#' @importFrom stats na.omit
 
 comp.clusters <- function(hdist, classes)
 {

@@ -54,6 +54,7 @@ load.xml <- function(filename)
     }
 }
 
+#' @importFrom ncdf4 nc_open ncvar_get
 
 load.ncdf4 <- function(filename)
 {	
@@ -120,6 +121,7 @@ load.ncdf4 <- function(filename)
 #' }
 #' @seealso \code{\link{newExp}}
 #' @export
+#' @importFrom utils write.table
 
 createdt <- function(path)
 {
