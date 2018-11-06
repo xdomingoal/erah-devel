@@ -1,3 +1,22 @@
+#' @name idList
+#' @aliases idList
+#' @title Identification list
+#' @description The list of identified metabolites in a given experiment
+#' @usage idList(object, id.database = mslib)
+#' @param object A 'MetaboSet' S4 object containing the experiment data. The experiment has to be previously deconvolved, aligned and identified.
+#' @param id.database The mass-spectra library to be compared with the empirical spectra. By default, the MassBank - Mass Bank of North America (MoNa) database are employed (mslib object).
+#' @details Returns an identification table containing the names, match scores, and other variables for a given experiment.
+#' @return 
+#' \code{idList} returns an S3 object:
+#'      \item{AlignID}{The unique Tag for found metabolite by eRah. Each metabolite found by eRah for a given experiment has an unique AlignID tag number.}
+#'      \item{tmean}{The mean compound retention time.}
+#'      \item{Name.X}{the name of the Xst/nd/rd... hit. idList return as many X (hits) as n.putative selected with \code{\link{identifyComp}}.}
+#'      \item{FoundIn}{The number of samples in which the compound has been detected (the number of samples where the compound area is non-zero).}
+#'      \item{MatchFactor.X}{The match factor/score of spectral similarity (spectral correlation).}
+#'      \item{DB.Id.X}{The identification number of the library. Each metbolite in the reference library has a different DB.Id number.}
+#'      \item{CAS.X}{the CAS number of each identified metabolite.}
+#' @seealso \code{\link{alignList}} \code{\link{dataList}}
+
 idList <- function(object, id.database=mslib) {
 	#if(!(any(unlist(lapply(object@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned and identified first")
 	if(nrow(object@Results@Identification)==0) stop("Factors must be identified first")
@@ -67,6 +86,23 @@ idList <- function(object, id.database=mslib) {
 	# }
 # }
 
+#' @name alignList
+#' @aliases alignList
+#' @title Alignment list
+#' @description The list of aligned metabolites and their relative quantification for each sample in a given experiment
+#' @usage alignList(object, by.area = TRUE)
+#' @param object A 'MetaboSet' S4 object containing the experiment data. The experiment has to be previously deconvolved, aligned and (optionally) identified.
+#' @param by.area if TRUE (default), eRah outputs quantification by the area of the deconvolved chromatographic peak of each compound. If FALSE, eRah outputs the intensity of the deconvolved chromatographic peak.
+#' @details Returns an alignment table containing the list of aligned metabolites and their relative quantification for each sample in a given experiment.
+#' @return 
+#' \code{alignList} returns a data frame object:
+#'      \item{AlignID}{The unique Tag for found metabolite by eRah. Each metabolite found by eRah for a given experiment has an unique AlignID tag number.}
+#'      \item{Factor}{the Factor tag name. Each metabolite has an unique 'Factor' name to enhance visual interpretation.}
+#'      \item{tmean}{The mean compound retention time.}
+#'      \item{FoundIn}{The number of samples in which the compound has been detected (the number of samples where the compound area is non-zero).}	
+#'      \item{Quantification}{As many columns as samples and as many rows as metabolites, where each column name has the name of each sample.}
+#' @seealso \code{\link{idList}} \code{\link{dataList}}
+
 alignList <- function(object, by.area=TRUE) {
 		
 	if(!(any(unlist(lapply(object@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned first")
@@ -133,6 +169,15 @@ alignList <- function(object, by.area=TRUE) {
 	}
 }
 
+#' @name  expClasses
+#' @aliases expClasses
+#' @title  Experiment classes
+#' @description The classes of a given experiment.
+#' @usage expClasses(object)
+#' @param object A 'MetaboSet' S4 object containing the experiment.
+#' @details Returns the classes details of the experiment.
+#' @seealso metaData phenoData
+
 expClasses <- function(object)
 {
 	if(nrow(object@MetaData@Phenotype)==0) stop("No Phenotype data has been attached to this experiment.")
@@ -157,6 +202,27 @@ expClasses <- function(object)
 	#return(new("expClasses", classes.type=samples.class.type, classes.summary=classes.summary))
 }
 
+#' @name dataList
+#' @aliases dataList
+#' @title Data list
+#' @description The final eRah list of aligned and identified metabolites and their relative quantification for each sample in a given experiment
+#' @usage dataList(Experiment, id.database = mslib, by.area = TRUE)
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment data. The experiment has to be previously deconvolved, aligned and identified.
+#' @param id.databaseThe mass-spectra library to be compared with the empirical spectra. By default, the MassBank - Mass Bank of North America (MoNa) database are employed (mslib object).
+#' @param by.area if TRUE (default), eRah outputs quantification by the area of the deconvolved chromatographic peak of each compound. If FALSE, eRah outputs the intensity of the deconvolved chromatographic peak.
+#' @details Returns an identification and alignment table containing the list of aligned and identifed metabolites (names) and their relative quantification for each sample in a given experiment.
+#' @return 
+#' \code{alignList} returns an S3 object:
+#'      \item{AlignID}{The unique Tag for found metabolite by eRah. Each metabolite found by eRah for a given experiment has an unique AlignID tag number.}
+#'      \item{tmean}{The mean compound retention time.}
+#'      \item{FoundIn}{The number of samples in which the compound has been detected (the number of samples where the compound area is non-zero).}
+#'      \item{Name.X}{the name of the Xst/nd/rd... hit. idList return as many X (hits) as n.putative selected with \code{\link{identifyComp}}.}
+#'      \item{MatchFactor.X}{The match factor/score of spectral similarity (spectral correlation).}
+#'      \item{DB.Id.X}{The identification number of the library. Each metbolite in the reference library has a different DB.Id number.}
+#'      \item{CAS.X}{the CAS number of each identified metabolite.}
+#'      \item{Quantification}{As many columns as samples and as many rows as metabolites, where each column name has the name of each sample.}
+#' @seealso \code{\link{idList}} \code{\link{alignList}}
+
 dataList <- function(Experiment, id.database=mslib, by.area=TRUE)
 {
 	ID.table <- idList(Experiment, id.database)	
@@ -165,6 +231,16 @@ dataList <- function(Experiment, id.database=mslib, by.area=TRUE)
 	data.table <- merge(ID.table, Al.table, by="AlignID")
 	data.table
 }
+
+#' @name sampleInfo
+#' @aliases sampleInfo
+#' @title Information of the samples
+#' @description Returns basic information on the samples.
+#' @usage sampleInfo(Experiment, N.sample = 1)
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment.
+#' @param N.sample Integer. The number of the sample to query.
+#' @details Returns details on a given sample of the experiment, such as name, start time, end time, minium and maximum adquired m/z and scans per second.
+#' @seealso \code{\link{plotChr}}
 
 sampleInfo <- function(Experiment, N.sample=1)
 {

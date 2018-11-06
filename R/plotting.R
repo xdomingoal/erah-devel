@@ -1,3 +1,32 @@
+#' @name plotSpectra
+#' @aliases plotSpectra
+#' @title Plotting Spectra
+#' @description Plots the empirical spectra found by eRah, and allows comparing it with the reference spectra.
+#' @usage 
+#' plotSpectra(Experiment, AlignId, n.putative = 1,
+#' compare = T, id.database = mslib, comp.db = NULL, 
+#' return.spectra = F, draw.color = "purple", xlim = NULL)
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment after being deconolved, aligned and (optionally) identified.
+#' @param AlignId the Id identificator for the compound to be shown.
+#' @param n.putative The hit number (position) to be returned when comparing the empirical spectrum with the reference. See details
+#' @param compare logical. If TRUE, then the reference spectrum from the library is shown for comparison.
+#' @param id.database The mass-spectra library to be compared with the empirical spectra. By default, the MassBank-[2] - Mass Bank of North America (MoNa) database are employed.
+#' @param comp.db If you want to compare the empirical spectrum with another spectrum from the database, select the comp.db number from the database.
+#' @param return.spectra logical. If TRUE, the function returns the empirical spectrum for the selected compound
+#' @param draw.color Selects the color for the reference spectrum (see \code{\link{colors}}).
+#' @param xlim x axsis (mass - m/z) limits (see \code{\link{plot.default}}).
+#' @details When identification is applied (see \code{\link{identifyComp}}), the number of hits to be returned (n.putative) has to be selected. Therefore, here you can compare the empirical spectrum (found by eRah) with each n.putative hit returned (1, 2, ...) by (see \code{\link{identifyComp}}).
+#' @return 
+#' \code{plotSpectra} returns an vector when return.spectra=TRUE.
+#'
+#'      \item{x}{vector. Containts the empirical spectrum.}
+#' @references 
+#' [1] eRah: an R package for spectral deconvolution, alignment, and metabolite identification in GC/MS-based untargeted metabolomics. Xavier Domingo-Almenara, Alexandre Perera, Maria Vinaixa, Sara Samino, Xavier Correig, Jesus Brezmes, Oscar Yanes. (2016) Article in Press.
+#'
+#' [2] MassBank: A public repository for sharing mass spectral data for life sciences, H. Horai, M. Arita, S. Kanaya, Y. Nihei, T. Ikeda, K. Suwa. Y. Ojima, K. Tanaka, S. Tanaka, K. Aoshima, Y. Oda, Y. Kakazu, M. Kusano, T. Tohge, F. Matsuda, Y. Sawada, M. Yokota Hirai, H. Nakanishi, K. Ikeda, N. Akimoto, T. Maoka, H. Takahashi, T. Ara, N. Sakurai, H. Suzuki, D. Shibata, S. Neumann, T. Iida, K. Tanaka, K. Funatsu, F. Matsuura, T. Soga, R. Taguchi, K. Saito and T. Nishioka, J. Mass Spectrom., 45, 703-714 (2010)
+#' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
+#' @seealso \code{\link{plotProfile}} \code{\link{plotAlign}}
+
 plotSpectra <- function(Experiment, AlignId, n.putative=1, compare=T, id.database=mslib, comp.db=NULL, return.spectra=F, draw.color="purple", xlim=NULL)
 {
 	if(length(AlignId)!=1) stop("Only one spectrum can be shown at once")
@@ -69,6 +98,18 @@ plotSpectra <- function(Experiment, AlignId, n.putative=1, compare=T, id.databas
 	if(return.spectra==T) return(empiric.spectra)
 	
 }
+
+#' @name plotProfile
+#' @aliases plotProfile
+#' @title Plotting chromatographic profile
+#' @description Plots the chromatophic profiles of the compounds found by eRah.
+#' @usage plotProfile(Experiment,AlignId, per.class = T, xlim = NULL)
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment after being deconolved, aligned and (optionally) identified.
+#' @param AlignId the Id identificator for the compound to be shown.
+#' @param per.class logical. if TRUE the profiles are shown one color per class, if FALSE one color per sample.
+#' @param xlim x axsis (retention time) limits (see \code{\link{plot.default}}).
+#' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
+#' @seealso \code{\link{plotSpectra}} \code{\link{plotAlign}}
 
 plotProfile <- function(Experiment,AlignId, per.class=T, xlim=NULL)
 {	
@@ -152,6 +193,17 @@ plotProfile <- function(Experiment,AlignId, per.class=T, xlim=NULL)
 	
 }
 
+#' @name plotAlign
+#' @aliases plotAlign
+#' @title Plotting chromatographic profile with and without alignment
+#' @description Plots the chromatophic profiles of the compounds found by eRah. Similarly to plotProfile, but with two sub-windows, showing the chromatophic profiles before and after alignment.
+#' @usage plotAlign(Experiment,AlignId, per.class = T, xlim = NULL)
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment after being deconolved, aligned and (optionally) identified.
+#' @param AlignId the Id identificator for the compound to be shown.
+#' @param per.class logical. if TRUE the profiles are shown one color per class, if FALSE one color per sample.
+#' @param xlim x axsis (retention time) limits (see \code{\link{plot.default}}).
+#' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
+#' @seealso \code{\link{plotSpectra}} \code{\link{plotProfile}}
 
 plotAlign <- function(Experiment, AlignId, per.class=T, xlim=NULL)
 {	
@@ -244,6 +296,31 @@ plotAlign <- function(Experiment, AlignId, per.class=T, xlim=NULL)
 	
 }
 
+#' @name plotChr
+#' @aliases plotChr
+#' @title Plotting sample chromatogram
+#' @description Plot the sample chromatogram
+#' @usage plotChr(Experiment, N.sample = 1, type = c("BIC","TIC","EIC"), xlim = NULL, mz = NULL)
+#' @param Experiment A 'MetaboSet' S4 object containing the experiment.
+#' @param N.sample Integer. The number of the sample to query.
+#' @param type The type of plotting, Base Ion Chromatogram (BIC), Total Ion Chromatogram (TIC), or Extracted Ion Chromatogram (EIC).
+#' @param xlim The range in minutes, separated by comas: c(rt.min, rt.max) of the limits of plotting. By default, all the chromatogram is plotted.
+#' @param mz Just when EIC is selected. The range separated by comas: c(mz.min, mz.max) or a vector of numbers: c(50,67,80), of the masses to be ploted.
+#' @examples \dontrun{
+#' # First, an experiment has to be already created by newExp()
+#' # then, each sample chromatogram can be plotted by:
+#'
+#' plotChr(Experiment, 1, "BIC")
+#' plotChr(Experiment, 1, "TIC", xlim=c(5,7))  #Plots from
+#' # minute 5 to 7.
+#' 
+#' plotChr(Experiment, 1, "EIC", mz=50:70 xlim=c(5,7))  #Plots from
+#' # minute 5 to 7, and only the masses from 50 to 70.
+#'
+#' plotChr(Experiment, 1, "EIC", xlim=c(7,7.5), mz=c(50,54,70))  #Plots
+#' # the EIC from minute 7 to 7.5, and only the masses 50, 54 and 70.
+#' }
+#' @seealso \code{\link{sampleInfo}}
 
 plotChr <- function(Experiment, N.sample=1, type=c("BIC","TIC","EIC"), xlim=NULL, mz=NULL)
 {
@@ -276,8 +353,6 @@ plotChr <- function(Experiment, N.sample=1, type=c("BIC","TIC","EIC"), xlim=NULL
 
 	}
 }
-
-
 
 # plotBoxplot <- function(Experiment, AlignId, classes.to.compare=NULL, outline = TRUE, log = "", horizontal = FALSE)
 # {
