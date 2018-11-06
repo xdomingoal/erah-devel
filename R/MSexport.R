@@ -8,6 +8,7 @@
 #' @param export.id If NULL, all the spectra in the experiment will be exported. Otherwise, only the AlignID in export.id will be exported
 #' @param id.database The mass-spectra library used in the experiment.
 #' @param store.path The path where the converted files are to be exported.
+#' @export
 
 export2MSP <- function(Experiment, export.id=NULL, id.database = mslib, store.path=getwd())
 {
@@ -105,6 +106,7 @@ export2MSP <- function(Experiment, export.id=NULL, id.database = mslib, store.pa
 #' @param export.id If NULL, all the spectra in the experiment will be exported. Otherwise, only the AlignID in export.id will be exported
 #' @param id.database The mass-spectra library used in the experiment.
 #' @param store.path The path where the converted files are to be exported.
+#' @export
 
 export2CEF <- function (Experiment, export.id = NULL, id.database = mslib, store.path = getwd()) 
 {

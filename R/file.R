@@ -119,6 +119,7 @@ load.ncdf4 <- function(filename)
 #' phenotype="path/DEMO_pheno.csv", info="DEMO Experiment")
 #' }
 #' @seealso \code{\link{newExp}}
+#' @export
 
 createdt <- function(path)
 {

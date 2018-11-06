@@ -7,7 +7,7 @@
 phenoData(object)
 }
 \arguments{
-\item{object}{A 'MetaboSet' S4 object containing the experiment.}
+\item{object}{A 'MetaboSet' S4 object ciontaining the experiment.}
 }
 \description{
 Displays the Experiment phenotypic data (if included).

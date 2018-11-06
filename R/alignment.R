@@ -19,6 +19,9 @@
 # }
 
 
+#' @importFrom utils txtProgressBar
+#' @importFrom stats dist
+#' @importFrom stats cor
 
 align.factors <- function(factors.list, min.spectra.cor, max.time.dist, max.mz, mz.range)
 {				

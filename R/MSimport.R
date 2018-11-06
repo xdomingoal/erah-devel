@@ -175,6 +175,7 @@ list.DB <- function(DB.object)
 #' @param DB.info Some info about the database for further reference
 #' @param type The type of RI to be imported from the database
 #' @details For more details, please see the eRah manual
+#' @export
 
 importGMD <- function(filename, DB.name, DB.version, DB.info, type=c("VAR5.ALK","VAR5.FAME","MDN35.ALK", "MDN35.FAME"))
 {
@@ -299,6 +300,7 @@ importGMD <- function(filename, DB.name, DB.version, DB.info, type=c("VAR5.ALK",
 #'
 #'
 #' For more details, please see the eRah manual.
+#' @export
 
 importMSP <- function(filename, DB.name, DB.version, DB.info)
 {

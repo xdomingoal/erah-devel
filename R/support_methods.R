@@ -16,6 +16,7 @@
 #'      \item{DB.Id.X}{The identification number of the library. Each metbolite in the reference library has a different DB.Id number.}
 #'      \item{CAS.X}{the CAS number of each identified metabolite.}
 #' @seealso \code{\link{alignList}} \code{\link{dataList}}
+#' @export
 
 idList <- function(object, id.database=mslib) {
 	#if(!(any(unlist(lapply(object@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned and identified first")
@@ -102,6 +103,7 @@ idList <- function(object, id.database=mslib) {
 #'      \item{FoundIn}{The number of samples in which the compound has been detected (the number of samples where the compound area is non-zero).}	
 #'      \item{Quantification}{As many columns as samples and as many rows as metabolites, where each column name has the name of each sample.}
 #' @seealso \code{\link{idList}} \code{\link{dataList}}
+#' @export
 
 alignList <- function(object, by.area=TRUE) {
 		
@@ -177,6 +179,7 @@ alignList <- function(object, by.area=TRUE) {
 #' @param object A 'MetaboSet' S4 object containing the experiment.
 #' @details Returns the classes details of the experiment.
 #' @seealso metaData phenoData
+#' @export
 
 expClasses <- function(object)
 {
@@ -222,6 +225,7 @@ expClasses <- function(object)
 #'      \item{CAS.X}{the CAS number of each identified metabolite.}
 #'      \item{Quantification}{As many columns as samples and as many rows as metabolites, where each column name has the name of each sample.}
 #' @seealso \code{\link{idList}} \code{\link{alignList}}
+#' @export
 
 dataList <- function(Experiment, id.database=mslib, by.area=TRUE)
 {
@@ -241,6 +245,7 @@ dataList <- function(Experiment, id.database=mslib, by.area=TRUE)
 #' @param N.sample Integer. The number of the sample to query.
 #' @details Returns details on a given sample of the experiment, such as name, start time, end time, minium and maximum adquired m/z and scans per second.
 #' @seealso \code{\link{plotChr}}
+#' @export
 
 sampleInfo <- function(Experiment, N.sample=1)
 {

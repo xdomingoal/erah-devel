@@ -61,6 +61,7 @@ setClass(Class = "Results",
 #' @slot MetaData Slot MetaData has two slots. In the Instrumental slot it is saved a data frame with some mandatory fields (filename, date, time, sampleID) and optional fields related to the experimental platform (Column ID, Column Type, Ioniser,...). Slot Phenotypic contains a data frame with the sample and experimental information (phenotypes, longitudinal data,...).
 #' @slot Results In the Results slot it is saved the information related to the statistical and identification results. The slot Parameters contains all the values of the parameters used in the identification and statistical functions. Slot Identification has the results of the identification process as well as the identification or/and annotation steps. The results of the statistical functions are saved in the Statistics slot.
 #' @author Xavier Domingo-Almenara, Arnald Alonso and Francesc Fernandez-Albert.
+#' @export
 
 setClass(Class = "MetaboSet",
          representation = representation(Info = "character", 
@@ -81,6 +82,7 @@ setClass(Class = "MetaboSet",
 #' @slot info Character vector containing complementary information about the library.
 #' @slot database A list of S3 objects, which each object contains the information on a different compound.
 #' @author Xavier Domingo-Almenara.
+#' @export
 
 setClass(Class = "eRah_DB", 
          representation = representation(name = "character", 
@@ -92,7 +94,7 @@ setClass(Class = "eRah_DB",
 #'  @name RawDataParameters-class
 #'  @docType class
 #'  @aliases RawDataParameters-class
-#'  @title Class \code{"RawDataParameteres"}
+#'  @title Class \code{"RawDataParameters"}
 #'  @description The RawDataParameters class contains the slots for storing and accessing into a MS sample, and the essential parameters for performing its processing (deconvolution).
 #'  @slot data The data matrix of the sample to be processed
 #'  @slot min.mz The minimum adquired mz number
@@ -106,6 +108,7 @@ setClass(Class = "eRah_DB",
 #'  @slot noise.threshold The noise threshold
 #'  @slot compression.coef Compression coefficient (parameter for Orthogonal Signal Deconvolution)
 #'  @author Xavier Domingo-Almenara.
+#'  @export
 
 setClass(Class = "RawDataParameters", 
          representation = representation(data = "matrix", 

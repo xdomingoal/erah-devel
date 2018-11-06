@@ -15,6 +15,7 @@
 #' [1] Domingo-Almenara X, et al. Compound deconvolution in GC-MS-based metabolomics by blind source separation. Journal of Chromatography A (2015). Vol. 1409: 226-233. DOI: 10.1016/j.chroma.2015.07.044
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{newExp}} \code{\link{alignComp}} \code{\link{setAlPar}} \code{\link{setDecPar}}
+#' @export
 
 recMissComp <- function(Experiment, min.samples, free.model=F)
 {

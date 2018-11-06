@@ -13,6 +13,7 @@
 #' # we see that proline 2TMS has the DB.Id number 42, then:
 #' compInfo(42)
 #' @seealso \code{\link{findComp}}
+#' @export
 
 compInfo <- function(comp.id, id.database=mslib)
 {
@@ -50,6 +51,7 @@ compInfo <- function(comp.id, id.database=mslib)
 #'
 #' findComp("proline 2")
 #' @seealso \code{\link{compInfo}}
+#' @export
 
 findComp <- function(name=NULL, id.database=mslib, CAS=NULL, chem.form=NULL)
 {

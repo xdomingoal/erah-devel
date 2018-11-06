@@ -8,6 +8,7 @@ globalVariables("mslib")
 #' @usage metaData(object)
 #' @param object A 'MetaboSet' S4 object containing the experiment.
 #' @seealso \code{\link{phenoData}}
+#' @export
 
 metaData <- function(object) {object@MetaData@Instrumental}
 
@@ -16,8 +17,9 @@ metaData <- function(object) {object@MetaData@Instrumental}
 #' @title Show phenotype data
 #' @description Displays the Experiment phenotypic data (if included).
 #' @usage phenoData(object)
-#' @param object A 'MetaboSet' S4 object containing the experiment.
+#' @param object A 'MetaboSet' S4 object ciontaining the experiment.
 #' @seealso \code{\link{metaData}}
+#' @export
 
 phenoData <- function(object) {object@MetaData@Phenotype}
 
@@ -62,6 +64,7 @@ phenoData <- function(object) {object@MetaData@Phenotype}
 #'                         avoid.processing.mz = c(35:69,73:75,147:149), 
 #'                         analysis.time = c(5,15))
 #' }
+#' @export
 
 setDecPar <- function(min.peak.width, min.peak.height=2500, noise.threshold=500, avoid.processing.mz=c(73:75,147:149), compression.coef=2, analysis.time=0)
 {
@@ -89,6 +92,7 @@ setDecPar <- function(min.peak.width, min.peak.height=2500, noise.threshold=500,
 #' ex.al.par <- setAlPar(min.spectra.cor=0.90, max.time.dist=2,
 #' mz.range=1:600)
 #' }
+#' @export
 
 setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 {
@@ -123,6 +127,7 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 #' phenotype = "path/DEMO_pheno.csv", info = "DEMO Experiment")
 #' }
 #' @seealso \code{\link{createdt}} \code{\link{setDecPar}} \code{\link{setAlPar}}
+#' @export
 
 newExp <- function(instrumental, phenotype=NULL, info=character())
 {
@@ -211,6 +216,7 @@ newExp <- function(instrumental, phenotype=NULL, info=character())
 #' # An now deconvolve the compounds in the samples:
 #' # ex <- deconvolveComp(ex, decParameters=ex.dec.par)
 #' }
+#' @export
 
 deconvolveComp <- function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE, virtualScansPerSecond=NULL)
 {
@@ -251,6 +257,7 @@ deconvolveComp <- function(Experiment, decParameters, samples.to.process=NULL, d
 #' @references [1] Xavier Domingo-Almenara, et al., eRah: A Computational Tool Integrating Spectral Deconvolution and Alignment with Quantification and Identification of Metabolites in GC-MS-Based Metabolomics. Analytical Chemistry (2016). DOI: 10.1021/acs.analchem.6b02927 
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{newExp}} \code{\link{setDecPar}} \code{\link{deconvolveComp}}
+#' @export
 
 alignComp <- function(Experiment, alParameters, blocks.size=NULL)
 {
@@ -366,6 +373,7 @@ alignComp <- function(Experiment, alParameters, blocks.size=NULL)
 #' [2] MassBank: A public repository for sharing mass spectral data for life sciences, H. Horai, M. Arita, S. Kanaya, Y. Nihei, T. Ikeda, K. Suwa. Y. Ojima, K. Tanaka, S. Tanaka, K. Aoshima, Y. Oda, Y. Kakazu, M. Kusano, T. Tohge, F. Matsuda, Y. Sawada, M. Yokota Hirai, H. Nakanishi, K. Ikeda, N. Akimoto, T. Maoka, H. Takahashi, T. Ara, N. Sakurai, H. Suzuki, D. Shibata, S. Neumann, T. Iida, K. Tanaka, K. Funatsu, F. Matsuura, T. Soga, R. Taguchi, K. Saito and T. Nishioka, J. Mass Spectrom., 45 (2010) 703-714. 
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{newExp}} \code{\link{alignComp}} \code{\link{setAlPar}} \code{\link{setDecPar}}
+#' @export
 
 identifyComp <- function(Experiment, id.database=mslib, mz.range=NULL, n.putative=3)
 {

@@ -26,6 +26,7 @@
 #' [2] MassBank: A public repository for sharing mass spectral data for life sciences, H. Horai, M. Arita, S. Kanaya, Y. Nihei, T. Ikeda, K. Suwa. Y. Ojima, K. Tanaka, S. Tanaka, K. Aoshima, Y. Oda, Y. Kakazu, M. Kusano, T. Tohge, F. Matsuda, Y. Sawada, M. Yokota Hirai, H. Nakanishi, K. Ikeda, N. Akimoto, T. Maoka, H. Takahashi, T. Ara, N. Sakurai, H. Suzuki, D. Shibata, S. Neumann, T. Iida, K. Tanaka, K. Funatsu, F. Matsuura, T. Soga, R. Taguchi, K. Saito and T. Nishioka, J. Mass Spectrom., 45, 703-714 (2010)
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotProfile}} \code{\link{plotAlign}}
+#' @export
 
 plotSpectra <- function(Experiment, AlignId, n.putative=1, compare=T, id.database=mslib, comp.db=NULL, return.spectra=F, draw.color="purple", xlim=NULL)
 {
@@ -110,6 +111,7 @@ plotSpectra <- function(Experiment, AlignId, n.putative=1, compare=T, id.databas
 #' @param xlim x axsis (retention time) limits (see \code{\link{plot.default}}).
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotSpectra}} \code{\link{plotAlign}}
+#' @export
 
 plotProfile <- function(Experiment,AlignId, per.class=T, xlim=NULL)
 {	
@@ -204,6 +206,7 @@ plotProfile <- function(Experiment,AlignId, per.class=T, xlim=NULL)
 #' @param xlim x axsis (retention time) limits (see \code{\link{plot.default}}).
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotSpectra}} \code{\link{plotProfile}}
+#' @export
 
 plotAlign <- function(Experiment, AlignId, per.class=T, xlim=NULL)
 {	
@@ -321,6 +324,7 @@ plotAlign <- function(Experiment, AlignId, per.class=T, xlim=NULL)
 #' # the EIC from minute 7 to 7.5, and only the masses 50, 54 and 70.
 #' }
 #' @seealso \code{\link{sampleInfo}}
+#' @export
 
 plotChr <- function(Experiment, N.sample=1, type=c("BIC","TIC","EIC"), xlim=NULL, mz=NULL)
 {
