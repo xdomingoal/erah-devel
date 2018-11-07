@@ -153,6 +153,49 @@ newExp <- function(instrumental, phenotype=NULL, info=character())
   sample.container
 }
 
+#' @export
+
+newExp2  <- function(instrumental, phenotype=NULL, info=character()){
+  
+  if(is.null(phenotype)){
+    phenotype = as.data.frame(NULL)
+    warning("No phenotype data have been attached to this experiment.")
+  }
+  
+  factors.list <- lapply(1:nrow(instrumental), function(x){as.data.frame(NULL)})
+  
+  names(factors.list) <- as.vector(instrumental$sampleID)
+  ident.list <- as.data.frame(matrix(0,ncol=7, dimnames=list(row=0,col= c("AlignID", "tmean", "Name", "MatchFactor", "CAS", "Formula", "DB.Id"))))
+  uni.stats <- as.data.frame(matrix(0,ncol=3, dimnames=list(row=0,col= c("Id", "FoldChangue", "pvalue"))))
+  multi.stats <- as.data.frame(matrix(0,ncol=3, dimnames=list(row=0,col= c("Id", "CompoundsInvolved", "pvalue"))))
+  
+  al.par <- list()
+  id.par <- list()
+  soft.par <- list()
+  
+  stat.parameters <- new("MSResultsParameters", Alignment=al.par, Identification=id.par)
+  statistics <- new("Statistics", Univariate = uni.stats, Multivariate = multi.stats)
+  MS.Results <- new("Results", Parameters = stat.parameters, Identification = ident.list, Statistics = statistics )
+  MS.Data <- new("Data", FeatureList = list(NULL), FactorList = factors.list, Parameters = list(NULL))
+  MS.MetaData <- new("MetaData", Instrumental = instrumental, Phenotype = phenotype, DataDirectory='')
+  
+  # Instrumental Slots validation:
+  col.correct <- c("sampleID","filename","date","time")
+  for(i in 1:length(col.correct))
+    if(length(apply(as.matrix(colnames(MS.MetaData@Instrumental)),1,function(x) grep(col.correct[i],x)))==0) stop("Invalid instrumental file. The file must contain at least the following columns: ", paste(col.correct, collapse=", "))
+  
+  # Phenotype Slots validation:
+  if(!is.null(MS.MetaData@Phenotype))
+  {
+    col.correct <- c("sampleID","class")
+    for(i in 1:length(col.correct))
+      if(length(apply(as.matrix(colnames(MS.MetaData@Phenotype)),1,function(x) grep(col.correct[i],x)))==0) stop("Invalid phenotype file. The file must contain at least the following columns: ", paste(col.correct, collapse=", "))
+  }
+  sample.container <- new("MetaboSet", Info = info, Data = MS.Data, MetaData = MS.MetaData, Results = MS.Results)
+  sample.container
+}
+
+
 #' @rdname deconvolveComp
 #' @title Deconvolution of compounds in samples
 #' @description Deconvolution of GC-MS data
