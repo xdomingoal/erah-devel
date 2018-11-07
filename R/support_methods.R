@@ -235,8 +235,7 @@ dataList <- function(Experiment, id.database=mslib, by.area=TRUE)
   data.table
 }
 
-#' @name sampleInfo
-#' @aliases sampleInfo
+#' @rdname sampleInfo
 #' @title Information of the samples
 #' @description Returns basic information on the samples.
 #' @usage sampleInfo(Experiment, N.sample = 1)
@@ -246,16 +245,17 @@ dataList <- function(Experiment, id.database=mslib, by.area=TRUE)
 #' @seealso \code{\link{plotChr}}
 #' @export
 
-sampleInfo <- function(Experiment, N.sample=1)
-{
-  sampleRD <- load.file(paste(Experiment@MetaData@DataDirectory, Experiment@MetaData@Instrumental$filename[[N.sample]], sep="/"))
-  
-  max.rt <- (nrow(sampleRD@data)/(sampleRD@scans.per.second*60)) + sampleRD@start.time/60
-  min.rt <- sampleRD@start.time/60
-  
-  cat(" Name: \t", as.vector(Experiment@MetaData@Instrumental$filename[[N.sample]]), "\n", "Start Time: \t", min.rt, "\n", "End Time: \t", max.rt, "\n", "Min MZ: \t", sampleRD@min.mz,  "\n", "Max MZ: \t", sampleRD@max.mz, "\n", "Scans/sec: \t", sampleRD@scans.per.second)	
-  
-}
+setMethod('sampleInfo',signature = 'MetaboSet',
+          function(Experiment, N.sample=1){
+            sampleRD <- load.file(paste(Experiment@MetaData@DataDirectory, Experiment@MetaData@Instrumental$filename[[N.sample]], sep="/"))
+            
+            max.rt <- (nrow(sampleRD@data)/(sampleRD@scans.per.second*60)) + sampleRD@start.time/60
+            min.rt <- sampleRD@start.time/60
+            
+            cat(" Name: \t", as.vector(Experiment@MetaData@Instrumental$filename[[N.sample]]), "\n", "Start Time: \t", min.rt, "\n", "End Time: \t", max.rt, "\n", "Min MZ: \t", sampleRD@min.mz,  "\n", "Max MZ: \t", sampleRD@max.mz, "\n", "Scans/sec: \t", sampleRD@scans.per.second)	
+            
+          }
+)
 
 
 
