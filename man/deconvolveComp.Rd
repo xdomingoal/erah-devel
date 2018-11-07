@@ -7,11 +7,11 @@
 \title{Deconvolution of compounds in samples}
 \usage{
 deconvolveComp(Experiment, decParameters, samples.to.process = NULL,
-  down.sample = FALSE, virtualScansPerSecond = NULL)
+  down.sample = FALSE, virtualScansPerSecond = NULL, parallel = NULL)
 
 \S4method{deconvolveComp}{MetaboSet}(Experiment, decParameters,
   samples.to.process = NULL, down.sample = FALSE,
-  virtualScansPerSecond = NULL)
+  virtualScansPerSecond = NULL, parallel = NULL)
 }
 \arguments{
 \item{Experiment}{A 'MetaboSet' S4 object containing the experiment data previously created by newExp.}
@@ -23,6 +23,8 @@ deconvolveComp(Experiment, decParameters, samples.to.process = NULL,
 \item{down.sample}{If TRUE, chromatograms are down sampled to define one peak with 10 scan points (according to the minimum peak width). This is to process longer chromatograms with wider peak widths (more than 20 seconds peak width and small scans per second values). See details.}
 
 \item{virtualScansPerSecond}{A virtual scans per second. If chromatograms are downsampled (for example, for a 1 mean peak width a 1 scans per second sampling frequency was used), eRah could not perform as expected. In these cases, the BEST solution is to re-acquire the samples. However, by selecting a different (virtual) scans per second frequency, eRah can upsample the data and process it more effectively.}
+
+\item{parallel}{Use parallel processing. If \code{NULL} parallel processing will not be used. To use parallel processing this should be a named list consisting of two elements; \code{nCores} - a numeric to designate the number of processing cores, \code{clusterType} - a character to designate the cluster type to use, "PSOCK" or "FORK".}
 }
 \value{
 The function returns an updated S4 'MetaboSet' class, where the GC-MS samples have been now deconvolved.
