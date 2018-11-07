@@ -1,38 +1,6 @@
 
 globalVariables("mslib")
 
-#' metaData-method
-#' @rdname metaData
-#' @description Displays the Experiment metadata
-#' @param object A 'MetaboSet' S4 object containing the experiment.
-#' @seealso \code{\link{phenoData}}
-#' @export
-
-setMethod('metaData',signature = 'MetaboSet',
-          function(object){
-            object@MetaData@Instrumental
-          }
-)
-
-#' phenoData-method
-#' @rdname phenoData
-#' @description Displays the Experiment phenotypic data (if included).
-#' @param object A 'MetaboSet' S4 object ciontaining the experiment.
-#' @seealso \code{\link{metaData}}
-#' @export
-
-setMethod('phenoData',signature = 'MetaboSet',
-          function(object) {
-            object@MetaData@Phenotype
-          }
-)
-
-# setMethod("show", "expClasses", function(object) {
-# classes.string <- paste(object@classes.type, collapse=", ")
-# cat("Experiment containing ", nrow(object@classes.summary), " samples in ", length(object@classes.type), " different type of classes named: ",classes.string, ". \n \n", sep="")
-# print(object@classes.summary)
-# })
-
 ## Main Software functions:
 
 #' @name setDecPar

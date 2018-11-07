@@ -259,5 +259,29 @@ setMethod('sampleInfo',signature = 'MetaboSet',
           }
 )
 
+#' metaData-method
+#' @rdname metaData
+#' @description Displays the Experiment metadata
+#' @param object A 'MetaboSet' S4 object containing the experiment.
+#' @seealso \code{\link{phenoData}}
+#' @export
 
+setMethod('metaData',signature = 'MetaboSet',
+          function(object){
+            object@MetaData@Instrumental
+          }
+)
+
+#' phenoData-method
+#' @rdname phenoData
+#' @description Displays the Experiment phenotypic data (if included).
+#' @param object A 'MetaboSet' S4 object ciontaining the experiment.
+#' @seealso \code{\link{metaData}}
+#' @export
+
+setMethod('phenoData',signature = 'MetaboSet',
+          function(object) {
+            object@MetaData@Phenotype
+          }
+)
 

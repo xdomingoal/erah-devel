@@ -8,3 +8,9 @@ setMethod("show", "MetaboSet", function(object){
   cat("Data processed with", object@Data@Parameters$algorithm, "\n" ,sep = " ")
   cat("Info attached to this experiment: \n", object@Info)
 })
+
+# setMethod("show", "expClasses", function(object) {
+# classes.string <- paste(object@classes.type, collapse=", ")
+# cat("Experiment containing ", nrow(object@classes.summary), " samples in ", length(object@classes.type), " different type of classes named: ",classes.string, ". \n \n", sep="")
+# print(object@classes.summary)
+# })
