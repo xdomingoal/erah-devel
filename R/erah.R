@@ -185,8 +185,7 @@ newExp <- function(instrumental, phenotype=NULL, info=character())
   sample.container
 }
 
-#' @name deconvolveComp
-#' @aliases deconvolveComp
+#' @rdname deconvolveComp
 #' @title Deconvolution of compounds in samples
 #' @description Deconvolution of GC-MS data
 #' @param Experiment A 'MetaboSet' S4 object containing the experiment data previously created by newExp.
@@ -219,29 +218,29 @@ newExp <- function(instrumental, phenotype=NULL, info=character())
 #' }
 #' @export
 
-deconvolveComp <- function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE, virtualScansPerSecond=NULL)
-{
-  plotting=FALSE
-  Number.of.Samples <- nrow(Experiment@MetaData@Instrumental)
-  if(is.null(samples.to.process)) samples.to.process <- 1:Number.of.Samples
-  stopifnot(samples.to.process>=1, max(samples.to.process)<=Number.of.Samples, length(samples.to.process)<=Number.of.Samples)
-  
-  soft.par <- list(min.peak.width = decParameters@min.peak.width, min.peak.height = decParameters@min.peak.height, noise.threshold = decParameters@noise.threshold, avoid.processing.mz = decParameters@avoid.processing.mz,  compression.coef = decParameters@compression.coef, analysis.time = decParameters@analysis.time)
-  Experiment@Data@Parameters <- soft.par
-  
-  k <- 1
-  for(index in samples.to.process)
-  {
-    cat("\n Deconvolving compounds from",as.character(Experiment@MetaData@Instrumental$filename[index]),"... Processing", k,"/",length(samples.to.process),"\n")  
-    Experiment <- processSample(Experiment, index, plotting, down.sample, virtualScansPerSecond)
-    k <- k + 1
-  }
-  cat("\n Compounds deconvolved \n")
-  Experiment	
-}
+setMethod('deconvolveComp',signature = 'MetaboSet',
+          function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE, virtualScansPerSecond=NULL){
+            plotting=FALSE
+            Number.of.Samples <- nrow(Experiment@MetaData@Instrumental)
+            if(is.null(samples.to.process)) samples.to.process <- 1:Number.of.Samples
+            stopifnot(samples.to.process>=1, max(samples.to.process)<=Number.of.Samples, length(samples.to.process)<=Number.of.Samples)
+            
+            soft.par <- list(min.peak.width = decParameters@min.peak.width, min.peak.height = decParameters@min.peak.height, noise.threshold = decParameters@noise.threshold, avoid.processing.mz = decParameters@avoid.processing.mz,  compression.coef = decParameters@compression.coef, analysis.time = decParameters@analysis.time)
+            Experiment@Data@Parameters <- soft.par
+            
+            k <- 1
+            for(index in samples.to.process)
+            {
+              cat("\n Deconvolving compounds from",as.character(Experiment@MetaData@Instrumental$filename[index]),"... Processing", k,"/",length(samples.to.process),"\n")  
+              Experiment <- processSample(Experiment, index, plotting, down.sample, virtualScansPerSecond)
+              k <- k + 1
+            }
+            cat("\n Compounds deconvolved \n")
+            Experiment	
+          }
+)
 
-#' @name alignComp
-#' @aliases alignComp
+#' @rdname alignComp
 #' @title Alignment of compounds
 #' @description Alignment of GC-MS deconvolved compounds
 #' @usage alignComp(Experiment, alParameters, blocks.size=NULL)
@@ -260,106 +259,106 @@ deconvolveComp <- function(Experiment, decParameters, samples.to.process=NULL, d
 #' @seealso \code{\link{newExp}} \code{\link{setDecPar}} \code{\link{deconvolveComp}}
 #' @export
 
-alignComp <- function(Experiment, alParameters, blocks.size=NULL)
-{
-  al.par <- list(alignment.algorithm=alParameters@algorithm, min.spectra.cor=alParameters@min.spectra.cor, max.time.dist=alParameters@max.time.dist, mz.range=alParameters@mz.range)
-  Experiment@Results@Parameters@Alignment <- al.par
-  
-  min.spectra.cor <- Experiment@Results@Parameters@Alignment$min.spectra.cor
-  max.time.dist <- Experiment@Results@Parameters@Alignment$max.time.dist
-  mz.range <- Experiment@Results@Parameters@Alignment$mz.range
-  maxMZ <- max(mz.range)
-  
-  # Experiment@Data@FactorList <- align.factors(Experiment@Data@FactorList, min.spectra.cor, max.time.dist, maxMZ, mz.range)
-  # Experiment@Results@Alignment <- create.factorlist.table(Experiment)
-  
-  if(is.null(blocks.size))
-  {
-    Experiment@Data@FactorList <- align.factors(Experiment@Data@FactorList, min.spectra.cor, max.time.dist, maxMZ, mz.range)
-    Experiment@Results@Alignment <- create.factorlist.table(Experiment)
-    #return(Experiment)
-  }else{
-    
-    #blocks.size <- 15
-    max.mz <- maxMZ
-    Itrt <- length(Experiment@Data@FactorList)/blocks.size
-    sequs <- trunc(seq(1, length(Experiment@Data@FactorList), length.out=Itrt))
-    sequs[1] <- 0
-    
-    corresponding.list <- list()
-    block.list <- list()
-    #i <- 1
-    
-    for(i in 1:(length(sequs)-1))	
-    {
-      cat("Aligning block ", i, " of ", length(sequs)-1, "... \n", sep="")
-      ghost.object <- Experiment
-      ghost.object@Data@FactorList <- Experiment@Data@FactorList[(sequs[i]+1):sequs[(i+1)]]
-      factors.list <- ghost.object@Data@FactorList
-      ghost.object@Data@FactorList <- align.factors(factors.list, min.spectra.cor, max.time.dist, max.mz, mz.range)
-      ghost.factors.list <- create.factorlist.table(ghost.object)
-      
-      block.list[[i]] <- data.frame(ID=ghost.factors.list$AlignID, RT=ghost.factors.list$tmean, Spectra=ghost.factors.list$Spectra)
-      corresponding.list <- c(corresponding.list,lapply(ghost.object@Data@FactorList, function(x) x$AlignID))		
-    }
-    
-    cat("Aligning factors across blocks... \n")
-    full.factorlist <- align.factors(block.list, min.spectra.cor, max.time.dist, max.mz, mz.range)
-    
-    #MaxALID <- max(unlist(lapply(full.factorlist, function(x) x$AlignID)))
-    factors.list <- Experiment@Data@FactorList
-    if(!(any(unlist(lapply(factors.list,function(x) {is.null(x$AlignID)}))==FALSE)))
-    {	
-      factors.list <- lapply(factors.list, function(x){
-        outp <- cbind(x,matrix(0,nrow=length(x$ID)))
-        colnames(outp)[ncol(outp)] <- "AlignID"
-        outp
-      })
-    }else{
-      factors.list <- lapply(factors.list, function(x){
-        x$AlignID <- rep(0,length(x$ID))
-        x
-      })
-    }	
-    
-    Experiment@Data@FactorList <- factors.list
-    
-    free.aligned.slots <- list()		
-    for(i in 1:length(full.factorlist))
-    {
-      for(j in (sequs[i]+1):sequs[(i+1)])
-      {
-        ID.vct <- sapply(full.factorlist[[i]]$ID, function(x) {x.num <- which(corresponding.list[[j]]==x)
-        if(length(x.num)==0) x.num=0
-        x.num
-        })
-        
-        #full.factorlist[[i]]$AlignID[which(ID.vct!=0)]	
-        #ID.vct[which(ID.vct!=0)]	
-        
-        Experiment@Data@FactorList[[j]]$AlignID[ID.vct[which(ID.vct!=0)]] <- full.factorlist[[i]]$AlignID[which(ID.vct!=0)]	
-        free.aligned.slots[[j]] <- which(full.factorlist[[i]]$AlignID[which(ID.vct!=0)]==0)
-      }	
-    }
-    MaxALID <- max(unlist(lapply(Experiment@Data@FactorList, function(x) x$AlignID)))
-    Alid.counter <- MaxALID + 1
-    
-    for(i in 1:length(free.aligned.slots))
-    {
-      Experiment@Data@FactorList[[i]]$AlignID[free.aligned.slots[[i]]] <- seq(Alid.counter, Alid.counter + (length(free.aligned.slots[[i]])-1) )
-      Alid.counter <- Alid.counter + length(free.aligned.slots[[i]])
-    }
-    
-    cat("Constructing Factor List Table... (This may take a while...)\n")	
-    Experiment@Results@Alignment <- create.factorlist.table(Experiment)
-    
-  }
-  
-  Experiment
-}
+setMethod('alignComp',signature = 'MetaboSet',
+          function(Experiment, alParameters, blocks.size=NULL){
+            al.par <- list(alignment.algorithm=alParameters@algorithm, min.spectra.cor=alParameters@min.spectra.cor, max.time.dist=alParameters@max.time.dist, mz.range=alParameters@mz.range)
+            Experiment@Results@Parameters@Alignment <- al.par
+            
+            min.spectra.cor <- Experiment@Results@Parameters@Alignment$min.spectra.cor
+            max.time.dist <- Experiment@Results@Parameters@Alignment$max.time.dist
+            mz.range <- Experiment@Results@Parameters@Alignment$mz.range
+            maxMZ <- max(mz.range)
+            
+            # Experiment@Data@FactorList <- align.factors(Experiment@Data@FactorList, min.spectra.cor, max.time.dist, maxMZ, mz.range)
+            # Experiment@Results@Alignment <- create.factorlist.table(Experiment)
+            
+            if(is.null(blocks.size))
+            {
+              Experiment@Data@FactorList <- align.factors(Experiment@Data@FactorList, min.spectra.cor, max.time.dist, maxMZ, mz.range)
+              Experiment@Results@Alignment <- create.factorlist.table(Experiment)
+              #return(Experiment)
+            }else{
+              
+              #blocks.size <- 15
+              max.mz <- maxMZ
+              Itrt <- length(Experiment@Data@FactorList)/blocks.size
+              sequs <- trunc(seq(1, length(Experiment@Data@FactorList), length.out=Itrt))
+              sequs[1] <- 0
+              
+              corresponding.list <- list()
+              block.list <- list()
+              #i <- 1
+              
+              for(i in 1:(length(sequs)-1))	
+              {
+                cat("Aligning block ", i, " of ", length(sequs)-1, "... \n", sep="")
+                ghost.object <- Experiment
+                ghost.object@Data@FactorList <- Experiment@Data@FactorList[(sequs[i]+1):sequs[(i+1)]]
+                factors.list <- ghost.object@Data@FactorList
+                ghost.object@Data@FactorList <- align.factors(factors.list, min.spectra.cor, max.time.dist, max.mz, mz.range)
+                ghost.factors.list <- create.factorlist.table(ghost.object)
+                
+                block.list[[i]] <- data.frame(ID=ghost.factors.list$AlignID, RT=ghost.factors.list$tmean, Spectra=ghost.factors.list$Spectra)
+                corresponding.list <- c(corresponding.list,lapply(ghost.object@Data@FactorList, function(x) x$AlignID))		
+              }
+              
+              cat("Aligning factors across blocks... \n")
+              full.factorlist <- align.factors(block.list, min.spectra.cor, max.time.dist, max.mz, mz.range)
+              
+              #MaxALID <- max(unlist(lapply(full.factorlist, function(x) x$AlignID)))
+              factors.list <- Experiment@Data@FactorList
+              if(!(any(unlist(lapply(factors.list,function(x) {is.null(x$AlignID)}))==FALSE)))
+              {	
+                factors.list <- lapply(factors.list, function(x){
+                  outp <- cbind(x,matrix(0,nrow=length(x$ID)))
+                  colnames(outp)[ncol(outp)] <- "AlignID"
+                  outp
+                })
+              }else{
+                factors.list <- lapply(factors.list, function(x){
+                  x$AlignID <- rep(0,length(x$ID))
+                  x
+                })
+              }	
+              
+              Experiment@Data@FactorList <- factors.list
+              
+              free.aligned.slots <- list()		
+              for(i in 1:length(full.factorlist))
+              {
+                for(j in (sequs[i]+1):sequs[(i+1)])
+                {
+                  ID.vct <- sapply(full.factorlist[[i]]$ID, function(x) {x.num <- which(corresponding.list[[j]]==x)
+                  if(length(x.num)==0) x.num=0
+                  x.num
+                  })
+                  
+                  #full.factorlist[[i]]$AlignID[which(ID.vct!=0)]	
+                  #ID.vct[which(ID.vct!=0)]	
+                  
+                  Experiment@Data@FactorList[[j]]$AlignID[ID.vct[which(ID.vct!=0)]] <- full.factorlist[[i]]$AlignID[which(ID.vct!=0)]	
+                  free.aligned.slots[[j]] <- which(full.factorlist[[i]]$AlignID[which(ID.vct!=0)]==0)
+                }	
+              }
+              MaxALID <- max(unlist(lapply(Experiment@Data@FactorList, function(x) x$AlignID)))
+              Alid.counter <- MaxALID + 1
+              
+              for(i in 1:length(free.aligned.slots))
+              {
+                Experiment@Data@FactorList[[i]]$AlignID[free.aligned.slots[[i]]] <- seq(Alid.counter, Alid.counter + (length(free.aligned.slots[[i]])-1) )
+                Alid.counter <- Alid.counter + length(free.aligned.slots[[i]])
+              }
+              
+              cat("Constructing Factor List Table... (This may take a while...)\n")	
+              Experiment@Results@Alignment <- create.factorlist.table(Experiment)
+              
+            }
+            
+            Experiment
+          }
+)
 
-#' @name identifyComp
-#' @aliases identifyComp
+#' @rdname identifyComp
 #' @title Identification of compounds
 #' @description Identification of compounds. Each empirical spectrum is compared against a ms library.
 #' @usage identifyComp(Experiment, id.database = mslib,mz.range = NULL, n.putative = 3)
@@ -376,23 +375,24 @@ alignComp <- function(Experiment, alParameters, blocks.size=NULL)
 #' @seealso \code{\link{newExp}} \code{\link{alignComp}} \code{\link{setAlPar}} \code{\link{setDecPar}}
 #' @export
 
-identifyComp <- function(Experiment, id.database=mslib, mz.range=NULL, n.putative=3)
-{
-  #if(!(any(unlist(lapply(Experiment@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned first")
-  
-  if(is.null(Experiment@Results@Parameters@Alignment$mz.range) && is.null(mz.range)) stop("A mz.range has to be specified")
-  if(is.null(mz.range)) compare.only.mz <- min(Experiment@Results@Parameters@Alignment$mz.range):max(Experiment@Results@Parameters@Alignment$mz.range)
-  if(!is.null(mz.range)) compare.only.mz <- mz.range
-  
-  
-  id.par <- list(database.name = id.database@name, compare.only.mz = compare.only.mz, n.putative = n.putative)
-  Experiment@Results@Parameters@Identification <- id.par
-  
-  avoid.processing.mz <- Experiment@Data@Parameters$avoid.processing.mz
-  maxMZ <- max(compare.only.mz)
-  Experiment@Results@Identification <- identify.factors(Experiment, maxMZ, compare.only.mz, avoid.processing.mz, id.database@database, n.putative)
-  Experiment
-}
+setMethod('identifyComp',signature = 'MetaboSet',
+          function(Experiment, id.database=mslib, mz.range=NULL, n.putative=3){
+            #if(!(any(unlist(lapply(Experiment@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned first")
+            
+            if(is.null(Experiment@Results@Parameters@Alignment$mz.range) && is.null(mz.range)) stop("A mz.range has to be specified")
+            if(is.null(mz.range)) compare.only.mz <- min(Experiment@Results@Parameters@Alignment$mz.range):max(Experiment@Results@Parameters@Alignment$mz.range)
+            if(!is.null(mz.range)) compare.only.mz <- mz.range
+            
+            
+            id.par <- list(database.name = id.database@name, compare.only.mz = compare.only.mz, n.putative = n.putative)
+            Experiment@Results@Parameters@Identification <- id.par
+            
+            avoid.processing.mz <- Experiment@Data@Parameters$avoid.processing.mz
+            maxMZ <- max(compare.only.mz)
+            Experiment@Results@Identification <- identify.factors(Experiment, maxMZ, compare.only.mz, avoid.processing.mz, id.database@database, n.putative)
+            Experiment
+          }
+)
 
 processSample <- function(Experiment, index, plotting, down.sample, virtualScansPerSecond)
 {
