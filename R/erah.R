@@ -203,16 +203,20 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
               for(index in samples.to.process)
               {
                 cat("\n Deconvolving compounds from",as.character(Experiment@MetaData@Instrumental$filename[index]),"... Processing", k,"/",length(samples.to.process),"\n")  
-                Experiment <- processSample(Experiment, index, plotting, down.sample, virtualScansPerSecond)
+                Experiment@Data@FactorList[[index]] <- processSample(Experiment, index, plotting, down.sample, virtualScansPerSecond)
                 k <- k + 1
               }    
             } else {
               clus <- makeCluster(parallel$nCores,type = parallel$clusterType)
-              Experiment@Data@FactorList <- parLapply(clus,samples.to.process,function(x,Experiment,plotting){
-                processSample(Experiment,x,plotting)
-              },Experiment = Experiment, plotting = plotting)
+              Experiment@Data@FactorList <- parLapply(
+                clus,
+                samples.to.process,
+                function(x,Experiment,plotting,down.sample,virtualScansPerSecond){
+                  processSample(Experiment, x, plotting, down.sample, virtualScansPerSecond)
+                },Experiment = Experiment,plotting = plotting,down.sample = down.sample,virtualScansPerSecond = virtualScansPerSecond)
               stopCluster(clus)
             }
+            
             names(Experiment@Data@FactorList) <- samples.to.process
             cat("\n Compounds deconvolved \n")
             Experiment	
@@ -408,10 +412,8 @@ processSample <- function(Experiment, index, plotting, down.sample, virtualScans
   sampleObject <- avoid.processing(sampleObject)
   factor.list <- try(get.factor.list(sampleObject, analysis.window=Experiment@Data@Parameters$analysis.time, plotting, down.sample, virtualScansPerSecond), silent=F)
   if(class(factor.list)=="try-error") {factor.list <- as.data.frame(NULL); warning("Unable to extract factors from ", Experiment@MetaData@Instrumental$filename[index], ". Data may be corrupted.", sep="")}
-  Experiment@Data@FactorList[[index]] <- factor.list		
   
-  
-  Experiment
+  factor.list		
 }
 
 
