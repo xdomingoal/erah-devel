@@ -1,40 +1,37 @@
 
 globalVariables("mslib")
 
-#' @name metaData
-#' @aliases metaData
-#' @title metaData
+#' metaData-method
+#' @rdname metaData
 #' @description Displays the Experiment metadata
-#' @usage metaData(object)
 #' @param object A 'MetaboSet' S4 object containing the experiment.
 #' @seealso \code{\link{phenoData}}
 #' @export
 
-metaData <- function(object) {object@MetaData@Instrumental}
+setMethod('metaData',signature = 'MetaboSet',
+          function(object){
+            object@MetaData@Instrumental
+          }
+)
 
-#' @name phenoData
-#' @aliases phenoData
-#' @title Show phenotype data
+#' phenoData-method
+#' @rdname phenoData
 #' @description Displays the Experiment phenotypic data (if included).
-#' @usage phenoData(object)
 #' @param object A 'MetaboSet' S4 object ciontaining the experiment.
 #' @seealso \code{\link{metaData}}
 #' @export
 
-phenoData <- function(object) {object@MetaData@Phenotype}
+setMethod('phenoData',signature = 'MetaboSet',
+          function(object) {
+            object@MetaData@Phenotype
+          }
+)
 
 # setMethod("show", "expClasses", function(object) {
 # classes.string <- paste(object@classes.type, collapse=", ")
 # cat("Experiment containing ", nrow(object@classes.summary), " samples in ", length(object@classes.type), " different type of classes named: ",classes.string, ". \n \n", sep="")
 # print(object@classes.summary)
 # })
-
-# setGeneric("metaData", function(object) standardGeneric("metaData"))
-# setMethod("metaData", "MetaboSet", function(object) object@MetaData@Instrumental)
-# setGeneric("phenoData", function(object) standardGeneric("phenoData"))
-# setMethod("phenoData", "MetaboSet", function(object) object@MetaData@Phenotype)
-
-
 
 ## Main Software functions:
 
