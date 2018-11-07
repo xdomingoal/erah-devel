@@ -218,6 +218,7 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
             }
             
             names(Experiment@Data@FactorList) <- samples.to.process
+            Experiment <- scansPerSecond(Experiment)
             cat("\n Compounds deconvolved \n")
             Experiment	
           }
@@ -417,7 +418,16 @@ processSample <- function(Experiment, index, plotting, down.sample, virtualScans
 }
 
 
-
+scansPerSecond <- function(Experiment){
+  if (Experiment@MetaData@DataDirectory=="") {
+    filename <- as.character(Experiment@MetaData@Instrumental$filename[1])
+  } else {
+    filename <- paste(Experiment@MetaData@DataDirectory,"/",Experiment@MetaData@Instrumental$filename[1], sep="")
+  }
+  sampleObject <- load.file(filename)
+  Experiment@Data@Parameters$scans.per.second <- sampleObject@scans.per.second
+  return(Experiment)
+}
 
 
 
