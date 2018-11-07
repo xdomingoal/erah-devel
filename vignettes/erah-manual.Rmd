@@ -1,13 +1,15 @@
 ---
 title: "eRah Manual"
 author: "Xavier Domingo–Almenara"
-date: "`r Sys.Date()`"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
-  rmarkdown::html_vignette:
+  prettydoc::html_pretty:
     toc: true
+    highlight: github
+    theme: tactile
 bibliography: citations.bib
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{eRah Manual}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,7 +17,8 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.align = 'center'
 )
 ```
 

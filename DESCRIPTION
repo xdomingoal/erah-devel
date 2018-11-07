@@ -2,7 +2,6 @@ Package: erah
 Type: Package
 Title: Automated Spectral Deconvolution, Alignment, and Metabolite Identification in GC/MS-Based Untargeted Metabolomics
 Version: 1.1.0
-Date: 2017-04-30
 Author: Xavier Domingo-Almenara, Sara Samino, Maria Vinaixa, Alexandre Perera, Oscar Yanes
 Depends: R (>= 3.4)
 Imports: osd, 
@@ -18,7 +17,8 @@ Imports: osd,
 Suggests: 
     mzR,
     knitr,
-    rmarkdown
+    rmarkdown,
+    prettydoc
 Maintainer: Xavier Domingo-Almenara <xdomingo@scripps.edu>
 Description: Automated compound deconvolution, alignment across samples, and identification of metabolites by spectral library matching in Gas Chromatography - Mass spectrometry (GC-MS) untargeted metabolomics. Outputs a table with compound names, matching scores and the integrated area of the compound for each sample.
 License: GPL (>= 2)
