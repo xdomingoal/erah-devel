@@ -95,14 +95,24 @@ get.compound.info_MSP <- function(k, Spl.List, type)
 		Caps <- apply(as.matrix(x),1, function(x) {strsplit(x,":")[[1]]})
 		Sp.Ini <- which(lapply(Caps,function(y)y[1])=="Num Peaks" | lapply(Caps,function(y)y[1])=="Num peaks")
 		Spectra.semicolon <- paste(x[(Sp.Ini+1):length(x)],collapse="")
-		Spectra.semicolon <- gsub('  ', ' ', Spectra.semicolon)
-		if(strsplit(Spectra.semicolon, '')[[1]][1]==' ') Spectra.semicolon <- paste(strsplit(Spectra.semicolon, '')[[1]][-1], collapse='')
+		Spectra.semicolon <- gsub(' {2,}', ' ', Spectra.semicolon)
 		
+		if(strsplit(Spectra.semicolon, '')[[1]][1]==' ') Spectra.semicolon <- paste(strsplit(Spectra.semicolon, '')[[1]][-1], collapse='')
+				
 		if(length(grep(";", Spectra.semicolon))!=0){
-		 	Spectra.dot <- sapply(strsplit(Spectra.semicolon, "; ")[[1]], function(y) paste(strsplit(y, " ")[[1]], collapse=":"))
+		 	Spectra.dot <- sapply(strsplit(Spectra.semicolon, ";")[[1]], function(y) paste(strsplit(y, " ")[[1]], collapse=":"))
 		}else{
 			Spectra.dot <- sapply(x[(Sp.Ini+1):length(x)], function(y) paste(strsplit(y, " ")[[1]], collapse=":"))
 		}
+		
+		Spectra.dot <- sapply(Spectra.dot, function(y) {
+			yV <- y
+			nVs <- strsplit(y[1], '')[[1]] %in% c(0:9)
+			if(nVs[1]==FALSE) yV <- paste(strsplit(y, '')[[1]][-1], collapse='')
+			if(nVs[length(nVs)]==FALSE) yV <- paste(strsplit(y, '')[[1]][-length(nVs)], collapse='')
+			yV
+			})
+		
 		Spectra <- paste(Spectra.dot , collapse=" ")
 		
 		for(j in 1:length(x.split))

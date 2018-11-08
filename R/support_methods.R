@@ -48,10 +48,12 @@ idList <- function(object, id.database=mslib) {
 	if(!is.null(object@Results@Identification$RI.error.1))
     {
    	 	#RI.errTab <- cbind(object@Results@Identification$AlignID, object@Results@Identification$RI.error.1)
-  	 	RI.errTab <- object@Results@Identification[,c("AlignID","RI.error.1")]
-   	 	colnames(RI.errTab) <- c("AlignID", "RI.err")
+   	 	selColsbyName <- c('AlignID', sapply(1:n.putative, function(x) paste('RI.error.', x, sep='')))
+   	 	selColsbyName <- selColsbyName[selColsbyName %in% colnames(object@Results@Identification)]
+  	 	RI.errTab <- object@Results@Identification[,selColsbyName]
+   	 	#colnames(RI.errTab) <- c("AlignID", "RI.err")
  	 	id.list <- merge(id.list[,1:ncol(id.list)],  RI.errTab, by = "AlignID")
-   	 	id.list <- id.list[c(1:5,ncol(id.list),6:(ncol(id.list)-1))]
+   	 	#id.list <- id.list[c(1:5,ncol(id.list),6:(ncol(id.list)-1))]
      }
 	
 	return(as.data.frame(id.list[order(as.numeric(as.vector(id.list[,"tmean"]))),], row.names=1:nrow(id.list)))

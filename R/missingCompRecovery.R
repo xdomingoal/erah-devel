@@ -1,7 +1,6 @@
 
 recMissComp <- function(Experiment, min.samples, free.model=F)
 {
-	
 	alParameters <- Experiment@Results@Parameters@Alignment
 	al.par <- list(alignment.algorithm=alParameters$alignment.algorithm, min.spectra.cor=alParameters$min.spectra.cor, max.time.dist=alParameters$max.time.dist, mz.range=alParameters$mz.range, min.samples=min.samples)
 	Experiment@Results@Parameters@Alignment <- al.par
@@ -12,7 +11,6 @@ recMissComp <- function(Experiment, min.samples, free.model=F)
 	## Delete the peaks below the minimum peak threshold
 	delete.indexes <- which(as.numeric(as.vector(apply(data.list,1,function(x) max(as.numeric(as.vector(x))))))<Experiment@Data@Parameters$min.peak.height)		
 	if(length(delete.indexes)!=0) {data.list <- data.list[-delete.indexes,]; align.list <- align.list[-delete.indexes,]}
-	
 
 	meta.data <- metaData(Experiment)
 	sample.filenames <- as.vector(apply(as.matrix(colnames(data.list)),1,function(x) meta.data[which(x==meta.data),"filename"]))

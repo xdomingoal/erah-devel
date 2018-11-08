@@ -99,7 +99,12 @@ createdt <- function(path)
 	#path.dir <- list.files(path)
 	path.name <- strsplit(path, "/")[[1]]
 	path.name <- path.name[length(path.name)]
-
+	
+	inst.file <- paste(path, "/", path.name, "_inst.csv", sep="")
+	meta.file <- paste(path, "/", path.name, "_pheno.csv", sep="")
+	
+	if(file.exists(inst.file) | file.exists(meta.file)) stop('Instrumental and metadata files already exist. To overwrite them, remove them  from the folder manually')
+	
 	#dirs.c <- unlist(apply(as.matrix(path.dir), 1, function(x) rep(x,length(list.files(paste(path, x, sep="/"))))))
 	#path.dir.c <- apply(as.matrix(path.dir),1, function(x) paste(path, x, sep="/"))
 	#files.c <- list.files(path.dir.c)
@@ -136,9 +141,6 @@ createdt <- function(path)
 	
 	meta.table[,1] <- files.ID
 	meta.table[,2] <- files.class
-	
-	inst.file <- paste(path, "/", path.name, "_inst.csv", sep="")
-	meta.file <- paste(path, "/", path.name, "_pheno.csv", sep="")
 
 	write.table(inst.table, file=inst.file, sep=";", row.names=FALSE, eol="\n", quote=F)
 	write.table(meta.table, file=meta.file, sep=";", row.names=FALSE, eol="\n", quote=F)	

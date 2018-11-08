@@ -33,7 +33,8 @@ align.factors <- function(factors.list, min.spectra.cor, max.time.dist, max.mz, 
 		factors.list <- factors.list[-empty.samples] 
 	}
 	if(length(factors.list)==1) stop("Only one sample has been processed. No alignment needed")
-	
+	if(length(factors.list)==0) stop("No compounds found, alignment cannot be performed!")
+
 	N.samples <- length(factors.list)
 	
 	factors.assignment.matrix <- apply(as.matrix(1:length(factors.list)),1,function(x) {
@@ -42,7 +43,6 @@ align.factors <- function(factors.list, min.spectra.cor, max.time.dist, max.mz, 
 	
 	factors.assignment.matrix <- do.call(rbind, factors.assignment.matrix)
 	colnames(factors.assignment.matrix) <- c("Sample","Element")
-	
 	
 	retention.time.vector <- lapply(factors.list,function(x){as.numeric(as.vector(x[,"RT"]))})
 	retention.time.vector <- as.vector(unlist(retention.time.vector))

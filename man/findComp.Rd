@@ -28,15 +28,13 @@ chem.form = NULL)
 findComp("proline")
 
 # be careful, exact matches are not supported, 
-# as well as different names like these cases:
+# as well as special cases of partial searches, like these cases:
 
 findComp("L-proline (2TMS)")
 
-# or
-
 findComp("proline 2")
 
-
+# which will not report any results despite being in the database
 }
 
 \seealso{

@@ -28,7 +28,7 @@ When identification is applied (see \code{\link{identifyComp}}), the number of h
 	
 \code{plotSpectra} returns an vector when return.spectra=TRUE.
 
-	\item{x}{vector. Containts the empirical spectrum.}
+\item{x}{vector. Containts the empirical spectrum.}
 
 }
 \references{

@@ -1,18 +1,17 @@
 #exportPattern("^[[:alpha:]]+")
+useDynLib("erah", .registration = TRUE)
 
-
-import(osd, ncdf4, caTools, nnls, graphics, Rcpp)
+import(ncdf4, nnls, graphics, Rcpp)
 importFrom("igraph", "graph.data.frame", "clusters")
-importFrom("signal", "sgolayfilt", "hanning", "pchip")
-importFrom("HiClimR", "fastCor")
+importFrom("signal", "sgolayfilt", "hanning")
 importFrom("quantreg", "rq")
 importFrom("utils", "getTxtProgressBar", "read.csv","setTxtProgressBar", "txtProgressBar", "write.table")
 importFrom("methods", "new")
 importFrom("stats", "coefficients", "cor", "cov", "dist", "dnorm",
-             "fft", "na.omit", "prcomp", "runmed", "sd")
+             "fft", "na.omit", "prcomp", "runmed", "sd", "predict", "smooth.spline")
 importFrom("XML", "xmlParse")
 
 
-export(newExp, setDecPar, setAlPar, alignComp, deconvolveComp, plotAlign, plotProfile, plotSpectra, recMissComp, compInfo, dataList, findComp, identifyComp, idList, alignList, plotChr, sampleInfo, createdt, phenoData, metaData, expClasses,export2MSP, export2CEF, importMSP, importGMD)
+export(newExp, setDecPar, setAlPar, alignComp, deconvolveComp, plotAlign, plotProfile, plotSpectra, recMissComp, compInfo, dataList, findComp, identifyComp, idList, alignList, plotChr, sampleInfo, createdt, phenoData, metaData, expClasses,export2MSP, export2CEF, importMSP, importGMD, computeRIerror)
 
 exportClasses(RawDataParameters, MetaboSet, eRah_DB)

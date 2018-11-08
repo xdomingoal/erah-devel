@@ -52,7 +52,7 @@ plotSpectra <- function(Experiment, AlignId, n.putative=1, compare=T, id.databas
 		if(length(delete.mz)!=0) db.spectra[delete.mz] <- 0
 		db.spectra <- normalize(db.spectra)*(-1000)
 
-		match.factor <- cor.sinus(empiric.spectra,abs(db.spectra))
+		match.factor <- suppressWarnings(cor(empiric.spectra,abs(db.spectra)))
 		match.factor <- round(match.factor*100, digits=1)
 		
 		if(is.null(comp.db)) main.title <- paste(empiric.name, "\n Match Factor:",match.factor)

@@ -5,20 +5,20 @@
 \usage{
 deconvolveComp(Experiment, decParameters, 
 samples.to.process=NULL, down.sample=FALSE,
-virtualScansPerSecond=NULL)
+virtual.scans.ps=NULL)
 }
 \arguments{
   \item{Experiment}{A 'MetaboSet' S4 object containing the experiment data previously created by newExp.}
   \item{decParameters}{The software deconvolution parameters object previously created by setDecPar}
   \item{samples.to.process}{Vector indicating which samples are to be processed.} 
-  \item{down.sample}{If TRUE, chromatograms are down sampled to define one peak with 10 scan points (according to the minimum peak width). This is to process longer chromatograms with wider peak widths (more than 20 seconds peak width and high scans per second values). See details. } 
-  \item{virtualScansPerSecond}{A virtual scans per second. If chromatograms are downsampled (for example, for a 1 mean peak width a 1 scans per second sampling frequency was used), eRah could not perform as expected. In these cases, the BEST solution is to re-acquire the samples. However, by selecting a different (virtual) scans per second frequency, eRah can upsample the data and process it more effectively.} 
+  \item{down.sample}{If TRUE, chromatograms are down sampled to define one peak with 10 scan points (according to the minimum peak width). This is to process longer chromatograms with wider peak widths (more than 20 seconds peak width and small scans per second values). See details. }
+   \item{virtual.scans.ps}{Manually correction of scans per second. When chromatograms are downsampled (too few scans per second, or too many), a virtual scans per second can be defined, and data interpolation will correct the data. However, reanalysis of experimental data is advised.}  
 }
 \details{
 See eRah vignette for more details. To open the vignette, execute the following code in R:
 vignette("eRahManual", package="erah")
 
-eRah uses multivariate methods which run-time performance depend on the amount of data to be analyzed. When peaks are wider and the scans per second is also a small value, the number of points (scans) that define a peak might be too many, leading eRah to a poor run-time performance. To solve that, use down.sample=TRUE to allow eRah to define a peak with 10 seconds, and   analyze the data more efficiently
+eRah uses multivariate methods which run-time performance depend on the amount of data to be analyzed. When peaks are wide and the scans per second used for acquisition is too large, the number of points (scans) that define a peak might be too many, leading eRah to a poor run-time performance. To solve that, use down.sample=TRUE to allow eRah to define a peak with 10 seconds and analyze the data more efficiently
 }
 \value{
 The function returns an updated S4 'MetaboSet' class, where the GC-MS samples have been now deconvolved.
@@ -34,9 +34,9 @@ Xavier Domingo-Almenara. xavier.domingo@urv.cat
 \code{\link{newExp}}, \code{\link{setAlPar}}
 }
 \examples{
-
-# Deconvolve data from a created experiment by \code{\link{newExp}}.
-# ex <- newExp(instrumental="path")
+\donttest{
+# Deconvolve data from a created experiment by newExp().
+ex <- newExp(instrumental="path")
 
 # The following will set eRah for analyzing the chromatograms
 # from minutes 5 to 15, and withouth taking into account the masses
@@ -47,8 +47,8 @@ noise.threshold=500, avoid.processing.mz=c(35:69,73:75,147:149),
 analysis.time=c(5,15))
 
 # An now deconvolve the compounds in the samples:
-# ex <- deconvolveComp(ex, decParameters=ex.dec.par)
-
+ex <- deconvolveComp(ex, decParameters=ex.dec.par)
+}
 }
 
 

@@ -29,8 +29,7 @@ Xavier Domingo-Almenara. xavier.domingo@urv.cat
 # maximum distance of 2 seconds. All the masses are considered when
 # computing the spectral similarity.
 
-# ex.al.par <- setAlPar(min.spectra.cor=0.90, max.time.dist=2,
-# mz.range=1:600)
+ex.al.par <- setAlPar(min.spectra.cor=0.90, max.time.dist=2, mz.range=1:600)
 
 }
 

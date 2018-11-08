@@ -1,30 +1,31 @@
-export2MSP <- function(Experiment, export.id=NULL, id.database = mslib, store.path=getwd())
+export2MSP <- function(Experiment, export.id=NULL, id.database = mslib, store.path=getwd(), alg.version=1)
 {
-	#Experiment <- ex
-	#export.id <- NULL
-	#export.id <- c(4,5,10)
 	
-	#if(dir.exists(paste(c(store.path, "/ExportMSP/"), collapse=""))) stop("Please, delete the following folder before proceeding: ", paste(c(store.path, "/ExportMSP/")))
-
-	
-	if(is.null(nrow(Experiment@Results@Identification)) | nrow(Experiment@Results@Identification)==1)
+	if(is.null(nrow(Experiment@Results@Identification)) | nrow(Experiment@Results@Identification)==0)
 	{
 		if(!is.null(export.id)) Experiment@Results@Alignment <- Experiment@Results@Alignment[which(Experiment@Results@Alignment$AlignID %in% export.id),]
 			
 		SpectList <- sapply(Experiment@Results@Alignment$Spectra, function(x) {
 			splitted.spectra.list <- strsplit(as.character(x), split = " ")[[1]]
 			splitted.spectra.list <- gsub(",", " ", splitted.spectra.list)
-			splitted.spectra.list <- as.character(as.vector(sapply(splitted.spectra.list, function(x) paste(c(x,";"), collapse=""))))
-			Npeaks <- length(splitted.spectra.list)
-			if(Npeaks>=6)
-			{
-				sequ <- seq(1, Npeaks, 5)
-				if(sequ[length(sequ)]!=Npeaks) sequ <- c(sequ, Npeaks)
-				splitted.spectra.list <- paste(unlist(sapply(1:(length(sequ)-1), function(x) paste(c(splitted.spectra.list[sequ[x]:sequ[(x+1)]], "\n")))), collapse=" ")
-			}else{
-				splitted.spectra.list <- paste(splitted.spectra.list, collapse=" ")
-				}
-			PeakChar <- paste(gsub(",", " ", splitted.spectra.list), collapse="; ")
+			if(alg.version==1){		
+				splitted.spectra.list <- as.character(as.vector(sapply(splitted.spectra.list, function(x) paste(c(x,";"), collapse=""))))
+				Npeaks <- length(splitted.spectra.list)
+				if(Npeaks>=6)
+				{
+					sequ <- seq(1, Npeaks, 5)
+					if(sequ[length(sequ)]!=Npeaks) sequ <- c(sequ, Npeaks)
+					splitted.spectra.list <- paste(unlist(sapply(1:(length(sequ)-1), function(x) paste(c(splitted.spectra.list[sequ[x]:sequ[(x+1)]], "\n")))), collapse=" ")
+				}else{
+					splitted.spectra.list <- paste(splitted.spectra.list, collapse=" ")
+					}
+				PeakChar <- paste(gsub(",", " ", splitted.spectra.list), collapse="; ")
+			}
+			if(alg.version==2) {
+				splitted.spectra.list <- as.character(as.vector(sapply(splitted.spectra.list, function(x) paste(c(x,"\n"), collapse=""))))
+				Npeaks <- length(splitted.spectra.list)
+				PeakChar <-  paste(splitted.spectra.list, collapse="")
+			}		
 			return(list(Npeaks=Npeaks, PeakChar=PeakChar))
 		})
 		SpectList <- split(SpectList,seq(NROW(SpectList)))
@@ -38,22 +39,36 @@ export2MSP <- function(Experiment, export.id=NULL, id.database = mslib, store.pa
 		SpectNames <- apply(cbind(SpectNames.3,SpectNames.2), 1, function(x) paste(x, collapse=" @ "))
 	}else{
 		
+    	if(Experiment@Results@Parameters@Identification$database.name != id.database@name) {
+        	error.msg <- paste("This experiment was not processed with the database selected. Please use ", 
+            Experiment@Results@Parameters@Identification$database.name, 
+            sep = "")
+        	stop(error.msg)
+    		}
+    		
 		if(!is.null(export.id)) Experiment@Results@Identification<- Experiment@Results@Identification[which(Experiment@Results@Identification$AlignID %in% export.id),]
 		
 		SpectList <- sapply(Experiment@Results@Identification$Spectra, function(x) {
 			splitted.spectra.list <- strsplit(as.character(x), split = " ")[[1]]
 			splitted.spectra.list <- gsub(",", " ", splitted.spectra.list)
-			splitted.spectra.list <- as.character(as.vector(sapply(splitted.spectra.list, function(x) paste(c(x,";"), collapse=""))))
-			Npeaks <- length(splitted.spectra.list)
-			if(Npeaks>=6)
-			{
-				sequ <- seq(1, Npeaks, 5)
-				if(sequ[length(sequ)]!=Npeaks) sequ <- c(sequ, Npeaks)
-				splitted.spectra.list <- paste(unlist(sapply(1:(length(sequ)-1), function(x) paste(c(splitted.spectra.list[sequ[x]:sequ[(x+1)]], "\n")))), collapse=" ")
-			}else{
-				splitted.spectra.list <- paste(splitted.spectra.list, collapse=" ")
-				}
-			PeakChar <- paste(gsub(",", " ", splitted.spectra.list), collapse="; ")
+			if(alg.version==1){
+				splitted.spectra.list <- as.character(as.vector(sapply(splitted.spectra.list, function(x) paste(c(x,";"), collapse=""))))
+				Npeaks <- length(splitted.spectra.list)
+				if(Npeaks>=6)
+				{
+					sequ <- seq(1, Npeaks, 5)
+					if(sequ[length(sequ)]!=Npeaks) sequ <- c(sequ, Npeaks)
+					splitted.spectra.list <- paste(unlist(sapply(1:(length(sequ)-1), function(x) paste(c(splitted.spectra.list[sequ[x]:sequ[(x+1)]], "\n")))), collapse=" ")
+				}else{
+					splitted.spectra.list <- paste(splitted.spectra.list, collapse=" ")
+					}
+				PeakChar <- paste(gsub(",", " ", splitted.spectra.list), collapse="; ")	
+			}
+			if(alg.version==2) {
+				splitted.spectra.list <- as.character(as.vector(sapply(splitted.spectra.list, function(x) paste(c(x,"\n"), collapse=""))))
+				Npeaks <- length(splitted.spectra.list)
+				PeakChar <-  paste(splitted.spectra.list, collapse="")
+			}
 			return(list(Npeaks=Npeaks, PeakChar=PeakChar))
 		})
 		SpectList <- split(SpectList,seq(NROW(SpectList)))
@@ -72,13 +87,13 @@ export2MSP <- function(Experiment, export.id=NULL, id.database = mslib, store.pa
 	
 	dir.create(file.path(store.path, "ExportMSP") , showWarnings = FALSE)
 	filename <- paste(c(store.path, "/ExportMSP/", "ExportedMSP", ".msp"), collapse="")
-		
+			
 	fileTag <- character()	
 	for(i in 1:length(SpectString))
 	{ 
 		fileTag[i] <- paste(c("Name: ", SpectNames[i], "\n", "Comments: MSP spectra exported by eRah \n", "Num Peaks: ", Npeaks[i], "\n",SpectString[i]), collapse="")
 	}
-	fileTagGen <- paste(fileTag, collapse="\n \n")
+	fileTagGen <- paste(fileTag, collapse="\n")
 
 	writeLines(fileTagGen, filename)	
 	cat("Spectra saved at: ", store.path, "/ExportMSP", sep="")

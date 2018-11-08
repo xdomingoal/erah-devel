@@ -15,5 +15,4 @@ Returns details on a given sample of the experiment, such as name, start time, e
 
 \seealso{
 \code{\link{plotChr}}
-
 }

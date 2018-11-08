@@ -5,14 +5,13 @@
 	# gaussian.function
 # }
 
-# normalize <- function(x)
-# {
-	# x[is.na(x)] <- 0
-	# if(is.matrix(x)==T) norm.x <- sweep(x, 2, apply(x, 2, function(k) max(k, na.rm=T)), "/")
-	# if(is.matrix(x)==F) norm.x <- x/max(x, na.rm=T)
-	# norm.x[is.na(norm.x)] <- 0
-	# norm.x
-# }
+normalize <- function (x) {
+    x[is.na(x)] <- 0
+    if(is.matrix(x) == TRUE) norm.x <- sweep(x, 2, apply(x, 2, function(k) max(k, na.rm = T)), "/")
+    if(is.matrix(x) == FALSE) norm.x <- x/max(x, na.rm = T)
+    norm.x[is.na(norm.x)] <- 0
+    norm.x
+}
 
 is.even <- function(x) x %% 2 == 0
 
@@ -91,3 +90,30 @@ break.vector <- function(x)
 		x.out})
 	x.vect.s
 }
+
+
+runningmean = function(x, k){
+	dimx = dim(x) # Capture dimension of input array - to be used for formating y
+	x = as.vector(x)
+	n = length(x)
+	if (k<=1) return (x)
+	if (k >n) k = n
+	k2 = k%/%2
+	
+	y <- .C("runmean", as.double(x), y = double(n), as.integer(n), as.integer(k), NAOK=TRUE, PACKAGE="erah")$y
+	y
+}
+
+runningmin = function(x, k)
+{
+	dimx = dim(x)  # Capture dimension of input array - to be used for formating y
+	x = as.vector(x)
+	n = length(x)
+	if (k<=1) return (x)
+	if (k >n) k = n
+	
+	y <- .C("runmin", as.double(x), y = double(n), as.integer(n), as.integer(k), NAOK=TRUE, PACKAGE="erah")$y
+	y
+}
+
+

@@ -20,7 +20,7 @@ pre.process <- function(sampl, sigma.scans)
 removeBaseline <- function (x, k) 
 {
     if (max(x) == 0) return(x)
-    x.min <- caTools::runmin(x, k)
+    x.min <- runningmin(x, k)
     k.m <- k
     if(k.m>=length(x)) k.m <- length(x) - 1
     if (is.even(k.m) == T) k.m <- k.m - 1
@@ -30,7 +30,7 @@ removeBaseline <- function (x, k)
     base.sd <- sd(x.min)
     x.base <- x.med
     x.base[x.base > (x.min + base.sd)] <- x.min[x.base > (x.min + base.sd)] + base.sd
-    x.base <- caTools::runmean(x.base, k)
+    x.base <- runningmean(x.base, k)
     x.clean <- x - x.base
     x.clean[x.clean < 0] <- 0
     x.clean
