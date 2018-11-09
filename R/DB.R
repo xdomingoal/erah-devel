@@ -1,9 +1,57 @@
+#' @name compInfo
+#' @aliases compInfo
+#' @title Information of a Compound
+#' @description Displays basic information of a compound in the MS library.
+#' @usage compInfo(comp.id, id.database = mslib)
+#' @param comp.id The DB.Id number of the compound.
+#' @param id.database The mass-spectra library to be compared with the empirical spectra. By default, the MassBank - Mass Bank of North America (MoNa) database are employed (mslib object).
+#' @details Returns details on a given compound such as the synonyms, CAS, KEGG, retention index, among others.
+#' @examples 
+#' # finding proline
+#' findComp("proline")
+#'
+#' # we see that proline 2TMS has the DB.Id number 42, then:
+#' compInfo(42)
+#' @seealso \code{\link{findComp}}
+#' @export
+
 compInfo <- function(comp.id, id.database=mslib)
 {
 	comp.info <- id.database@database[[comp.id]]
 	comp.info$Synon <- gsub("//",", ", comp.info$Synon)
 	cat("Name: ", comp.info$Name, "\n", "Synonyms: ", comp.info$Synon, "\n", "CAS: ", comp.info$CAS, "\n" ,"Formula: ", comp.info$Formula, "\n" ,"MW: ", comp.info$MW, "\n", "KEGG: ", comp.info$KEGG, "\n", "RI (FAME & Var5): ", comp.info$RI.VAR5.FAME, "\n","RI (ALK & Var5): ", comp.info$RI.VAR5.ALK, "\n","RI (FAME & MDN35): ", comp.info$RI.MDN35.FAME, "\n","RI (ALK & MDN35): ", comp.info$MDN35.ALK, "\n", "------------------------------- \n" ,"Comment: ", comp.info$Comment, sep="")
 }
+
+#' @name findComp
+#' @aliases findComp
+#' @title Find a compound
+#' @description Finds compounds in the MS library by Name, CAS or chemical formula.
+#' @usage findComp(name = NULL, id.database = mslib, CAS = NULL, chem.form = NULL)
+#' @param name The name of the compound to be found.
+#' @param id.database The mass-spectra library to be compared with the empirical spectra. By default, the MassBank - Mass Bank of North America (MoNa) database are employed (mslib object).
+#' @param CAS The CAS number of the compound to be found.
+#' @param chem.form The chemical formula of the compound to be found.
+#' @return 
+#' \code{findComp} returns an S3 object:
+#'      \item{DB.Id}{The identification number of the library. Each metbolite in the reference library has a different DB.Id number.}
+#'      \item{Compound Name}{Compound Name.}
+#'      \item{CAS}{CAS number}
+#'      \item{Formula}{Chemical Formula.}
+#' @examples 
+#' # finding proline
+#'
+#' findComp("proline")
+#'
+#' # be careful, exact matches are not supported, 
+#' # as well as different names like these cases:
+#'
+#' findComp("L-proline (2TMS)")
+#'
+# or
+#'
+#' findComp("proline 2")
+#' @seealso \code{\link{compInfo}}
+#' @export
 
 findComp <- function(name=NULL, id.database=mslib, CAS=NULL, chem.form=NULL)
 {

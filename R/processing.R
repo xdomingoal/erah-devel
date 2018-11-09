@@ -1,3 +1,4 @@
+#' @importFrom osd normalize
 
 chrom.isoreg <- function(A, tresh=0.2)
 {
@@ -80,6 +81,7 @@ chrom.isoreg <- function(A, tresh=0.2)
 	Ar.n	
 }
 
+#' @importFrom stats prcomp
 
 getS.OSD <- function(mod.c, D, ref.response=NULL, beta=2,cutoff=0.05)
 {	
@@ -156,6 +158,9 @@ getC.tP <- function(winD, target.s)
 	Cps		
 }
 
+#' @importFrom stats coefficients
+#' @importFrom quantreg rq
+
 getC.rq <- function(winD, target.s)
 {
 	target.s <- normalize(target.s)
@@ -178,6 +183,9 @@ getC.rq <- function(winD, target.s)
 	Cps			
 }
 
+#' @importFrom stats dnorm cov
+#' @importFrom signal hanning
+#' @importFrom HiClimR fastCor
 
 get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.sample, virtual.scans.ps)
 {

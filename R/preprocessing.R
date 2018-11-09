@@ -17,6 +17,8 @@ pre.process <- function(sampl, sigma.scans)
 	sampl
 }
 
+#' @importFrom stats sd
+
 removeBaseline <- function (x, k) 
 {
     if (max(x) == 0) return(x)
@@ -35,6 +37,8 @@ removeBaseline <- function (x, k)
     x.clean[x.clean < 0] <- 0
     x.clean
 }
+
+#' @importFrom signal sgolayfilt
 
 soft.filter <- function (mat, p, n = NULL) 
 {
