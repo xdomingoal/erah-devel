@@ -1,3 +1,5 @@
+#' @importFrom stats smooth.spline predict
+#' @importFrom graphics points
 
 computeRIerror <- function(Experiment, id.database=mslib, reference.list, ri.error.type=c('relative','absolute'), plot.results=TRUE){
   
