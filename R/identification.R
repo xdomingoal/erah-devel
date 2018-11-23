@@ -1,14 +1,14 @@
-cor.sinus <- function(s1.mat, s2.mat)
-{
-	if(is.matrix(s1.mat)==F) s1.mat <- matrix(s1.mat, ncol=1)
-	if(is.matrix(s2.mat)==F) s2.mat <- matrix(s2.mat, ncol=1)
+# cor.sinus <- function(s1.mat, s2.mat)
+# {
+	# if(is.matrix(s1.mat)==F) s1.mat <- matrix(s1.mat, ncol=1)
+	# if(is.matrix(s2.mat)==F) s2.mat <- matrix(s2.mat, ncol=1)
 	
-	Z <- matrix(diag(t(s1.mat)%*%s1.mat),ncol=1)
-	H <- matrix(diag(t(s2.mat)%*%s2.mat),ncol=1)
+	# Z <- matrix(diag(t(s1.mat)%*%s1.mat),ncol=1)
+	# H <- matrix(diag(t(s2.mat)%*%s2.mat),ncol=1)
 	
-	cos.angle <- (t(s1.mat)%*%s2.mat)/sqrt(Z%*%t(H))
-	cos.angle
-}
+	# cos.angle <- (t(s1.mat)%*%s2.mat)/sqrt(Z%*%t(H))
+	# cos.angle
+# }
 
 convertMSPspectra <- function(MSPchain, maxMZ)
 {
@@ -55,8 +55,7 @@ identify.factors <- function(Experiment, maxMZ, compare.only.mz, avoid.processin
 	if(length(factors.list)==1) {
 		factors.list[[1]] <- cbind(factors.list[[1]],matrix(c(1:(length(factors.list[[1]]$ID))),nrow=length(factors.list[[1]]$ID)))
 		colnames(factors.list[[1]])[ncol(factors.list[[1]])] <- "AlignID"	
-	#}
-	
+
 		alignId <- lapply(factors.list,function(x){x$AlignID})
 		N.groups <- max(unique(unlist(alignId)))	
 	
@@ -94,7 +93,7 @@ identify.factors <- function(Experiment, maxMZ, compare.only.mz, avoid.processin
 	spects <- get.spectra.matrix(id.database, maxMZ)
 	spects[delete.mz,] <- 0		
 	cat("Comparing spectra... \n")	
-	mat.correlation <- cor.sinus(spectra.matrix.compare,spects)	
+	mat.correlation <- suppressWarnings(cor(spectra.matrix.compare,spects))
 
 	identification.results <- NULL
 	for(n.put in 1:n.putative)
@@ -151,7 +150,7 @@ identify.factors <- function(Experiment, maxMZ, compare.only.mz, avoid.processin
 
 get.spectra.matrix <- function(id.database, maxMZ)
 {
-	spects <- lapply(id.database, function(x) convertMSPspectra.dot(x$Spectra,maxMZ))
+	spects <- lapply(id.database, function(x) convertMSPspectra.dot(x$Spectra,maxMZ))	
 	spects <- do.call(cbind, spects)
 	spects
 }
