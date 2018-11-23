@@ -30,7 +30,6 @@ setMethod('recMissComp',signature = 'MetaboSet',
             delete.indexes <- which(as.numeric(as.vector(apply(data.list,1,function(x) max(as.numeric(as.vector(x))))))<Experiment@Data@Parameters$min.peak.height)		
             if(length(delete.indexes)!=0) {data.list <- data.list[-delete.indexes,]; align.list <- align.list[-delete.indexes,]}
             
-            
             meta.data <- metaData(Experiment)
             sample.filenames <- as.vector(apply(as.matrix(colnames(data.list)),1,function(x) meta.data[which(x==meta.data),"filename"]))
             
