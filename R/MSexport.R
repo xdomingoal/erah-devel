@@ -2,13 +2,12 @@
 #' @aliases export2MSP
 #' @title Export spectra to MSP
 #' @description Export spectra to MSP format for comparison with the NIST library.
-#' @usage export2MSP(Experiment, export.id = NULL, 
-#' id.database = mslib, store.path = getwd())
 #' @param Experiment A 'MetaboSet' S4 object containing the experiment.
 #' @param export.id If NULL, all the spectra in the experiment will be exported. Otherwise, only the AlignID in export.id will be exported
 #' @param id.database The mass-spectra library used in the experiment.
 #' @param store.path The path where the converted files are to be exported.
-#' @export
+#' @param alg.version Different algorithm implementations. Users have to chose what version works with their NIST MSearch or other software version. By default, alg.version is set to 1. If it not works, try setting alg.version to 2 ;).
+#' @export 
 
 export2MSP <- function(Experiment, export.id=NULL, id.database = mslib, store.path=getwd(), alg.version=1)
 {

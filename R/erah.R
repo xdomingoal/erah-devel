@@ -198,7 +198,7 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
             for(index in samples.to.process)
             {
               cat("\n Deconvolving compounds from",as.character(Experiment@MetaData@Instrumental$filename[index]),"... Processing", k,"/",length(samples.to.process),"\n")  
-              Experiment <- processSample(Experiment, index, plotting, down.sample, virtual.scans.ps)
+              Experiment <- processSample(Experiment, index, plotting, down.sample, virtualScansPerSecond)
               k <- k + 1
             }
             cat("\n Compounds deconvolved \n")
