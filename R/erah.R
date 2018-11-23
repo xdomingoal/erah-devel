@@ -143,11 +143,9 @@ newExp <- function(instrumental, phenotype=NULL, info=character())
     if(length(apply(as.matrix(colnames(MS.MetaData@Instrumental)),1,function(x) grep(col.correct[i],x)))==0) stop("Invalid instrumental file. The file must contain at least the following columns: ", paste(col.correct, collapse=", "))
   
   # Phenotype Slots validation:
-  if(!is.null(MS.MetaData@Phenotype))
-  {
+  if(nrow(MS.MetaData@Phenotype)!=0){
     col.correct <- c("sampleID","class")
-    for(i in 1:length(col.correct))
-      if(length(apply(as.matrix(colnames(MS.MetaData@Phenotype)),1,function(x) grep(col.correct[i],x)))==0) stop("Invalid phenotype file. The file must contain at least the following columns: ", paste(col.correct, collapse=", "))
+    for(i in 1:length(col.correct)) if(length(apply(as.matrix(colnames(MS.MetaData@Phenotype)),1,function(x) grep(col.correct[i],x)))==0) stop("Invalid phenotype file. The file must contain at least the following columns: ", paste(col.correct, collapse=", "))
   }
   sample.container <- new("MetaboSet", Info = info, Data = MS.Data, MetaData = MS.MetaData, Results = MS.Results)
   sample.container
@@ -200,7 +198,7 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
             for(index in samples.to.process)
             {
               cat("\n Deconvolving compounds from",as.character(Experiment@MetaData@Instrumental$filename[index]),"... Processing", k,"/",length(samples.to.process),"\n")  
-              Experiment <- processSample(Experiment, index, plotting, down.sample, virtualScansPerSecond)
+              Experiment <- processSample(Experiment, index, plotting, down.sample, virtual.scans.ps)
               k <- k + 1
             }
             cat("\n Compounds deconvolved \n")
@@ -362,7 +360,7 @@ setMethod('identifyComp',signature = 'MetaboSet',
           }
 )
 
-processSample <- function(Experiment, index, plotting, down.sample, virtualScansPerSecond)
+processSample <- function(Experiment, index, plotting, down.sample, virtual.scans.ps)
 {
   if(Experiment@MetaData@DataDirectory=="") {filename <- as.character(Experiment@MetaData@Instrumental$filename[index])
   }else{filename <- paste(Experiment@MetaData@DataDirectory,"/",Experiment@MetaData@Instrumental$filename[index], sep="")}
@@ -383,7 +381,6 @@ processSample <- function(Experiment, index, plotting, down.sample, virtualScans
   Experiment@Data@Parameters$scans.per.second <- sampleObject@scans.per.second
   sampleObject@avoid.processing.mz <- Experiment@Data@Parameters$avoid.processing.mz
   sampleObject@min.peak.width <- Experiment@Data@Parameters$min.peak.width*Experiment@Data@Parameters$scans.per.second*60
-  if(!is.null(virtualScansPerSecond)) sampleObject@min.peak.width <- Experiment@Data@Parameters$min.peak.width*virtualScansPerSecond*60
   sampleObject@min.peak.height <- Experiment@Data@Parameters$min.peak.height
   sampleObject@noise.threshold <- Experiment@Data@Parameters$noise.threshold
   #sampleObject@moving.window.length <- Experiment@Data@Parameters$moving.window.length*Experiment@Data@Parameters$scans.per.second*60
@@ -395,7 +392,7 @@ processSample <- function(Experiment, index, plotting, down.sample, virtualScans
   
   
   sampleObject <- avoid.processing(sampleObject)
-  factor.list <- try(get.factor.list(sampleObject, analysis.window=Experiment@Data@Parameters$analysis.time, plotting, down.sample, virtualScansPerSecond), silent=F)
+  factor.list <- try(get.factor.list(sampleObject, analysis.window=Experiment@Data@Parameters$analysis.time, plotting, down.sample, virtual.scans.ps), silent=F)
   if(class(factor.list)=="try-error") {factor.list <- as.data.frame(NULL); warning("Unable to extract factors from ", Experiment@MetaData@Instrumental$filename[index], ". Data may be corrupted.", sep="")}
   Experiment@Data@FactorList[[index]] <- factor.list		
   
