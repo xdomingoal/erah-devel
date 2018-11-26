@@ -1,3 +1,9 @@
+
+erah v1.1.1 (Release date: 2019-01-01)
+==============
+* eRah now has the ability to use parallel processing to speed up compound deconvolution (enhancement contributed by Dr. J Finch).
+* Minor bug fixes.
+
 erah v1.1.0 (Release date: 2018-07-10)
 ==============
 * eRah now computes Retention Index errors. Please see the Vignette for more information.
