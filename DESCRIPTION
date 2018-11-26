@@ -13,7 +13,8 @@ Imports: osd,
     signal, 
     quantreg, 
     XML, 
-    methods
+    methods,
+    parallel
 Suggests: 
     mzR,
     knitr,

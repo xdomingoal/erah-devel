@@ -176,4 +176,3 @@ createdt <- function(path)
 	write.table(meta.table, file=meta.file, sep=";", row.names=FALSE, eol="\n", quote=F)	
 
 }
-
