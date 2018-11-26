@@ -1,6 +1,8 @@
 
 globalVariables("mslib")
 
+#' @useDynLib erah 
+
 ## Main Software functions:
 
 #' @name setDecPar
