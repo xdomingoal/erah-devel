@@ -118,7 +118,7 @@ getS.OSD <- function(mod.c, D, ref.response=NULL, beta=2,cutoff=0.05)
   spc
 }
 
-function(m.data, c.model, s.model)
+refine.extraction <- function(m.data, c.model, s.model)
 {
   
   neg.sign.flag <- any(sign(normalize(m.data[which.max(c.model),])-normalize(s.model))==(-1))

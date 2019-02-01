@@ -33,8 +33,13 @@ setMethod(plotSpectra,signature = 'MetaboSet',
             if(length(AlignId)!=1) stop("Only one spectrum can be shown at once")
             if(compare==T) if(is.null(id.database)) stop("A database is needed for spectra comparison. Select a database or set 'compare' parameter to 'False'")
             
-            index <- which(as.numeric(as.vector(Experiment@Results@Alignment[,"AlignID"]))==AlignId)
-            MSP.spect.emp <- Experiment@Results@Alignment[index,"Spectra"]
+          if(nrow(Experiment@Results@Alignment)==0){
+                    index <- which(as.numeric(as.vector(Experiment@Data@FactorList[[1]]$ID))==AlignId)
+		MSP.spect.emp <- Experiment@Data@FactorList[[1]]$Spectra[index]
+	}else{
+		index <- which(as.numeric(as.vector(Experiment@Results@Alignment[,"AlignID"]))==AlignId)
+		MSP.spect.emp <- Experiment@Results@Alignment[index,"Spectra"]
+	}
             
             current.column <- paste("DB.Id.",n.putative, sep="")
             
