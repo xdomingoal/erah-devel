@@ -185,8 +185,7 @@ createInstrumentalTable <- function(files){
     strsplit(out.s[length(out.s)], "\\.")[[1]][1] 
   })
   
-  files.path <- apply(as.matrix(files),1, function(x) paste(path, x, sep="/"))	
-  files.cdate <- apply(as.matrix(files.path), 1, function(x) as.character(file.info(x)$mtime))
+  files.cdate <- apply(as.matrix(files), 1, function(x) as.character(file.info(x)$mtime))
   files.date <- apply(as.matrix(files.cdate),1, function(x) strsplit(x, " ")[[1]][1])
   files.time <- apply(as.matrix(files.cdate),1, function(x) strsplit(x, " ")[[1]][2])
   
