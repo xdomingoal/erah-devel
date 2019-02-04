@@ -247,7 +247,7 @@ For example, eRah allows a rapid assessment for visualizing the second hit retur
 To do so:
 
 ```{r,eval=FALSE}
-plotSpectra(ex, 41, draw.color = "orange")
+plotSpectra(ex, 41, 2, draw.color = "orange")
 ```
 
 ```{r fig.cap='**Figure 4:** Image from `plotSpectra(ex,41, 2, draw.color=’orange3’)`.',echo=FALSE}
