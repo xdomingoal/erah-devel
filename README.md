@@ -1,6 +1,6 @@
 # erah
 
-[![Travis-CI Build Status](https://travis-ci.org/xdomingoal/erah-devel.svg?branch=master)](https://travis-ci.org/xdomingoal/erah-devel)
+[![Travis-CI Build Status](https://travis-ci.org/xdomingoal/erah-devel.svg?branch=devel)](https://travis-ci.org/xdomingoal/erah-devel)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/erah)](https://cran.r-project.org/package=erah)
 [![](http://cranlogs.r-pkg.org/badges/erah)](http://cran.rstudio.com/web/packages/erah/index.html)
 
