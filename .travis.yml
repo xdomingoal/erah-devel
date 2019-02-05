@@ -8,6 +8,8 @@ bioc_required: true
 
 apt_packages:
   - libgit2-dev
+  - libnetcdf-dev
+  - netcdf-bin
 
 notifications:
   email:
