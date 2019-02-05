@@ -153,11 +153,20 @@ newExp <- function(instrumental, phenotype=NULL, info=character())
   sample.container
 }
 
+#' @name newExp2
+#' @aliases newExp2
+#' @title New Experiment
+#' @description Sets a new experiment for eRah
+#' @param instrumental A data.frame containing the sample instrumental information.
+#' @param phenotype (optional) A data.frame containing sample phenotype information.
+#' @param info Experiment description
+#' @details See eRah vignette for more details. To open the vignette, execute the following code in R:
+#' vignette("eRahManual", package="erah")
 #' @export
 
 newExp2  <- function(instrumental, phenotype=NULL, info=character()){
   
-  if(is.null(phenotype)){
+  if (is.null(phenotype)) {
     phenotype = as.data.frame(NULL)
     warning("No phenotype data have been attached to this experiment.")
   }
