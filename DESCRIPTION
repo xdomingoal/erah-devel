@@ -14,7 +14,8 @@ Imports: osd,
     quantreg, 
     XML, 
     methods,
-    parallel
+    parallel,
+    tibble
 Suggests: 
     mzR,
     knitr,
