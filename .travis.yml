@@ -11,6 +11,9 @@ apt_packages:
   - libnetcdf-dev
   - netcdf-bin
 
+after_success:
+    - Rscript -e 'covr::codecov()'
+
 notifications:
   email:
     on_success: change
