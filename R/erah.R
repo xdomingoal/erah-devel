@@ -74,9 +74,8 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 #' @aliases newExp
 #' @title New Experiment
 #' @description Sets a new experiment for eRah
-#' @usage newExp(instrumental, phenotype = NULL, info = character())
-#' @param instrumental The path where the instrumental .csv file is located.
-#' @param phenotype (optional) The path where the phenotypic .csv file is located.
+#' @param instrumental A data.frame containing the sample instrumental information.
+#' @param phenotype (optional) A data.frame containing sample phenotype information.
 #' @param info Experiment description
 #' @details See eRah vignette for more details. To open the vignette, execute the following code in R:
 #' vignette("eRahManual", package="erah")
@@ -84,87 +83,22 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 #' @references [1] Xavier Domingo-Almenara, et al., eRah: A Computational Tool Integrating Spectral Deconvolution and Alignment with Quantification and Identification of Metabolites in GC-MS-Based Metabolomics. Analytical Chemistry (2016). DOI: 10.1021/acs.analchem.6b02927
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @examples \dontrun{
-#' # Store all the raw data files in one different folder per class,
-#' # and all the class-folders in one folder, which is the experiment
-#' # folder. Then execute
-#'
-#' createdt(path)
-#'
-#' # where path is the experiment folder path.
-#' # The experiment can be now started by:
-#'
-#' ex <- newExp(instrumental = "path/DEMO_inst.csv", 
-#' phenotype = "path/DEMO_pheno.csv", info = "DEMO Experiment")
+#' library(gcspikelite)
+#' data(targets)
+#' 
+#' files <- list.files(system.file('data',package = 'gcspikelite'),full.names = T)
+#' files <- files[sapply(files,grepl,pattern = 'CDF')]
+#' 
+#' instrumental <- createInstrumentalTable(files)
+#' phenotype <- createPhenoTable(files,as.character(targets$Group[order(targets$FileName)]))
+#' 
+#' ex <- newExp(instrumental = instrumental, 
+#' phenotype = phenotype, info = "DEMO Experiment")
 #' }
-#' @seealso \code{\link{createdt}} \code{\link{setDecPar}} \code{\link{setAlPar}}
-#' @export
-#' @importFrom utils read.csv
-
-newExp <- function(instrumental, phenotype=NULL, info=character())
-{
-  #IF es un path:
-  #IF path.dir== 
-  path.dir <- strsplit(instrumental, split="/")[[1]]
-  path.dir <- paste(path.dir[-length(path.dir)], collapse="/")
-  
-  instrumental.dataframe <- suppressWarnings(try(read.csv(instrumental, sep=";"), silent=T))
-  if(class(instrumental.dataframe)=="try-error") stop(attributes(instrumental.dataframe)$condition)
-  delete.rows <- apply(instrumental.dataframe,1,function(x) if(x["sampleID"]==""){TRUE}else{FALSE})
-  if(any(delete.rows)) instrumental.dataframe <- instrumental.dataframe[-which(delete.rows==T),]
-  
-  if(is.null(phenotype)) 
-  {
-    phenotype.dataframe = as.data.frame(NULL)
-    warning("No phenotype data have been attached to this experiment.")
-  }else{
-    phenotype.dataframe <- suppressWarnings(try(read.csv(phenotype, sep=";"), silent=T))
-    if(class(phenotype.dataframe)=="try-error") stop(attributes(phenotype.dataframe)$condition)
-    ## Comprobar almenys que estigui la columna que la relaciona amb la instrumental sampleID
-  }
-  
-  factors.list <- lapply(1:nrow(instrumental.dataframe), function(x){as.data.frame(NULL)})
-  
-  names(factors.list) <- as.vector(instrumental.dataframe$sampleID)
-  ident.list <- as.data.frame(matrix(0,ncol=7, dimnames=list(row=0,col= c("AlignID", "tmean", "Name", "MatchFactor", "CAS", "Formula", "DB.Id"))))
-  uni.stats <- as.data.frame(matrix(0,ncol=3, dimnames=list(row=0,col= c("Id", "FoldChangue", "pvalue"))))
-  multi.stats <- as.data.frame(matrix(0,ncol=3, dimnames=list(row=0,col= c("Id", "CompoundsInvolved", "pvalue"))))
-  
-  al.par <- list()
-  id.par <- list()
-  soft.par <- list()
-  
-  stat.parameters <- new("MSResultsParameters", Alignment=al.par, Identification=id.par)
-  statistics <- new("Statistics", Univariate = uni.stats, Multivariate = multi.stats)
-  MS.Results <- new("Results", Parameters = stat.parameters, Identification = ident.list, Statistics = statistics )
-  MS.Data <- new("Data", FeatureList = list(NULL), FactorList = factors.list, Parameters = list(NULL))
-  MS.MetaData <- new("MetaData", Instrumental = instrumental.dataframe, Phenotype = phenotype.dataframe, DataDirectory=path.dir)
-  
-  # Instrumental Slots validation:
-  col.correct <- c("sampleID","filename","date","time")
-  for(i in 1:length(col.correct))
-    if(length(apply(as.matrix(colnames(MS.MetaData@Instrumental)),1,function(x) grep(col.correct[i],x)))==0) stop("Invalid instrumental file. The file must contain at least the following columns: ", paste(col.correct, collapse=", "))
-  
-  # Phenotype Slots validation:
-  if(nrow(MS.MetaData@Phenotype)!=0){
-    col.correct <- c("sampleID","class")
-    for(i in 1:length(col.correct)) if(length(apply(as.matrix(colnames(MS.MetaData@Phenotype)),1,function(x) grep(col.correct[i],x)))==0) stop("Invalid phenotype file. The file must contain at least the following columns: ", paste(col.correct, collapse=", "))
-  }
-  sample.container <- new("MetaboSet", Info = info, Data = MS.Data, MetaData = MS.MetaData, Results = MS.Results)
-  sample.container
-}
-
-#' @name newExp2
-#' @aliases newExp2
-#' @title New Experiment
-#' @description Sets a new experiment for eRah
-#' @param instrumental A data.frame containing the sample instrumental information.
-#' @param phenotype (optional) A data.frame containing sample phenotype information.
-#' @param info Experiment description
-#' @details See eRah vignette for more details. To open the vignette, execute the following code in R:
-#' vignette("eRahManual", package="erah")
+#' @seealso \code{\link{createInstrumentalTable}} \code{\link{createPhenoTable}} \code{\link{setDecPar}} \code{\link{setAlPar}}
 #' @export
 
-newExp2  <- function(instrumental, phenotype=NULL, info=character()){
+newExp  <- function(instrumental, phenotype=NULL, info=character()){
   
   if (is.null(phenotype)) {
     phenotype = as.data.frame(NULL)

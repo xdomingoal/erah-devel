@@ -175,6 +175,9 @@ createdt <- function(path)
   
 }
 
+#' @title Create Instrumental Table
+#' @description Create table containing instrumental information such as sample IDs and file names.
+#' @param files file paths
 #' @importFrom tibble tibble
 #' @export
 
