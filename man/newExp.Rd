@@ -7,9 +7,9 @@
 newExp(instrumental, phenotype = NULL, info = character())
 }
 \arguments{
-\item{instrumental}{The path where the instrumental .csv file is located.}
+\item{instrumental}{A data.frame containing the sample instrumental information.}
 
-\item{phenotype}{(optional) The path where the phenotypic .csv file is located.}
+\item{phenotype}{(optional) A data.frame containing sample phenotype information.}
 
 \item{info}{Experiment description}
 }
@@ -25,24 +25,24 @@ vignette("eRahManual", package="erah")
 }
 \examples{
 \dontrun{
-# Store all the raw data files in one different folder per class,
-# and all the class-folders in one folder, which is the experiment
-# folder. Then execute
+library(gcspikelite)
+data(targets)
 
-createdt(path)
+files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRUE)
+files <- files[sapply(files,grepl,pattern = 'CDF')]
 
-# where path is the experiment folder path.
-# The experiment can be now started by:
+instrumental <- createInstrumentalTable(files)
+phenotype <- createPhenoTable(files,as.character(targets$Group[order(targets$FileName)]))
 
-ex <- newExp(instrumental = "path/DEMO_inst.csv", 
-phenotype = "path/DEMO_pheno.csv", info = "DEMO Experiment")
+ex <- newExp(instrumental = instrumental, 
+phenotype = phenotype, info = "DEMO Experiment")
 }
 }
 \references{
 [1] Xavier Domingo-Almenara, et al., eRah: A Computational Tool Integrating Spectral Deconvolution and Alignment with Quantification and Identification of Metabolites in GC-MS-Based Metabolomics. Analytical Chemistry (2016). DOI: 10.1021/acs.analchem.6b02927
 }
 \seealso{
-\code{\link{createdt}} \code{\link{setDecPar}} \code{\link{setAlPar}}
+\code{\link{createInstrumentalTable}} \code{\link{createPhenoTable}} \code{\link{setDecPar}} \code{\link{setAlPar}}
 }
 \author{
 Xavier Domingo-Almenara. xavier.domingo@urv.cat

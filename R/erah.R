@@ -86,7 +86,7 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 #' library(gcspikelite)
 #' data(targets)
 #' 
-#' files <- list.files(system.file('data',package = 'gcspikelite'),full.names = T)
+#' files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRUE)
 #' files <- files[sapply(files,grepl,pattern = 'CDF')]
 #' 
 #' instrumental <- createInstrumentalTable(files)
