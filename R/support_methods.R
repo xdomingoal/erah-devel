@@ -15,6 +15,7 @@
 #'      \item{DB.Id.X}{The identification number of the library. Each metbolite in the reference library has a different DB.Id number.}
 #'      \item{CAS.X}{the CAS number of each identified metabolite.}
 #' @seealso \code{\link{alignList}} \code{\link{dataList}}
+#' @importFrom tibble as_tibble
 #' @export
 
 setMethod('idList',signature = 'MetaboSet',
@@ -76,7 +77,7 @@ setMethod('idList',signature = 'MetaboSet',
               #id.list <- id.list[c(1:5,ncol(id.list),6:(ncol(id.list)-1))]
             }
             
-            return(as.data.frame(id.list[order(as.numeric(as.vector(id.list[,"tmean"]))),], row.names=1:nrow(id.list)))
+            return(as_tibble(id.list[order(as.numeric(as.vector(id.list[,"tmean"]))),], row.names=1:nrow(id.list)))
           }
 )
 
@@ -170,7 +171,7 @@ setMethod('alignList',signature = 'MetaboSet',
                 area.list  <- area.list[which(area.list$FoundIn>=object@Results@Parameters@Alignment$min.samples),]
               }		
               
-              return(area.list)
+              return(as_tibble(area.list))
             }
           }
 )
@@ -202,7 +203,7 @@ setMethod('dataList',signature = 'MetaboSet',
             Al.table <- alignList(Experiment, by.area)
             Al.table <- Al.table[, !(names(Al.table) %in% c("FoundIn","tmean","Factor"))]	
             data.table <- merge(ID.table, Al.table, by="AlignID")
-            data.table
+            as_tibble(data.table)
           }
 )
 
