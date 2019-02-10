@@ -98,15 +98,61 @@ the ’eRah Manual’.
 
 ###Creating a new experiment
 
-In the given example, we process only four serum chromatograms, divided into two classes: CONTROL and DISEASE. 
-The experiment has to been organized as follows: all the samples related to each class have to be stored in the same folder (one folder = one class), and all the class-folders in one folder, which is the experiment folder (Figure 1). 
+Prior to deconvolution, alignment and compound identification, we first need to setup a new experiment where the sample meta information is defined, such as file paths and class types.
+**eRah** provides two ways in which this can be achieved.
+The first of which requires only sample file paths and further sample class information is then added manually.
+The second derives sample class information and file paths from the underlying directory strucure of a given experiment directory path. 
+
+#### Using file paths only
+
+Using this input method we first load the file paths of the given data set.
+For our example data set from the **gcspikelite** package we can do this by:
+
+```{r files}
+files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRUE)
+files <- files[sapply(files,grepl,pattern = 'CDF')]
+```
+
+`files` then contains a vector of file paths to the nine .CDF files needed for processing.
+An instrumental information table can then be created from these using the following:
+
+```{r instrumentalTable}
+instrumental <- createInstrumentalTable(files)
+```
+
+Further columns containing additional sample insturmental information can also be added to this table.
+
+Next we define our class or phenotype information for our sample set.
+This can be done using the following, providing a vector of classes names that are assocatied with each file.
+**Ensure that the order of the class affiliations match those of your file paths.** 
+
+```{r phenoTable}
+classes <- as.character(targets$Group[order(targets$FileName)])
+phenotype <- createPhenoTable(files, cls = classes)
+```
+
+Similarly to the `instrumental` table, columns containing additional sample insturmental information can also be added.
+
+A new experiment can then be setup using our `instrumental` and `phenotype` tables by:
+
+```{r newExp}
+ex <- newExp(instrumental = instrumental,
+             phenotype = phenotype, 
+             info = "DEMO Experiment")
+```
+
+Where an experiment name can be defined using the `info` argument.
+
+#### Using file directory structure
+
+Alternatively, the strucure of an experiment directory can be used to define the instrument and class information.
+The experiment directory should be organized as follows: all the samples related to each class have to be stored in the same folder (one folder = one class), and all the class-folders in one folder, which is the experiment folder (Figure 1). 
 eRah also accepts only one class; in that case, only one class-folder has to be created inside an experiment-folder.
 
-Here in the demo, the experiment folder is the ’PCOS’ folder, which contains two class-folders called ’CONTROL’ and ’DISEASE’ (Figure 1). This experiment has two classes. 
-Here, we used the following control samples: CON BASA 567795.mzXML, and CON BASA 574488.mzXML, and the following disease samples: DIA BASE 630974.mzXML and DIA BASE 635799.mzXML. 
-The user can download the same, others, or all the experiment samples.
+Figure 1 below shows the strucutre of an example experiment folder name PCOS. This contains two class-folders called ’CONTROL’ and ’DISEASE’, which each contain the sample files for that class. 
+In this case these are the CON BASA 567795.mzXML, and CON BASA 574488.mzXML files in the CONTROL class.
 
-```{r classFolders,fig.cap='**Figure 1:** Distribution of the raw data files and the class and experiment folders for the given example.',echo=FALSE}
+```{r classFolders,fig.cap='**Figure 1:** An example distribution of the raw data files and the class and experiment folders.',echo=FALSE}
 knitr::include_graphics('figures/classFolders.png')
 ```
 
@@ -132,23 +178,6 @@ If the folder ’PCOS’ contains files (for example, already created .csv files
 
 Next, we load the new experiment to the R workspace using the function newExp, where we introduce the path of the .csv file containing the instrumental data and the phenotypic data, along with a description of the experiment. We name the new experiment as ’ex’. 
 With metaData, phenoData and expClasses we can retrieve the instrumental data and the experiment classes and the processing status:
-
-```{r files}
-files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRUE)
-files <- files[sapply(files,grepl,pattern = 'CDF')]
-```
-
-```{r dataTables}
-instrumental <- createInstrumentalTable(files)
-
-phenotype <- createPhenoTable(files, cls = as.character(targets$Group[order(targets$FileName)]))
-```
-
-```{r newExp}
-ex <- newExp(instrumental = instrumental,
-             phenotype = phenotype, 
-             info = "DEMO Experiment")
-```
 
 ```{r metaData}
 metaData(ex)
