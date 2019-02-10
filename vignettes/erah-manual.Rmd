@@ -122,7 +122,7 @@ instrumental <- createInstrumentalTable(files)
 
 Further columns containing additional sample insturmental information can also be added to this table.
 
-Next we define our class or phenotype information for our sample set.
+Next we can optionally define our class or phenotype information for our sample set.
 This can be done using the following, providing a vector of classes names that are assocatied with each file.
 **Ensure that the order of the class affiliations match those of your file paths.** 
 
@@ -142,6 +142,7 @@ ex <- newExp(instrumental = instrumental,
 ```
 
 Where an experiment name can be defined using the `info` argument.
+This creates a new `MetaboSet` object used for storing the sample metadata and processing results.
 
 #### Using file directory structure
 
@@ -171,12 +172,26 @@ createdt('experiment_path/PCOS/')
 
 Where `experiment_path` is the path where the experiment-folder is, and PCOS is the experiment-folder.
 Two things have to be considered at this step: .csv files are different when created by American and European computers, so errors may raise due to that fact. 
-Also, the folder contain-ing the samples (in this case, the folder ’PCOS’, must contain only folders. 
+Also, the folder containing the samples (in this case, the folder ’PCOS’, must contain only folders. 
 If the folder ’PCOS’ contains files (for example, already created .csv files), eRah will prompt an error.
 
 * Note that if you have an specific question about a function, you can always access to the help of the function with a question mark before the name of the function: `?createdt`
 
-Next, we load the new experiment to the R workspace using the function newExp, where we introduce the path of the .csv file containing the instrumental data and the phenotypic data, along with a description of the experiment. We name the new experiment as ’ex’. 
+The new experiment can then be created by loading the instrumental and phenotypic tables into the workspace and supplying these to `newExp()` as below:
+
+```{r experimentSetup,eval=FALSE}
+instrumental <- read.csv('experiment_path/PCOS/PCOS_inst.csv')
+phenotype <- read.csv('experiment_path/PCOS/PCOS_pheno.csv')
+
+ex <- newExp(instrumental = instrumental,
+             phenotype = phenotype,
+             info = 'PCOS Experiment')
+```
+
+This creates a new `MetaboSet` object used for storing the sample metadata and processing results.
+
+#### Accessing sample metadata
+
 With metaData, phenoData and expClasses we can retrieve the instrumental data and the experiment classes and the processing status:
 
 ```{r metaData}
@@ -188,7 +203,7 @@ phenoData(ex)
 ```
 
 ```{r expClasses}
-# expClasses(ex)
+expClasses(ex)
 ```
 
 ###Compound deconvolution
