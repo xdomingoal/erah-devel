@@ -1,5 +1,6 @@
 ---
 title: "eRah Manual"
+subtitle: "`r packageVersion('erah')`"
 author: "Xavier Domingo–Almenara"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
@@ -36,10 +37,13 @@ methods.
 
 **eRah** can be installed from any **CRAN** repository, by:
 
-```{r,eval=FALSE}
-# Install
+```{r install,eval=FALSE}
 install.packages("erah")
-# Load
+```
+
+Then loaded using:
+
+```{r load}
 library(erah)
 ```
 
@@ -64,10 +68,16 @@ A mean spectra from each group of aligned compounds is compared with a reference
 ##GC–MS Data Processing with eRah: a tutorial
 
 In this section we show the processing of serum samples analyzed through GC–MS, and freely available from MetaboLights (accession number: MTBLS321). 
+
+```{r loadData}
+library(gcspikelite)
+data("targets")
+```
+
 This tutorial shows how to deconvolve, align and identify the compounds contained in these four samples.
 All the listed commands (script) to reproduce the following demo can by found by executing:
 
-```{r,eval=FALSE}
+```{r help,eval=FALSE}
 library(erah)
 help(package = "erah")
 ```
@@ -98,7 +108,7 @@ The same is applicable to the phenotypic table, in this case the two necessary c
 Please note that capital letters of the column names must be respected and that ’sampleID’ is the column that relates the instrumental and phenotypic tables. 
 These files can also be created automatically, execute the following command:
 
-```{r,eval=FALSE}
+```{r createdt,eval=FALSE}
 createdt('experiment_path/PCOS/')
 ```
 
@@ -112,16 +122,33 @@ If the folder ’PCOS’ contains files (for example, already created .csv files
 Next, we load the new experiment to the R workspace using the function newExp, where we introduce the path of the .csv file containing the instrumental data and the phenotypic data, along with a description of the experiment. We name the new experiment as ’ex’. 
 With metaData, phenoData and expClasses we can retrieve the instrumental data and the experiment classes and the processing status:
 
-```{r,eval=FALSE}
-ex <- newExp(instrumental = "PCOS/PCOS_inst.csv",
-             phenotype = "PCOS/PCOS_pheno.csv", 
-             pheno = "PCOS Experiment")
+```{r files}
+files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRUE)
+files <- files[sapply(files,grepl,pattern = 'CDF')]
+```
 
+```{r dataTables}
+instrumental <- createInstrumentalTable(files)
+
+phenotype <- createPhenoTable(files, cls = as.character(targets$Group[order(targets$FileName)]))
+```
+
+```{r newExp}
+ex <- newExp(instrumental = instrumental,
+             phenotype = phenotype, 
+             info = "DEMO Experiment")
+```
+
+```{r metaData}
 metaData(ex)
+```
 
+```{r phenoData}
 phenoData(ex)
+```
 
-expClasses(ex)
+```{r expClasses}
+# expClasses(ex)
 ```
 
 ###Compound deconvolution
@@ -130,7 +157,7 @@ The compounds in data are deconvolved with deconvolveComp function. This functio
 `Deconvolution parameters` object, that can be created with `setDecPar` function, containing the
 parameters of the algorithm as shown as follows:
 
-```{r,eval=FALSE}
+```{r deconvolve}
 ex.dec.par <- setDecPar(min.peak.width = 1,avoid.processing.mz = c(35:69,73:75,147:149))
 
 ex <- deconvolveComp(ex, ex.dec.par )
@@ -224,34 +251,22 @@ From the idList(ex), we see that urea is appearing at minute 8.13 with an AlignI
 * Execute `?alignList`, to access to the help of alignList function with a detailed
 explanation of each column in an align list.
 
-```{r,eval=FALSE}
+```{r plotProfile,fig.cap='**Figure 2:** Image from `plotProfile(ex,41)`.',eval=FALSE}
 plotProfile(ex, 41)
-```
-
-```{r fig.cap='**Figure 2:** Image from `plotProfile(ex,41)`.',echo=FALSE}
-knitr::include_graphics('figures/profileComparison.png')
 ```
 
 This displays Figure 2. Its spectra can be also be plotted and compared with the reference spectra using the function plotSprectra, which displays Figure 3:
 
-```{r,eval=FALSE}
+```{r plotSpectra,fig.cap='**Figure 3:** Image from `plotSpectra(ex,41)`.',eval=FALSE}
 plotSpectra(ex, 41)
-```
-
-```{r fig.cap='**Figure 3:** Image from `plotSpectra(ex,41)`.',echo=FALSE}
-knitr::include_graphics('figures/ureaMatchFactor.png')
 ```
 
 The plotSpectra function has a lot of possibilities for plotting, to know more access to its particular help by executing `?plotSpectra`.
 For example, eRah allows a rapid assessment for visualizing the second hit returned in the case of compound align ID #41 (Urea).
 To do so:
 
-```{r,eval=FALSE}
+```{r matchFactor,fig.cap='**Figure 4:** Image from `plotSpectra(ex,41, 2, draw.color=’orange3’)`.',eval=FALSE}
 plotSpectra(ex, 41, 2, draw.color = "orange")
-```
-
-```{r fig.cap='**Figure 4:** Image from `plotSpectra(ex,41, 2, draw.color=’orange3’)`.',echo=FALSE}
-knitr::include_graphics('figures/homocitrullineMatchFactor.png')
 ```
 
 This plots Figure 4, which is a comparison of the empirical spectrum found, with the second most similar metabolite from the database (in this case Homocitrulline).
