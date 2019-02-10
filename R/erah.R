@@ -203,7 +203,7 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
               stopCluster(clus)
             }
             
-            names(Experiment@Data@FactorList) <- samples.to.process
+            names(Experiment@Data@FactorList) <- metaData(Experiment)$sampleID
             Experiment <- scansPerSecond(Experiment)
             cat("\n Compounds deconvolved \n")
             Experiment	
