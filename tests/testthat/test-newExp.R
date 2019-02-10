@@ -19,6 +19,7 @@ ex.al.par <- setAlPar(min.spectra.cor = 0.90, max.time.dist = 3, mz.range = 70:6
 deconvolvedEx <- deconvolveComp(ex,ex.dec.par)
 alignedEx <- alignComp(deconvolvedEx,alParameters = ex.al.par)
 recoveredEx <-   recMissComp(alignedEx,min.samples = 1)
+identifiedEx <- identifyComp(recoveredEx)
 
 test_that('createInstrumentalTable works',{
   expect_true(identical(class(instrumental),c('tbl_df','tbl','data.frame')))
@@ -54,4 +55,8 @@ test_that('alignComp works',{
 
 test_that('recMissComp works',{
   expect_true(class(recoveredEx) == 'MetaboSet')
+})
+
+test_that('identifyComp works',{
+  expect_true(class(identifiedEx) == 'MetaboSet')
 })
