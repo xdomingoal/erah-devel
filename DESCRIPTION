@@ -15,7 +15,8 @@ Imports: osd,
     XML, 
     methods,
     parallel,
-    tibble
+    tibble,
+    progress
 Suggests: 
     mzR,
     knitr,
