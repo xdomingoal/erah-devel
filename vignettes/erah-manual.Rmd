@@ -66,7 +66,7 @@ A mean spectra from each group of aligned compounds is compared with a reference
 
 ##GC–MS Data Processing with eRah: a tutorial
 
-In this section we show the processing of example samples from a spike-in expriment designed for interrogating data processing methods from the **[gcspikelite](http://bioconductor.org/packages/release/data/experiment/html/gcspikelite.html)** data package [@robinson2018] that were analyzed using GC–MS. 
+In this section we show the processing of example samples from a spike-in experiment designed for interrogating data processing methods from the **[gcspikelite](http://bioconductor.org/packages/release/data/experiment/html/gcspikelite.html)** data package [@robinson2018] that were analyzed using GC–MS. 
 This sample set consists of nine samples with three triplicate classes.
 
 The **gcspikelite** package can be installed from bioconductor using the **BiocManager** package:
@@ -99,7 +99,7 @@ the ’eRah Manual’.
 Prior to deconvolution, alignment and compound identification, we first need to setup a new experiment where the sample meta information is defined, such as file paths and class types.
 **eRah** provides two ways in which this can be achieved.
 The first of which requires only sample file paths and further sample class information is then added manually.
-The second derives sample class information and file paths from the underlying directory strucure of a given experiment directory path. 
+The second derives sample class information and file paths from the underlying directory structure of a given experiment directory path. 
 
 #### Using file paths only
 
@@ -118,10 +118,10 @@ An instrumental information table can then be created from these using the follo
 instrumental <- createInstrumentalTable(files)
 ```
 
-Further columns containing additional sample insturmental information can also be added to this table.
+Further columns containing additional sample instrumental information can also be added to this table.
 
 Next we can optionally define our class or phenotype information for our sample set.
-This can be done using the following, providing a vector of classes names that are assocatied with each file.
+This can be done using the following, providing a vector of classes names that are associated with each file.
 **Ensure that the order of the class affiliations match those of your file paths.** 
 
 ```{r phenoTable}
@@ -129,7 +129,7 @@ classes <- as.character(targets$Group[order(targets$FileName)])
 phenotype <- createPhenoTable(files, cls = classes)
 ```
 
-Similarly to the `instrumental` table, columns containing additional sample insturmental information can also be added.
+Similarly to the `instrumental` table, columns containing additional sample instrumental information can also be added.
 
 A new experiment can then be setup using our `instrumental` and `phenotype` tables by:
 
@@ -144,11 +144,11 @@ This creates a new `MetaboSet` object used for storing the sample metadata and p
 
 #### Using file directory structure
 
-Alternatively, the strucure of an experiment directory can be used to define the instrument and class information.
+Alternatively, the structure of an experiment directory can be used to define the instrument and class information.
 The experiment directory should be organized as follows: all the samples related to each class have to be stored in the same folder (one folder = one class), and all the class-folders in one folder, which is the experiment folder (Figure 1). 
 eRah also accepts only one class; in that case, only one class-folder has to be created inside an experiment-folder.
 
-Figure 1 below shows the strucutre of an example experiment folder name PCOS. This contains two class-folders called ’CONTROL’ and ’DISEASE’, which each contain the sample files for that class. 
+Figure 1 below shows the structure of an example experiment folder name PCOS. This contains two class-folders called ’CONTROL’ and ’DISEASE’, which each contain the sample files for that class. 
 In this case these are the CON BASA 567795.mzXML, and CON BASA 574488.mzXML files in the CONTROL class.
 
 ```{r classFolders,fig.cap='**Figure 1:** An example distribution of the raw data files and the class and experiment folders.',echo=FALSE}
@@ -220,7 +220,7 @@ The lower this parameter is set to, the more sensibility to deconvolve co-eluted
 If is set too low the algorithm will generate too false positives compounds, which this usually means that one single compound will be detected twice.
 If the parameter value is increased, the algorithm may fail in separate co-eluted compounds, leading to generate less false positives but loosing capacity of detection.
 
-* **Masses to exclude:** masses m/z 73, 74, 75, 147, 148, 149 are recomended to be excluded in the processing and subsequent steps, since these are ubiquitous mass fragments typically generated from compounds carrying a trimethylsilyl moiety.
+* **Masses to exclude:** masses m/z 73, 74, 75, 147, 148, 149 are recommended to be excluded in the processing and subsequent steps, since these are ubiquitous mass fragments typically generated from compounds carrying a trimethylsilyl moiety.
 If the samples have been derivatized, including these masses will only hamper the deconvolution process; this is because an important number of compounds will share these masses leading to a poorer selectivity between compounds.
 Also, in complex GC–MS-based metabolomics samples, we also recommend excluding all masses from 1 to 69 Da, for the same reasons. Those masses are generated from compounds with groups that are very common for a large number of compounds in metabolomics, leading to a poorer selectivity between compounds. 
 Although those masses are also the most intense m/z in the compounds spectra, eRah will automatically set the used library’s masses to zero, so it does not affect spectral matching and identification.
@@ -257,22 +257,22 @@ load("testPCOS.rda")
 
 ###Alignment
 
-Alignment is executed with `alignComp()`. The parameters aldo have to be set prior to this.
+Alignment is executed with `alignComp()`. The parameters also have to be set prior to this.
 
 ```{r alignmentParameters}
 ex.al.par <- setAlPar(min.spectra.cor = 0.90, max.time.dist = 3, mz.range = 70:600)
 ```
 
-The parameters are min.spectra.cor, max.time.dist and mz.range. 
-The min.spectra.cor (Minimum spectral correlation) value - from 0 (non similar) to 1 (very similar) - sets how similar two or more compounds have be to be considered for alignment between them. 
+The parameters are `min.spectra.cor`, `max.time.dist` and `mz.range`. 
+The `min.spectra.cor` (Minimum spectral correlation) value - from 0 (non similar) to 1 (very similar) - sets how similar two or more compounds have be to be considered for alignment between them. 
 We can be restrictive with this parameter, as if one compound is not detected in some samples, we can retrieve it later
 by the ’missing compound recovery’ step. 
-Also, we impose a maximum disalignment distance of 3 seconds (max.time.dist). 
+Also, we impose a maximum disalignment distance of 3 seconds (`max.time.dist`). 
 This value (in seconds) sets how far two or more compounds can be considered for alignment between them. 
-Mz.range is the range of masses that is considered when comparing spectra. 
+`mz.range` is the range of masses that is considered when comparing spectra. 
 We set that only the masses from 70 to 600 are taken into account, for the reasons commented above in the ’Masses to exclude’ point.
 
-Alingment can be performed by:
+Alignment can be performed by:
 
 ```{r alignment}
 ex <- alignComp(ex, alParameters = ex.al.par)
@@ -282,16 +282,16 @@ ex
 
 * **Aligning large ammout of samples:** For experiments containing more than 100 (Windows) or 1000 (Mac or Linux) samples, alignment could lead to errors or show a poor run-time performance. 
 In those cases alignment can be conducted by block segmentation. 
-For more details access to the alignComp help through `?alignComp`
+For more details about `alignComp()` access help using `?alignComp`
 
-We can decide to execute the missing compound recovery step (and retrieve the compounds that have missing values - have not been found - in certain samples) or also identify the compounds without applying the MissRecComp function. 
+We can decide to execute the missing compound recovery step (and retrieve the compounds that have missing values - have not been found - in certain samples) or also identify the compounds without applying `recMissComp()`. 
 In other words, the missing compound recovery step is optional.
 Here, we apply the missing recovery step to later identify the compounds.
 
 ###Missing compound recovery
 
 The missing compound recovery step only requires to indicate the number of minimum values for which a compound wants to be ’re-searched’ in the samples. 
-If a compound appears in at least the same or more samples than the minimum samples value (min.samples), then, this compound is searched in the rest of the samples where its concentration has not been registered. 
+If a compound appears in at least the same or more samples than the minimum samples value (`min.samples`), then, this compound is searched in the rest of the samples where its concentration has not been registered. 
 To do so:
 
 ```{r compoundRecovery}
@@ -303,9 +303,8 @@ ex
 * **Missing compound recovery:** The min.samples parameter sets the number of samples from the total number of samples.
 Also, this parameter should be large, in alignment with the dimension of the number of samples in the experiment. 
 If set too low, a higher number of false positives are expected. 
-A recommended strategy is to first evaluate the average number of samples where the compounds appear, by execut-
-ing alignList or idList - after being identified - functions (explained in the following sections). 
-**Warning:** if we have already identified the compounds, we always have to re-identify the compounds after executing the missing compound recovery step, by identifyComp, as explained in the following sections.
+A recommended strategy is to first evaluate the average number of samples where the compounds appear, by executeing `alignList ()` or `idList()` - after being identified - functions (explained in the following sections). 
+**Warning:** if we have already identified the compounds, we always have to re-identify the compounds after executing the missing compound recovery step, by`identifyComp()`, as explained in the following sections.
 
 ###Identification
 
@@ -430,4 +429,4 @@ Here, we show a figure (Figure 5) with all the available functions.
 knitr::include_graphics('figures/functionSummary.png')
 ```
 
-##Citations
+##References
