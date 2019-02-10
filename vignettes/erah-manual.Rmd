@@ -326,19 +326,35 @@ head(id.list[,1:4], n = 8)
 
 ###Results and visualization
 
-Now, we can access to the identification list, alignment list and final list by idList, alignList and dataList respectively. 
-From the idList(ex), we see that urea is appearing at minute 8.13 with an AlignID number #41. Let us have a look to its profile with the function plotProfile:
+The identification list can be obtained using:
+
+```{r idList}
+idList(ex)
+```
+
+The alignment list can be returned using:
+```{r alignList}
+alignList(ex)
+```
+
+And the final data list can be returned using:
+
+```{r dataList}
+dataList(ex)
+```
+
+From the table returned by `idList(ex)`, we see that gallic acid is appearing at minute 7.81 with an AlignID number #84. Let us have a look to its profile with the function plotProfile:
 
 * Execute `?alignList`, to access to the help of alignList function with a detailed
 explanation of each column in an align list.
 
-```{r plotProfile,fig.cap='**Figure 2:** Image from `plotProfile(ex,41)`.',eval=FALSE}
+```{r plotProfile,fig.cap='**Figure 2:** Image from `plotProfile(ex,84)`.'}
 plotProfile(ex, 84)
 ```
 
 This displays Figure 2. Its spectra can be also be plotted and compared with the reference spectra using the function plotSprectra, which displays Figure 3:
 
-```{r plotSpectra,fig.cap='**Figure 3:** Image from `plotSpectra(ex,41)`.',eval=FALSE}
+```{r plotSpectra,fig.cap='**Figure 3:** Image from `plotSpectra(ex,84)`.'}
 plotSpectra(ex, 84)
 ```
 
@@ -346,12 +362,12 @@ The plotSpectra function has a lot of possibilities for plotting, to know more a
 For example, eRah allows a rapid assessment for visualizing the second hit returned in the case of compound align ID #41 (Urea).
 To do so:
 
-```{r matchFactor,fig.cap='**Figure 4:** Image from `plotSpectra(ex,41, 2, draw.color=’orange3’)`.',eval=FALSE}
+```{r matchFactor,fig.cap='**Figure 4:** Image from `plotSpectra(ex,84, 2, draw.color=’orange3’)`.'}
 plotSpectra(ex, 84, 2, draw.color = "orange")
 ```
 
-This plots Figure 4, which is a comparison of the empirical spectrum found, with the second most similar metabolite from the database (in this case Homocitrulline).
-From the figure, it is clear that eRah returned the first hit correctly, as this spectra is more similar to Urea than to Homocitrulline.
+This plots Figure 4, which is a comparison of the empirical spectrum found, with the second most similar metabolite from the database (in this case pyridoxamine).
+From the figure, it is clear that eRah returned the first hit correctly, as this spectra is more similar to gallic acid than to pyridoxamine.
 
 ##Importing and customizing mass spectral libraries
 
