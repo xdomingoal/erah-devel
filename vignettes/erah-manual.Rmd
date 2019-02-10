@@ -243,6 +243,8 @@ The samples can then be deconvolved using:
 
 ```{r deconvolve}
 ex <- deconvolveComp(ex, ex.dec.par,parallel = ppars)
+
+ex
 ```
 
 Data can be saved and loaded at any stage of the process by:
@@ -255,12 +257,10 @@ load("testPCOS.rda")
 
 ###Alignment
 
-Alignment is executed with alignComp function. The parameters have to be also previously set.
+Alignment is executed with `alignComp()`. The parameters aldo have to be set prior to this.
 
-```{r,eval=F}
+```{r alignmentParameters}
 ex.al.par <- setAlPar(min.spectra.cor = 0.90, max.time.dist = 3, mz.range = 70:600)
-
-ex <- alignComp(ex, alParameters = ex.al.par)
 ```
 
 The parameters are min.spectra.cor, max.time.dist and mz.range. 
@@ -274,6 +274,12 @@ We set that only the masses from 70 to 600 are taken into account, for the reaso
 We can decide to execute the missing compound recovery step (and retrieve the compounds that have missing values - have not been found - in certain samples) or also identify the compounds without applying the MissRecComp function. 
 In other words, the missing compound recovery step is optional.
 Here, we apply the missing recovery step to later identify the compounds.
+
+```{r alignment}
+ex <- alignComp(ex, alParameters = ex.al.par)
+
+ex
+```
 
 * **Aligning large ammout of samples:** For experiments containing more than 100 (Windows) or 1000 (Mac or Linux) samples, alignment could lead to errors or show a poor run-time performance. 
 In those cases alignment can be conducted by block segmentation. 
