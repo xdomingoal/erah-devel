@@ -1,6 +1,6 @@
 ---
 title: "eRah Manual"
-subtitle: "`r packageVersion('erah')`"
+subtitle: "`r paste0('v',packageVersion('erah'))`"
 author: "Xavier Domingo–Almenara"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
@@ -48,7 +48,8 @@ library(erah)
 ```
 
 ####Support
-Any enquiries, bug reports or suggestions are welcome and they should be addressed to xavier.domingo@urv.cat.
+
+Any enquiries, bug reports or suggestions are welcome and they should be addressed to xdomingo@scripps.edu.
 
 ##Introduction
 
@@ -67,14 +68,24 @@ A mean spectra from each group of aligned compounds is compared with a reference
 
 ##GC–MS Data Processing with eRah: a tutorial
 
-In this section we show the processing of serum samples analyzed through GC–MS, and freely available from MetaboLights (accession number: MTBLS321). 
+In this section we show the processing of example samples from a spike-in expriment designed for interrogating data processing methods from the **[gcspikelite](http://bioconductor.org/packages/release/data/experiment/html/gcspikelite.html)** data package [@robinson2018] that were analyzed using GC–MS. 
+This sample set consists of nine samples with three triplicate classes.
+
+The **gcspikelite** package can be installed from bioconductor using the **BiocManager** package:
+
+```{r installgcspikelite,eval=FALSE}
+install.packages('BiocManager')
+BiocManager::install('gspikelite')
+```
+
+The package and necessary data can be loaded using:
 
 ```{r loadData}
 library(gcspikelite)
 data("targets")
 ```
 
-This tutorial shows how to deconvolve, align and identify the compounds contained in these four samples.
+This tutorial shows how to deconvolve, align and identify the compounds contained in these samples.
 All the listed commands (script) to reproduce the following demo can by found by executing:
 
 ```{r help,eval=FALSE}
@@ -157,10 +168,15 @@ The compounds in data are deconvolved with deconvolveComp function. This functio
 `Deconvolution parameters` object, that can be created with `setDecPar` function, containing the
 parameters of the algorithm as shown as follows:
 
+```{r parallel}
+ppars <- list(nCores = 2,
+              clusterType = 'PSOCK')
+```
+
 ```{r deconvolve}
 ex.dec.par <- setDecPar(min.peak.width = 1,avoid.processing.mz = c(35:69,73:75,147:149))
 
-ex <- deconvolveComp(ex, ex.dec.par )
+ex <- deconvolveComp(ex, ex.dec.par,parallel = ppars)
 ```
 
 The peak width value (in seconds) is a critical parameter that conditions the efficiency of eRah, and also the masses to exclude have an important role in GC–MS-based metabolomics experiments.
