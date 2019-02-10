@@ -221,7 +221,7 @@ setMethod('expClasses',signature = 'MetaboSet',
             pn <- object@MetaData@Phenotype
             samples.name <- names(object@Data@FactorList)		
             indx <- apply(as.matrix(samples.name),1,function(x) which(pn[,"sampleID"]==x))		
-            class.names <- as.vector(pn[indx,"class"])
+            class.names <- unlist(pn[indx,"class"],use.names = F)
             samples.class.type <- levels(as.factor(class.names))
             empty.samples <- which(lapply(object@Data@FactorList,nrow)==0)
             
