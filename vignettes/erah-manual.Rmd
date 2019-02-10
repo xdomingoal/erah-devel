@@ -271,9 +271,8 @@ Also, we impose a maximum disalignment distance of 3 seconds (max.time.dist).
 This value (in seconds) sets how far two or more compounds can be considered for alignment between them. 
 Mz.range is the range of masses that is considered when comparing spectra. 
 We set that only the masses from 70 to 600 are taken into account, for the reasons commented above in the ’Masses to exclude’ point.
-We can decide to execute the missing compound recovery step (and retrieve the compounds that have missing values - have not been found - in certain samples) or also identify the compounds without applying the MissRecComp function. 
-In other words, the missing compound recovery step is optional.
-Here, we apply the missing recovery step to later identify the compounds.
+
+Alingment can be performed by:
 
 ```{r alignment}
 ex <- alignComp(ex, alParameters = ex.al.par)
@@ -285,14 +284,20 @@ ex
 In those cases alignment can be conducted by block segmentation. 
 For more details access to the alignComp help through `?alignComp`
 
+We can decide to execute the missing compound recovery step (and retrieve the compounds that have missing values - have not been found - in certain samples) or also identify the compounds without applying the MissRecComp function. 
+In other words, the missing compound recovery step is optional.
+Here, we apply the missing recovery step to later identify the compounds.
+
 ###Missing compound recovery
 
 The missing compound recovery step only requires to indicate the number of minimum values for which a compound wants to be ’re-searched’ in the samples. 
 If a compound appears in at least the same or more samples than the minimum samples value (min.samples), then, this compound is searched in the rest of the samples where its concentration has not been registered. 
 To do so:
 
-```{r,eval=FALSE}
-ex <- recMissComp(ex, min.samples = 3)
+```{r compoundRecovery}
+ex <- recMissComp(ex, min.samples = 6)
+
+ex
 ```
 
 * **Missing compound recovery:** The min.samples parameter sets the number of samples from the total number of samples.
@@ -312,7 +317,7 @@ GMD importation is described in following sections.
 
 Identification can be executed by identifyComp, and accessed by idList as follows:
 
-```{r,eval=FALSE}
+```{r identifyComp}
 ex <- identifyComp(ex)
 
 id.list <- idList(ex)
@@ -328,13 +333,13 @@ From the idList(ex), we see that urea is appearing at minute 8.13 with an AlignI
 explanation of each column in an align list.
 
 ```{r plotProfile,fig.cap='**Figure 2:** Image from `plotProfile(ex,41)`.',eval=FALSE}
-plotProfile(ex, 41)
+plotProfile(ex, 84)
 ```
 
 This displays Figure 2. Its spectra can be also be plotted and compared with the reference spectra using the function plotSprectra, which displays Figure 3:
 
 ```{r plotSpectra,fig.cap='**Figure 3:** Image from `plotSpectra(ex,41)`.',eval=FALSE}
-plotSpectra(ex, 41)
+plotSpectra(ex, 84)
 ```
 
 The plotSpectra function has a lot of possibilities for plotting, to know more access to its particular help by executing `?plotSpectra`.
@@ -342,7 +347,7 @@ For example, eRah allows a rapid assessment for visualizing the second hit retur
 To do so:
 
 ```{r matchFactor,fig.cap='**Figure 4:** Image from `plotSpectra(ex,41, 2, draw.color=’orange3’)`.',eval=FALSE}
-plotSpectra(ex, 41, 2, draw.color = "orange")
+plotSpectra(ex, 84, 2, draw.color = "orange")
 ```
 
 This plots Figure 4, which is a comparison of the empirical spectrum found, with the second most similar metabolite from the database (in this case Homocitrulline).
