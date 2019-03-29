@@ -73,7 +73,7 @@ The **gcspikelite** package can be installed from bioconductor using the **BiocM
 
 ```{r installgcspikelite,eval=FALSE}
 install.packages('BiocManager')
-BiocManager::install('gspikelite')
+BiocManager::install('gcspikelite')
 ```
 
 The package and necessary data can be loaded using:
