@@ -136,7 +136,7 @@ setMethod('plotProfile',signature = 'MetaboSet',
             N.groups <- max(unique(unlist(alignId)))	
             N.samples <- length(Experiment@Data@FactorList)
             
-            samples.name <- names(Experiment@Data@FactorList)		
+            samples.name <- metaData(Experiment)$sampleID		
             for(i in 1:N.samples) samples.name[i] <- strsplit(as.character(samples.name[i]), split="\\.")[[1]][1]
             
             profile.list <- lapply(Experiment@Data@FactorList,function(x) {
@@ -189,9 +189,9 @@ setMethod('plotProfile',signature = 'MetaboSet',
               indx <- apply(as.matrix(samples.name),1,function(x) which(pn[,"sampleID"]==x))		
               class.names <- pn[indx,"class"]
               
-              samples.class.type <- levels(pn$class)
+              samples.class.type <- levels(factor(pn$class))
               
-              matplot(profile.time,profile.int, type="l", lty=1, col=class.names, main=paste("Profile Comparison \n",compound.name), xlab="time (min)", ylab="Intensity", xlim=xlim)
+              matplot(profile.time,profile.int, type="l", lty=1, col=1:length(samples.class.type), main=paste("Profile Comparison \n",compound.name), xlab="time (min)", ylab="Intensity", xlim=xlim)
               par(font=2)
               legend("topright",legend=samples.class.type, pch=19, col=1:length(samples.class.type), title="Classes")
               par(font=1)

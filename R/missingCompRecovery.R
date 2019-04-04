@@ -41,11 +41,13 @@ setMethod('recMissComp',signature = 'MetaboSet',
             total.iterations <- 0
             for(sample in 1:length(sample.filenames)) total.iterations <- total.iterations + length(data.list[model.indexes,sample])
             
-            cat("\n")
-            pb <- txtProgressBar(min=1,max=total.iterations, width=50, style=3)
+            pb <- progress_bar$new(
+              format = "  recovering [:bar] :percent eta: :eta",
+              total = length(sample.filenames), clear = FALSE)
+            pb$tick(0)
+            
             k.it <- 0
-            for(sample in 1:length(sample.filenames))
-            {
+            for(sample in 1:length(sample.filenames)){
               ## Error on sample 23
               
               re.analyze.in <- which(as.numeric(data.list[model.indexes,sample])==0)
@@ -115,11 +117,10 @@ setMethod('recMissComp',signature = 'MetaboSet',
                   Experiment@Data@FactorList[colnames(data.list)[sample]][[1]]$"AlignID" <- as.numeric(as.vector(Experiment@Data@FactorList[colnames(data.list)[sample]][[1]]$"AlignID"))
                   colnames(Experiment@Data@FactorList[colnames(data.list)[sample]][[1]]) <- c("ID", "RT", "Area", "Peak Height", "Spectra", "Profile", "AlignID")						
                   
-                  setTxtProgressBar(pb, k.it)
                 }
               }	
+              pb$tick()
             }
-            setTxtProgressBar(pb, total.iterations)
             cat("\n Updating alignment table... \n")
             Experiment@Results@Alignment <- create.factorlist.table(Experiment)
             cat("Model fitted! \n")

@@ -1,5 +1,6 @@
 ---
 title: "eRah Manual"
+subtitle: "`r paste0('v',packageVersion('erah'))`"
 author: "Xavier Domingo–Almenara"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
@@ -16,8 +17,6 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
   fig.align = 'center'
 )
 ```
@@ -36,15 +35,19 @@ methods.
 
 **eRah** can be installed from any **CRAN** repository, by:
 
-```{r,eval=FALSE}
-# Install
+```{r install,eval=FALSE}
 install.packages("erah")
-# Load
+```
+
+Then loaded using:
+
+```{r load}
 library(erah)
 ```
 
 ####Support
-Any enquiries, bug reports or suggestions are welcome and they should be addressed to xavier.domingo@urv.cat.
+
+Any enquiries, bug reports or suggestions are welcome and they should be addressed to xdomingo@scripps.edu.
 
 ##Introduction
 
@@ -63,11 +66,27 @@ A mean spectra from each group of aligned compounds is compared with a reference
 
 ##GC–MS Data Processing with eRah: a tutorial
 
-In this section we show the processing of serum samples analyzed through GC–MS, and freely available from MetaboLights (accession number: MTBLS321). 
-This tutorial shows how to deconvolve, align and identify the compounds contained in these four samples.
+In this section we show the processing of example samples from a spike-in experiment designed for interrogating data processing methods from the **[gcspikelite](http://bioconductor.org/packages/release/data/experiment/html/gcspikelite.html)** data package [@robinson2018] that were analyzed using GC–MS. 
+This sample set consists of nine samples with three triplicate classes.
+
+The **gcspikelite** package can be installed from bioconductor using the **BiocManager** package:
+
+```{r installgcspikelite,eval=FALSE}
+install.packages('BiocManager')
+BiocManager::install('gcspikelite')
+```
+
+The package and necessary data can be loaded using:
+
+```{r loadData}
+library(gcspikelite)
+data("targets")
+```
+
+This tutorial shows how to deconvolve, align and identify the compounds contained in these samples.
 All the listed commands (script) to reproduce the following demo can by found by executing:
 
-```{r,eval=FALSE}
+```{r help,eval=FALSE}
 library(erah)
 help(package = "erah")
 ```
@@ -77,15 +96,62 @@ the ’eRah Manual’.
 
 ###Creating a new experiment
 
-In the given example, we process only four serum chromatograms, divided into two classes: CONTROL and DISEASE. 
-The experiment has to been organized as follows: all the samples related to each class have to be stored in the same folder (one folder = one class), and all the class-folders in one folder, which is the experiment folder (Figure 1). 
+Prior to deconvolution, alignment and compound identification, we first need to setup a new experiment where the sample meta information is defined, such as file paths and class types.
+**eRah** provides two ways in which this can be achieved.
+The first of which requires only sample file paths and further sample class information is then added manually.
+The second derives sample class information and file paths from the underlying directory structure of a given experiment directory path. 
+
+#### Using file paths only
+
+Using this input method we first load the file paths of the given data set.
+For our example data set from the **gcspikelite** package we can do this by:
+
+```{r files}
+files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRUE)
+files <- files[sapply(files,grepl,pattern = 'CDF')]
+```
+
+`files` then contains a vector of file paths to the nine .CDF files needed for processing.
+An instrumental information table can then be created from these using the following:
+
+```{r instrumentalTable}
+instrumental <- createInstrumentalTable(files)
+```
+
+Further columns containing additional sample instrumental information can also be added to this table.
+
+Next we can optionally define our class or phenotype information for our sample set.
+This can be done using the following, providing a vector of classes names that are associated with each file.
+**Ensure that the order of the class affiliations match those of your file paths.** 
+
+```{r phenoTable}
+classes <- as.character(targets$Group[order(targets$FileName)])
+phenotype <- createPhenoTable(files, cls = classes)
+```
+
+Similarly to the `instrumental` table, columns containing additional sample instrumental information can also be added.
+
+A new experiment can then be setup using our `instrumental` and `phenotype` tables by:
+
+```{r newExp}
+ex <- newExp(instrumental = instrumental,
+             phenotype = phenotype, 
+             info = "DEMO Experiment")
+```
+
+Where an experiment name can be defined using the `info` argument.
+This creates a new `MetaboSet` object used for storing the sample metadata and processing results.
+
+#### Using file directory structure
+
+Alternatively, the structure of an experiment directory can be used to define the instrument and class information.
+The experiment directory should be organized as follows: all the samples related to each class have to be stored in the same folder (one folder = one class), and all the class-folders in one folder, which is the experiment folder (Figure 1). 
 eRah also accepts only one class; in that case, only one class-folder has to be created inside an experiment-folder.
 
-Here in the demo, the experiment folder is the ’PCOS’ folder, which contains two class-folders called ’CONTROL’ and ’DISEASE’ (Figure 1). This experiment has two classes. 
-Here, we used the following control samples: CON BASA 567795.mzXML, and CON BASA 574488.mzXML, and the following disease samples: DIA BASE 630974.mzXML and DIA BASE 635799.mzXML. 
-The user can download the same, others, or all the experiment samples.
+Figure 1 below shows the structure of an example experiment folder name PCOS. This contains two class-folders called ’CONTROL’ and ’DISEASE’, which each contain the sample files for that class. 
+In this case these are the CON BASA 567795.mzXML, and CON BASA 574488.mzXML files in the CONTROL class.
 
-```{r classFolders,fig.cap='**Figure 1:** Distribution of the raw data files and the class and experiment folders for the given example.',echo=FALSE}
+```{r classFolders,fig.cap='**Figure 1:** An example distribution of the raw data files and the class and experiment folders.',echo=FALSE}
 knitr::include_graphics('figures/classFolders.png')
 ```
 
@@ -98,42 +164,53 @@ The same is applicable to the phenotypic table, in this case the two necessary c
 Please note that capital letters of the column names must be respected and that ’sampleID’ is the column that relates the instrumental and phenotypic tables. 
 These files can also be created automatically, execute the following command:
 
-```{r,eval=FALSE}
+```{r createdt,eval=FALSE}
 createdt('experiment_path/PCOS/')
 ```
 
 Where `experiment_path` is the path where the experiment-folder is, and PCOS is the experiment-folder.
 Two things have to be considered at this step: .csv files are different when created by American and European computers, so errors may raise due to that fact. 
-Also, the folder contain-ing the samples (in this case, the folder ’PCOS’, must contain only folders. 
+Also, the folder containing the samples (in this case, the folder ’PCOS’, must contain only folders. 
 If the folder ’PCOS’ contains files (for example, already created .csv files), eRah will prompt an error.
 
 * Note that if you have an specific question about a function, you can always access to the help of the function with a question mark before the name of the function: `?createdt`
 
-Next, we load the new experiment to the R workspace using the function newExp, where we introduce the path of the .csv file containing the instrumental data and the phenotypic data, along with a description of the experiment. We name the new experiment as ’ex’. 
-With metaData, phenoData and expClasses we can retrieve the instrumental data and the experiment classes and the processing status:
+The new experiment can then be created by loading the instrumental and phenotypic tables into the workspace and supplying these to `newExp()` as below:
 
-```{r,eval=FALSE}
-ex <- newExp(instrumental = "PCOS/PCOS_inst.csv",
-             phenotype = "PCOS/PCOS_pheno.csv", 
-             pheno = "PCOS Experiment")
+```{r experimentSetup,eval=FALSE}
+instrumental <- read.csv('experiment_path/PCOS/PCOS_inst.csv')
+phenotype <- read.csv('experiment_path/PCOS/PCOS_pheno.csv')
 
+ex <- newExp(instrumental = instrumental,
+             phenotype = phenotype,
+             info = 'PCOS Experiment')
+```
+
+This creates a new `MetaboSet` object used for storing the sample metadata and processing results.
+
+#### Accessing sample metadata
+
+With `metaData()`, `phenoData()` and `expClasses()` we can retrieve the instrumental data and the experiment classes and the processing status:
+
+```{r metaData}
 metaData(ex)
+```
 
+```{r phenoData}
 phenoData(ex)
+```
 
+```{r expClasses}
 expClasses(ex)
 ```
 
 ###Compound deconvolution
 
-The compounds in data are deconvolved with deconvolveComp function. This function needs a
-`Deconvolution parameters` object, that can be created with `setDecPar` function, containing the
-parameters of the algorithm as shown as follows:
+The compounds in data are deconvolved using `deconvolveComp()`. This function requires a `Deconvolution parameters` object, that can be created with `setDecPar` function, containing the parameters of the algorithm as shown as follows:
 
-```{r,eval=FALSE}
-ex.dec.par <- setDecPar(min.peak.width = 1,avoid.processing.mz = c(35:69,73:75,147:149))
-
-ex <- deconvolveComp(ex, ex.dec.par )
+```{r deconvolveParameters}
+ex.dec.par <- setDecPar(min.peak.width = 1,
+                        avoid.processing.mz = c(35:69,73:75,147:149))
 ```
 
 The peak width value (in seconds) is a critical parameter that conditions the efficiency of eRah, and also the masses to exclude have an important role in GC–MS-based metabolomics experiments.
@@ -143,6 +220,33 @@ The lower this parameter is set to, the more sensibility to deconvolve co-eluted
 If is set too low the algorithm will generate too false positives compounds, which this usually means that one single compound will be detected twice.
 If the parameter value is increased, the algorithm may fail in separate co-eluted compounds, leading to generate less false positives but loosing capacity of detection.
 
+* **Masses to exclude:** masses m/z 73, 74, 75, 147, 148, 149 are recommended to be excluded in the processing and subsequent steps, since these are ubiquitous mass fragments typically generated from compounds carrying a trimethylsilyl moiety.
+If the samples have been derivatized, including these masses will only hamper the deconvolution process; this is because an important number of compounds will share these masses leading to a poorer selectivity between compounds.
+Also, in complex GC–MS-based metabolomics samples, we also recommend excluding all masses from 1 to 69 Da, for the same reasons. Those masses are generated from compounds with groups that are very common for a large number of compounds in metabolomics, leading to a poorer selectivity between compounds. 
+Although those masses are also the most intense m/z in the compounds spectra, eRah will automatically set the used library’s masses to zero, so it does not affect spectral matching and identification.
+
+**eRah** also supports parallel processing at this step to enable faster processing of large sample sets.
+This requires a list containing two options:
+
+* `nCores` - number of processors to use
+* `clusterType` - the cluster type as supported by `makeCluster()` in the **parallel** package
+
+These options can be added to a parallel parameters list ready to be passed to `deconvolveComp()`.
+The following allows for processing across two processors using a PSOCK cluster:
+
+```{r parallel}
+ppars <- list(nCores = 2,
+              clusterType = 'PSOCK')
+```
+
+The samples can then be deconvolved using:
+
+```{r deconvolve}
+ex <- deconvolveComp(ex, ex.dec.par,parallel = ppars)
+
+ex
+```
+
 Data can be saved and loaded at any stage of the process by:
 
 ```{r,eval=FALSE}
@@ -151,53 +255,56 @@ save(ex, file = "testPCOS.rda")
 load("testPCOS.rda")
 ```
 
-* **Masses to exclude:** masses m/z 73, 74, 75, 147, 148, 149 are recomended to be excluded in the processing and subsequent steps, since these are ubiquitous mass fragments typically generated from compounds carrying a trimethylsilyl moiety.
-If the samples have ben derivatized, including these masses will only hamper the deconvolution process; this is because an important number of compounds will share these masses leading to a poorer selectivity between compounds.
-Also, in GC–MS-based metabolomics samples, we also recommend excluding all masses from 1 to 69 Da, for the same reasons. Those masses are generated from compounds with groups that are very common for a large number of compounds in metabolomics, leading to a poorer selectivity between compounds. 
-Although those masses are also the most intense m/z in the compounds spectra, eRah will automatically set the used library’s masses to zero, so it does not affect spectral matching and identification.
-
 ###Alignment
 
-Alignment is executed with alignComp function. The parameters have to be also previously set.
+Alignment is executed with `alignComp()`. The parameters also have to be set prior to this.
 
-```{r,eval=F}
+```{r alignmentParameters}
 ex.al.par <- setAlPar(min.spectra.cor = 0.90, max.time.dist = 3, mz.range = 70:600)
-
-ex <- alignComp(ex, alParameters = ex.al.par)
 ```
 
-The parameters are min.spectra.cor, max.time.dist and mz.range. 
-The min.spectra.cor (Minimum spectral correlation) value - from 0 (non similar) to 1 (very similar) - sets how similar two or more compounds have be to be considered for alignment between them. 
+The parameters are `min.spectra.cor`, `max.time.dist` and `mz.range`. 
+The `min.spectra.cor` (Minimum spectral correlation) value - from 0 (non similar) to 1 (very similar) - sets how similar two or more compounds have be to be considered for alignment between them. 
 We can be restrictive with this parameter, as if one compound is not detected in some samples, we can retrieve it later
 by the ’missing compound recovery’ step. 
-Also, we impose a maximum disalignment distance of 3 seconds (max.time.dist). 
+Also, we impose a maximum disalignment distance of 3 seconds (`max.time.dist`). 
 This value (in seconds) sets how far two or more compounds can be considered for alignment between them. 
-Mz.range is the range of masses that is considered when comparing spectra. 
+`mz.range` is the range of masses that is considered when comparing spectra. 
 We set that only the masses from 70 to 600 are taken into account, for the reasons commented above in the ’Masses to exclude’ point.
-We can decide to execute the missing compound recovery step (and retrieve the compounds that have missing values - have not been found - in certain samples) or also identify the compounds without applying the MissRecComp function. 
-In other words, the missing compound recovery step is optional.
-Here, we apply the missing recovery step to later identify the compounds.
+
+Alignment can be performed by:
+
+```{r alignment}
+ex <- alignComp(ex, alParameters = ex.al.par)
+
+ex
+```
 
 * **Aligning large ammout of samples:** For experiments containing more than 100 (Windows) or 1000 (Mac or Linux) samples, alignment could lead to errors or show a poor run-time performance. 
 In those cases alignment can be conducted by block segmentation. 
-For more details access to the alignComp help through `?alignComp`
+For more details about `alignComp()` access help using `?alignComp`
+
+We can decide to execute the missing compound recovery step (and retrieve the compounds that have missing values - have not been found - in certain samples) or also identify the compounds without applying `recMissComp()`. 
+In other words, the missing compound recovery step is optional.
+Here, we apply the missing recovery step to later identify the compounds.
 
 ###Missing compound recovery
 
 The missing compound recovery step only requires to indicate the number of minimum values for which a compound wants to be ’re-searched’ in the samples. 
-If a compound appears in at least the same or more samples than the minimum samples value (min.samples), then, this compound is searched in the rest of the samples where its concentration has not been registered. 
+If a compound appears in at least the same or more samples than the minimum samples value (`min.samples`), then, this compound is searched in the rest of the samples where its concentration has not been registered. 
 To do so:
 
-```{r,eval=FALSE}
-ex <- recMissComp(ex, min.samples = 3)
+```{r compoundRecovery}
+ex <- recMissComp(ex, min.samples = 6)
+
+ex
 ```
 
 * **Missing compound recovery:** The min.samples parameter sets the number of samples from the total number of samples.
 Also, this parameter should be large, in alignment with the dimension of the number of samples in the experiment. 
 If set too low, a higher number of false positives are expected. 
-A recommended strategy is to first evaluate the average number of samples where the compounds appear, by execut-
-ing alignList or idList - after being identified - functions (explained in the following sections). 
-**Warning:** if we have already identified the compounds, we always have to re-identify the compounds after executing the missing compound recovery step, by identifyComp, as explained in the following sections.
+A recommended strategy is to first evaluate the average number of samples where the compounds appear, by executeing `alignList ()` or `idList()` - after being identified - functions (explained in the following sections). 
+**Warning:** if we have already identified the compounds, we always have to re-identify the compounds after executing the missing compound recovery step, by`identifyComp()`, as explained in the following sections.
 
 ###Identification
 
@@ -209,7 +316,7 @@ GMD importation is described in following sections.
 
 Identification can be executed by identifyComp, and accessed by idList as follows:
 
-```{r,eval=FALSE}
+```{r identifyComp}
 ex <- identifyComp(ex)
 
 id.list <- idList(ex)
@@ -218,44 +325,48 @@ head(id.list[,1:4], n = 8)
 
 ###Results and visualization
 
-Now, we can access to the identification list, alignment list and final list by idList, alignList and dataList respectively. 
-From the idList(ex), we see that urea is appearing at minute 8.13 with an AlignID number #41. Let us have a look to its profile with the function plotProfile:
+The identification list can be obtained using:
+
+```{r idList}
+idList(ex)
+```
+
+The alignment list can be returned using:
+```{r alignList}
+alignList(ex)
+```
+
+And the final data list can be returned using:
+
+```{r dataList}
+dataList(ex)
+```
+
+From the table returned by `idList(ex)`, we see that gallic acid is appearing at minute 7.81 with an AlignID number #84. Let us have a look to its profile with the function plotProfile:
 
 * Execute `?alignList`, to access to the help of alignList function with a detailed
 explanation of each column in an align list.
 
-```{r,eval=FALSE}
-plotProfile(ex, 41)
-```
-
-```{r fig.cap='**Figure 2:** Image from `plotProfile(ex,41)`.',echo=FALSE}
-knitr::include_graphics('figures/profileComparison.png')
+```{r plotProfile,fig.cap='**Figure 2:** Image from `plotProfile(ex,84)`.'}
+plotProfile(ex, 84)
 ```
 
 This displays Figure 2. Its spectra can be also be plotted and compared with the reference spectra using the function plotSprectra, which displays Figure 3:
 
-```{r,eval=FALSE}
-plotSpectra(ex, 41)
-```
-
-```{r fig.cap='**Figure 3:** Image from `plotSpectra(ex,41)`.',echo=FALSE}
-knitr::include_graphics('figures/ureaMatchFactor.png')
+```{r plotSpectra,fig.cap='**Figure 3:** Image from `plotSpectra(ex,84)`.'}
+plotSpectra(ex, 84)
 ```
 
 The plotSpectra function has a lot of possibilities for plotting, to know more access to its particular help by executing `?plotSpectra`.
 For example, eRah allows a rapid assessment for visualizing the second hit returned in the case of compound align ID #41 (Urea).
 To do so:
 
-```{r,eval=FALSE}
-plotSpectra(ex, 41, 2, draw.color = "orange")
+```{r matchFactor,fig.cap='**Figure 4:** Image from `plotSpectra(ex,84, 2, draw.color=’orange3’)`.'}
+plotSpectra(ex, 84, 2, draw.color = "orange")
 ```
 
-```{r fig.cap='**Figure 4:** Image from `plotSpectra(ex,41, 2, draw.color=’orange3’)`.',echo=FALSE}
-knitr::include_graphics('figures/homocitrullineMatchFactor.png')
-```
-
-This plots Figure 4, which is a comparison of the empirical spectrum found, with the second most similar metabolite from the database (in this case Homocitrulline).
-From the figure, it is clear that eRah returned the first hit correctly, as this spectra is more similar to Urea than to Homocitrulline.
+This plots Figure 4, which is a comparison of the empirical spectrum found, with the second most similar metabolite from the database (in this case pyridoxamine).
+From the figure, it is clear that eRah returned the first hit correctly, as this spectra is more similar to gallic acid than to pyridoxamine.
 
 ##Importing and customizing mass spectral libraries
 
@@ -318,4 +429,4 @@ Here, we show a figure (Figure 5) with all the available functions.
 knitr::include_graphics('figures/functionSummary.png')
 ```
 
-##Citations
+##References

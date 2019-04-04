@@ -22,6 +22,7 @@
 #' @importFrom utils txtProgressBar setTxtProgressBar getTxtProgressBar
 #' @importFrom stats dist cor
 #' @importFrom igraph graph.data.frame clusters
+#' @importFrom progress progress_bar
 
 align.factors <- function(factors.list, min.spectra.cor, max.time.dist, max.mz, mz.range)
 {				
@@ -84,7 +85,11 @@ align.factors <- function(factors.list, min.spectra.cor, max.time.dist, max.mz, 
 
 	###################
 	#k <- 1
-	pb <- txtProgressBar(min=0,max=length(time.dist.clustlist), width=50, style=3)
+	pb <- progress_bar$new(
+	  format = "  aligning [:bar] :percent eta: :eta",
+	  total = length(time.dist.clustlist), clear = FALSE)
+	pb$tick(0)
+	
 	global.aligned.factors <- list()
 	for(k in 1:length(time.dist.clustlist))		
 	{
@@ -136,7 +141,7 @@ align.factors <- function(factors.list, min.spectra.cor, max.time.dist, max.mz, 
 
 		global.aligned.factors <- c(global.aligned.factors,aligned.factors)
 
-	setTxtProgressBar(pb, getTxtProgressBar(pb)+1)
+		pb$tick()
 	}
 		
 	aligned.factors <- global.aligned.factors
