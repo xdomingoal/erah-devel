@@ -39,7 +39,13 @@ get.compound.info_GMD <- function(k, Spl.List, type)
       if(type=="VAR5.ALK") RI.VAR5.ALK=as.numeric(apply(as.matrix(x.split[j+1]), 2, gsub, patt=",", replace="."))
       if(type=="VAR5.FAME") RI.VAR5.FAME=as.numeric(apply(as.matrix(x.split[j+1]), 2, gsub, patt=",", replace="."))
     }
-    if(x.split[j]==" MST SEL MASS") SelMZ <- as.vector(sapply(strsplit(x.split[j+1], "\\|"), as.numeric))
+    if(x.split[j]==" MST SEL MASS") SelMZ <- as.vector(sapply(strsplit(x.split[j+1], "\\|")[[1]],function(z){
+      if (grepl('NA',z)) {
+        return(NA)
+      } else {
+        return(as.numeric(z))
+      }
+    }))
     if(x.split[j]=="CAS#") CAS=x.split[j+1]
     if(x.split[j]=="Formula") Formula=x.split[j+1]
     if(x.split[j]==" METB InChI") InChi= strsplit(x.split[j+1], "=")[[1]][2]
