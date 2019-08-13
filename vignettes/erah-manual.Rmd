@@ -31,7 +31,7 @@ If you use the package eRah in your analysis and publications please cite @domin
 @domingo2016 is also referred for a more technical and detailed explanation about the eRah
 methods.
 
-####Installation
+#### Installation
 
 **eRah** can be installed from any **CRAN** repository, by:
 
@@ -45,11 +45,11 @@ Then loaded using:
 library(erah)
 ```
 
-####Support
+#### Support
 
 Any enquiries, bug reports or suggestions are welcome and they should be addressed to xdomingo@scripps.edu.
 
-##Introduction
+## Introduction
 
 **eRah** automatically detects and deconvolves the spectra of the compounds appearing in GC–MS chromatograms. 
 **eRah** processes the raw data files (netCDF or mzXML) of a complete metabolomics experiment in an automated manner.
@@ -64,7 +64,7 @@ Finally, identification of the found metabolites is conducted.
 A mean spectra from each group of aligned compounds is compared with a reference library. 
 **eRah** includes a custom version of MassBank repository. Other libraries can imported with eRah (e.g., Golm Metabolome Database), and eRah’s deconvolved spectra can be exported for further comparison with NIST library.
 
-##GC–MS Data Processing with eRah: a tutorial
+## GC–MS Data Processing with eRah: a tutorial
 
 In this section we show the processing of example samples from a spike-in experiment designed for interrogating data processing methods from the **[gcspikelite](http://bioconductor.org/packages/release/data/experiment/html/gcspikelite.html)** data package [@robinson2018] that were analyzed using GC–MS. 
 This sample set consists of nine samples with three triplicate classes.
@@ -94,7 +94,7 @@ help(package = "erah")
 and then click on User guides, package vignettes and other documentation and on source from
 the ’eRah Manual’.
 
-###Creating a new experiment
+### Creating a new experiment
 
 Prior to deconvolution, alignment and compound identification, we first need to setup a new experiment where the sample meta information is defined, such as file paths and class types.
 **eRah** provides two ways in which this can be achieved.
@@ -204,7 +204,7 @@ phenoData(ex)
 expClasses(ex)
 ```
 
-###Compound deconvolution
+### Compound deconvolution
 
 The compounds in data are deconvolved using `deconvolveComp()`. This function requires a `Deconvolution parameters` object, that can be created with `setDecPar` function, containing the parameters of the algorithm as shown as follows:
 
@@ -255,7 +255,7 @@ save(ex, file = "testPCOS.rda")
 load("testPCOS.rda")
 ```
 
-###Alignment
+### Alignment
 
 Alignment is executed with `alignComp()`. The parameters also have to be set prior to this.
 
@@ -288,7 +288,7 @@ We can decide to execute the missing compound recovery step (and retrieve the co
 In other words, the missing compound recovery step is optional.
 Here, we apply the missing recovery step to later identify the compounds.
 
-###Missing compound recovery
+### Missing compound recovery
 
 The missing compound recovery step only requires to indicate the number of minimum values for which a compound wants to be ’re-searched’ in the samples. 
 If a compound appears in at least the same or more samples than the minimum samples value (`min.samples`), then, this compound is searched in the rest of the samples where its concentration has not been registered. 
@@ -306,7 +306,7 @@ If set too low, a higher number of false positives are expected.
 A recommended strategy is to first evaluate the average number of samples where the compounds appear, by executeing `alignList ()` or `idList()` - after being identified - functions (explained in the following sections). 
 **Warning:** if we have already identified the compounds, we always have to re-identify the compounds after executing the missing compound recovery step, by`identifyComp()`, as explained in the following sections.
 
-###Identification
+### Identification
 
 The final processing step is to identify the previously aligned compounds and assign them a putative name. 
 **eRah** compares all the spectra found against a reference database. 
@@ -323,7 +323,7 @@ id.list <- idList(ex)
 head(id.list[,1:4], n = 8)
 ```
 
-###Results and visualization
+### Results and visualization
 
 The identification list can be obtained using:
 
@@ -368,9 +368,9 @@ plotSpectra(ex, 84, 2, draw.color = "orange")
 This plots Figure 4, which is a comparison of the empirical spectrum found, with the second most similar metabolite from the database (in this case pyridoxamine).
 From the figure, it is clear that eRah returned the first hit correctly, as this spectra is more similar to gallic acid than to pyridoxamine.
 
-##Importing and customizing mass spectral libraries
+## Importing and customizing mass spectral libraries
 
-###Using the Golm Metabolome Database
+### Using the Golm Metabolome Database
 
 Users may import their own mass spectral libraries. We strongly recommend using the Golm Metabolome Database (GMD) with eRah.
 To use the GMD, first, we have to download it from its [webpage](http://gmd.mpimp-golm.mpg.de/download/), by downloading the file ”GMD 20111121 VAR5 ALK MSP.txt” or ”GMD 20111121 MDN35 ALK MSP.txt”, depending on which type of chromatographic columns (VAR5 or MDN35) are we using.
@@ -410,17 +410,17 @@ If we do not replace the `mslib` object as shown before, we have to use the new 
 findComp(name = "phenol", id.database = golm.database)
 ```
 
-###Using in-house libraries
+### Using in-house libraries
 
 Other MSP-formatted libraries can be also imported. The procedure is the same as for the GMD database, with the only exception is that the function is `importMSP` instead of `importGMD`. 
 Access to specific `importMSP` help in R (`?importMSP`) for details on database MSP input format.
 
-##Exporting spectra: comparison with NIST
+## Exporting spectra: comparison with NIST
 
 Users may export their results to MSP format or CEF format for comparison with NIST MS Search software (MSP), or to compare spectra with NIST through the MassHunter workstation (CEF). 
 Users are referred to `exportMSP` and `exportCEF` functions help for more details.
 
-##Final Summary
+## Final Summary
 To complement the given tutorial, the user may access to the particular help for each function, as shown before. 
 Also, and for more details, please read the original article.
 Here, we show a figure (Figure 5) with all the available functions.
@@ -429,4 +429,4 @@ Here, we show a figure (Figure 5) with all the available functions.
 knitr::include_graphics('figures/functionSummary.png')
 ```
 
-##References
+## References
