@@ -21,5 +21,5 @@ install.packages('erah')
 To install this development version, execute:
 
 ```r
-devtools::install_github('xdomingoal/erah-devel',build_opts =c("--no-resave-data", "--no-manual"))
+devtools::install_github('xdomingoal/erah-devel',build_vignettes = TRUE)
 ```
