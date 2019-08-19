@@ -15,7 +15,7 @@
  
  - Type 'citation('erah')' for citing this R package in publications. 
  - Type 'vignette('eRahManual', package='erah')' for a tutorial on eRah's usage. 
- - For bugs, problems and issues, please do not hesitate in contacting xdomingo@scripps.edu.")
+ - For bugs, problems and issues, please do not hesitate in contacting xdomingo@scripps.edu or opening an issue on the Github repository (https://github.com/xdomingoal/erah-devel/issues).")
   
   #msg <- paste("Welcome to eRah. For bugs, problems and issues, please do not hesitate in contacting xdomingo@scripps.edu and describing your problem.", sep="") 
   packageStartupMessage(erah.logo)   

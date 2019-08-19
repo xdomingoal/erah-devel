@@ -193,7 +193,13 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
                 k <- k + 1
               }    
             } else {
-              clus <- makeCluster(parallel$nCores,type = parallel$clusterType)
+              nCores <- length(samples.to.process)
+              
+              if (nCores > parallel$nCores) {
+              nCores <- parallel$nCores  
+              }
+              
+              clus <- makeCluster(nCores,type = parallel$clusterType)
               Experiment@Data@FactorList <- parLapply(
                 clus,
                 samples.to.process,
