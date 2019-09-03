@@ -54,8 +54,6 @@ load.xml <- function(filename)
   }
 }
 
-#' @importFrom ncdf4 nc_open ncvar_get
-
 load.ncdf4 <- function(filename)
 {	
   if(!requireNamespace("ncdf4", quietly = TRUE)){
@@ -63,17 +61,17 @@ load.ncdf4 <- function(filename)
     stop(msg)
   }  
   isExact <- FALSE
-  measurement = nc_open(filename)
-  mass_values <- ncvar_get(measurement, "mass_values")
+  measurement = ncdf4::nc_open(filename)
+  mass_values <- ncdf4::ncvar_get(measurement, "mass_values")
   rndSmplColl <- sample(mass_values, 500)
   if (any(rndSmplColl != (rndSmplColl^2/trunc(rndSmplColl)))) isExact <- TRUE
-  mass_intensities <- ncvar_get(measurement, "intensity_values")
-  scan_indexes <- ncvar_get(measurement, "scan_index")
+  mass_intensities <- ncdf4::ncvar_get(measurement, "intensity_values")
+  scan_indexes <- ncdf4::ncvar_get(measurement, "scan_index")
   min_mz <- round(min(mass_values)) - 1
   max_mz <- round(max(mass_values)) + 1
-  start_time <- as.numeric(ncvar_get(measurement, "scan_acquisition_time", count = 1))
-  rndScan <- as.numeric(ncvar_get(measurement, "scan_acquisition_time", count = 10))[10]
-  rndScan2 <- as.numeric(ncvar_get(measurement, "scan_acquisition_time", count = 11))[11]
+  start_time <- as.numeric(ncdf4::ncvar_get(measurement, "scan_acquisition_time", count = 1))
+  rndScan <- as.numeric(ncdf4::ncvar_get(measurement, "scan_acquisition_time", count = 10))[10]
+  rndScan2 <- as.numeric(ncdf4::ncvar_get(measurement, "scan_acquisition_time", count = 11))[11]
   scans_per_second <- as.numeric((1/(rndScan2 - rndScan)))
   if (isExact) {
     full.matrix <- matrix(0, length(scan_indexes), ((max_mz - min_mz) + 1))
