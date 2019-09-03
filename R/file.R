@@ -49,7 +49,7 @@ load.xml <- function(filename)
     return(sampleRD)
   }
   else {
-    msg <- c("mzR is not installed. eRah and Baitmet can operate withouth mzR, unless you want to process .mzXML files (as in this case). To install the mzR package and be able to read mzXML files, please visit its bioconductor website: http://bioconductor.org/packages/release/bioc/html/mzR.html\nOr, alternatively, execute the following R code:\n\t\t\n\t\t## try http:// if https:// URLs are not supported \n\t\tsource('https://bioconductor.org/biocLite.R')\n\t\tbiocLite('mzR')")
+    msg <- c("mzR is not installed. eRah and Baitmet can operate withouth mzR, unless you want to process .mzXML files (as in this case). To install the mzR package and be able to use mzXML files, please visit its bioconductor website: http://bioconductor.org/packages/release/bioc/html/mzR.html\nOr, alternatively, execute the following R code:\n\t\t\n\t\t## try http:// if https:// URLs are not supported \n\t\tsource('https://bioconductor.org/biocLite.R')\n\t\tbiocLite('mzR')")
     warning(msg)
   }
 }
@@ -58,6 +58,10 @@ load.xml <- function(filename)
 
 load.ncdf4 <- function(filename)
 {	
+  if(!requireNamespace("ncdf4", quietly = TRUE)){
+    msg <- c("ncdf4 is not installed. eRah and Baitmet can operate withouth ncdf4, unless you want to process .CDF files (as in this case). To install the ncdf4 package use: install.packages('ncdf4')")
+    stop(msg)
+  }  
   isExact <- FALSE
   measurement = nc_open(filename)
   mass_values <- ncvar_get(measurement, "mass_values")
