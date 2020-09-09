@@ -1,16 +1,36 @@
 Package: erah
 Type: Package
+Version: 2.0.0
+Author: Xavier Domingo-Almenara [aut, cre, cph], Jasen P. Finch [ctb], Sara Samino [aut], Maria Vinaixa [aut], Alexandre Perera [aut, ths], Jesus Brezmes [aut, ths], Oscar Yanes [aut, ths]
 Title: Automated Spectral Deconvolution, Alignment, and Metabolite Identification in GC/MS-Based Untargeted Metabolomics
-Version: 1.0.6
-Date: 2017-04-30
-Author: Xavier Domingo-Almenara, Sara Samino, Maria Vinaixa, Alexandre Perera, Oscar Yanes
-Depends: Rcpp
-Imports: osd, ncdf4, caTools, nnls, HiClimR, igraph, signal, quantreg, XML, methods
-Suggests: R.rsp, mzR
-Maintainer: Xavier Domingo-Almenara <xdomingo@scripps.edu>
-Description: Automated compound deconvolution, alignment across samples, and identification of metabolites by spectral library matching in Gas Chromatography - Mass spectrometry (GC-MS) untargeted metabolomics. Outputs a table with compound names, matching scores and the integrated area of the compound for each sample.
+Depends: R (>= 3.4)
+Imports: osd,  
+    caTools, 
+    nnls, 
+    HiClimR, 
+    igraph, 
+    signal, 
+    quantreg, 
+    XML, 
+    methods,
+    parallel,
+    tibble,
+    progress
+Suggests:
+    ncdf4,
+    mzR,
+    knitr,
+    rmarkdown,
+    prettydoc,
+    covr,
+    gcspikelite,
+    testthat
+Maintainer: Xavier Domingo-Almenara <xavier.domingoa@eurecat.org>
+Description: Automated compound deconvolution, alignment across samples, and identification of metabolites by spectral library matching in Gas Chromatography - Mass spectrometry (GC-MS) untargeted metabolomics. Outputs a table with compound names, matching scores and the integrated area of the compound for each sample. Package implementation is described in Domingo-Almenara et al. (2016) <doi:10.1021/acs.analchem.6b02927>.
 License: GPL (>= 2)
 URL: http://metabolomicsplatform.com/
-Repository: CRAN
 LazyData: yes
-VignetteBuilder: R.rsp
+NeedsCompilation: yes
+VignetteBuilder: knitr
+RoxygenNote: 6.1.1
+Encoding: UTF-8
