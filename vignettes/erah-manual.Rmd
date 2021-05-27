@@ -225,15 +225,17 @@ If the samples have been derivatized, including these masses will only hamper th
 Also, in complex GC–MS-based metabolomics samples, we also recommend excluding all masses from 1 to 69 Da, for the same reasons. Those masses are generated from compounds with groups that are very common for a large number of compounds in metabolomics, leading to a poorer selectivity between compounds. 
 Although those masses are also the most intense m/z in the compounds spectra, eRah will automatically set the used library’s masses to zero, so it does not affect spectral matching and identification.
 
-**eRah** also supports parallel processing at this step using the [future]() package. 
+**eRah** also supports parallel processing at this step using the [future](https://CRAN.R-project.org/package=future) package. 
 This enables the faster processing of large sample sets.
 This requires a list containing two options:
 
-By default, deconvolution will be done on each file seqentially. However, parallel processing can be activated prior to to this by specifying a parallel backend using `plan()`. The following example specifies using the multisession backend (muliple background R sessions) with two worker processes.
+By default, deconvolution will be done on each file sequentially. However, parallel processing can be activated prior to to this by specifying a parallel backend using `plan()`. The following example specifies using the `multisession` backend (muliple background R sessions) with two worker processes.
 
 ```{r parallel}
 plan(future::multisession,workers = 2)
 ```
+
+See the future package [documentation](https://CRAN.R-project.org/package=future) for more information on the types of parallel backends that are available.
 
 The samples can then be deconvolved using:
 
