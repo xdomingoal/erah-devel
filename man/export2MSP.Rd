@@ -4,8 +4,13 @@
 \alias{export2MSP}
 \title{Export spectra to MSP}
 \usage{
-export2MSP(Experiment, export.id = NULL, id.database = mslib,
-  store.path = getwd(), alg.version = 1)
+export2MSP(
+  Experiment,
+  export.id = NULL,
+  id.database = mslib,
+  store.path = getwd(),
+  alg.version = 1
+)
 }
 \arguments{
 \item{Experiment}{A 'MetaboSet' S4 object containing the experiment.}

@@ -17,7 +17,6 @@ ex.dec.par <- setDecPar(min.peak.width = 1,avoid.processing.mz = c(35:69,73:75,1
 ex.al.par <- setAlPar(min.spectra.cor = 0.90, max.time.dist = 3, mz.range = 70:600)
 
 deconvolvedEx <- deconvolveComp(ex,ex.dec.par)
-deconvolvedExParallel <- deconvolveComp(ex,ex.dec.par,parallel = list(nCores = 2,clusterType = 'PSOCK'))
 alignedEx <- alignComp(deconvolvedEx,alParameters = ex.al.par)
 recoveredEx <-   recMissComp(alignedEx,min.samples = 1)
 identifiedEx <- identifyComp(recoveredEx)
@@ -48,10 +47,6 @@ test_that('setAlPar works',{
 
 test_that('deconvolveComp works',{
   expect_true(class(deconvolvedEx) == 'MetaboSet')
-})
-
-test_that('deconvolveComp parallel works',{
-  expect_true(class(deconvolvedExParallel) == 'MetaboSet')
 })
 
 test_that('alignComp works',{

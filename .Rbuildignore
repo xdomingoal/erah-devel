@@ -4,3 +4,6 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 LICENSE
+^\.github$
+^doc$
+^Meta$
