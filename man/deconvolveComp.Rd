@@ -10,8 +10,7 @@ deconvolveComp(
   decParameters,
   samples.to.process = NULL,
   down.sample = FALSE,
-  virtualScansPerSecond = NULL,
-  parallel = NULL
+  virtualScansPerSecond = NULL
 )
 
 \S4method{deconvolveComp}{MetaboSet}(
