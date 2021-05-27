@@ -287,7 +287,7 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
     if(length(cov.m)==1) next
     
     solv.m <- try(solve(cov.m), silent=T)
-    if(class(solv.m)=="try-error") {
+    if("try-error" %in% class(solv.m)) {
       mf[i] <- 0
       next
     }
