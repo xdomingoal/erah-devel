@@ -1,10 +1,11 @@
 # erah
 
-[![Travis-CI Build Status](https://travis-ci.org/xdomingoal/erah-devel.svg?branch=devel)](https://travis-ci.org/xdomingoal/erah-devel)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/xdomingoal/erah-devel?branch=devel&svg=true)](https://ci.appveyor.com/project/xdomingoal/erah-devel)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/xdomingoal/erah-devel/workflows/R-CMD-check/badge.svg)](https://github.com/xdomingoal/erah-devel/actions)
 [![Coverage status](https://codecov.io/gh/xdomingoal/erah-devel/branch/master/graph/badge.svg)](https://codecov.io/github/xdomingoal/erah-devel?branch=devel)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/erah)](https://cran.r-project.org/package=erah)
 [![](http://cranlogs.r-pkg.org/badges/erah)](http://cran.rstudio.com/web/packages/erah/index.html)
+<!-- badges: end -->
 
 ### Automated Spectral Deconvolution, Alignment, and Metabolite Identification in GC/MS-Based Untargeted Metabolomics
 
