@@ -12,7 +12,8 @@ Imports: osd,
     methods,
     tibble,
     progress,
-    future
+    future,
+    furrr
 Suggests:
     ncdf4,
     mzR,

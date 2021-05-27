@@ -147,7 +147,6 @@ newExp  <- function(instrumental, phenotype=NULL, info=character()){
 #' @param samples.to.process Vector indicating which samples are to be processed.
 #' @param down.sample If TRUE, chromatograms are down sampled to define one peak with 10 scan points (according to the minimum peak width). This is to process longer chromatograms with wider peak widths (more than 20 seconds peak width and small scans per second values). See details.
 #' @param virtualScansPerSecond A virtual scans per second. If chromatograms are downsampled (for example, for a 1 mean peak width a 1 scans per second sampling frequency was used), eRah could not perform as expected. In these cases, the BEST solution is to re-acquire the samples. However, by selecting a different (virtual) scans per second frequency, eRah can upsample the data and process it more effectively.
-#' @param parallel Use parallel processing. If \code{NULL} parallel processing will not be used. To use parallel processing this should be a named list consisting of two elements; \code{nCores} - a numeric to designate the number of processing cores, \code{clusterType} - a character to designate the cluster type to use, "PSOCK" or "FORK".  
 #' @details See eRah vignette for more details. To open the vignette, execute the following code in R:
 #' vignette("eRahManual", package="erah")
 #'
@@ -162,7 +161,7 @@ newExp  <- function(instrumental, phenotype=NULL, info=character()){
 #'
 #' # The following will set eRah for analyzing the chromatograms
 #' # from minutes 5 to 15, and withouth taking into account the masses
-#' # 35:69,73:75,147:149, with a minimum peak widht of 0.7 seconds.
+#' # 35:69,73:75,147:149, with a minimum peak width of 0.7 seconds.
 #'
 #' ex.dec.par <- setDecPar(min.peak.width=0.7, min.peak.height=5000, 
 #'                        noise.threshold=500, avoid.processing.mz=c(35:69,73:75,147:149), 
@@ -172,10 +171,10 @@ newExp  <- function(instrumental, phenotype=NULL, info=character()){
 #' # ex <- deconvolveComp(ex, decParameters=ex.dec.par)
 #' }
 #' @export
-#' @importFrom parallel makeCluster parLapply stopCluster
+#' @importFrom furrr future_map furrr_options
 
 setMethod('deconvolveComp',signature = 'MetaboSet',
-          function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE, virtualScansPerSecond=NULL,parallel = NULL){
+          function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE, virtualScansPerSecond=NULL){
             plotting=FALSE
             Number.of.Samples <- nrow(Experiment@MetaData@Instrumental)
             if(is.null(samples.to.process)) samples.to.process <- 1:Number.of.Samples
@@ -184,30 +183,22 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
             soft.par <- list(min.peak.width = decParameters@min.peak.width, min.peak.height = decParameters@min.peak.height, noise.threshold = decParameters@noise.threshold, avoid.processing.mz = decParameters@avoid.processing.mz,  compression.coef = decParameters@compression.coef, analysis.time = decParameters@analysis.time)
             Experiment@Data@Parameters <- soft.par
             
-            if (is.null(parallel)) {
-              k <- 1
-              for(index in samples.to.process)
-              {
-                cat("\n Deconvolving compounds from",as.character(Experiment@MetaData@Instrumental$filename[index]),"... Processing", k,"/",length(samples.to.process),"\n")  
-                Experiment@Data@FactorList[[index]] <- processSample(Experiment, index, plotting, down.sample, virtualScansPerSecond)
-                k <- k + 1
-              }    
-            } else {
-              nCores <- length(samples.to.process)
+            Experiment@Data@FactorList <- future_map(samples.to.process,~{
               
-              if (nCores > parallel$nCores) {
-              nCores <- parallel$nCores  
-              }
+              k <- which(samples.to.process == .x)
               
-              clus <- makeCluster(nCores,type = parallel$clusterType)
-              Experiment@Data@FactorList <- parLapply(
-                clus,
-                samples.to.process,
-                function(x,Experiment,plotting,down.sample,virtualScansPerSecond){
-                  processSample(Experiment, x, plotting, down.sample, virtualScansPerSecond)
-                },Experiment = Experiment,plotting = plotting,down.sample = down.sample,virtualScansPerSecond = virtualScansPerSecond)
-              stopCluster(clus)
-            }
+              message(paste("\n Deconvolving compounds from",
+                  as.character(Experiment@MetaData@Instrumental$filename[k]),
+                  "... Processing", 
+                  k,"/",
+                  length(samples.to.process),"\n"))
+              processSample(Experiment, 
+                            .x, 
+                            plotting, 
+                            down.sample, 
+                            virtualScansPerSecond)
+            },
+            .options = furrr_options(seed = TRUE))
             
             names(Experiment@Data@FactorList) <- metaData(Experiment)$sampleID
             Experiment <- scansPerSecond(Experiment)

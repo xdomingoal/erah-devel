@@ -19,8 +19,7 @@ deconvolveComp(
   decParameters,
   samples.to.process = NULL,
   down.sample = FALSE,
-  virtualScansPerSecond = NULL,
-  parallel = NULL
+  virtualScansPerSecond = NULL
 )
 }
 \arguments{
@@ -33,8 +32,6 @@ deconvolveComp(
 \item{down.sample}{If TRUE, chromatograms are down sampled to define one peak with 10 scan points (according to the minimum peak width). This is to process longer chromatograms with wider peak widths (more than 20 seconds peak width and small scans per second values). See details.}
 
 \item{virtualScansPerSecond}{A virtual scans per second. If chromatograms are downsampled (for example, for a 1 mean peak width a 1 scans per second sampling frequency was used), eRah could not perform as expected. In these cases, the BEST solution is to re-acquire the samples. However, by selecting a different (virtual) scans per second frequency, eRah can upsample the data and process it more effectively.}
-
-\item{parallel}{Use parallel processing. If \code{NULL} parallel processing will not be used. To use parallel processing this should be a named list consisting of two elements; \code{nCores} - a numeric to designate the number of processing cores, \code{clusterType} - a character to designate the cluster type to use, "PSOCK" or "FORK".}
 }
 \value{
 The function returns an updated S4 'MetaboSet' class, where the GC-MS samples have been now deconvolved.
@@ -55,7 +52,7 @@ eRah uses multivariate methods which run-time performance depend on the amount o
 
 # The following will set eRah for analyzing the chromatograms
 # from minutes 5 to 15, and withouth taking into account the masses
-# 35:69,73:75,147:149, with a minimum peak widht of 0.7 seconds.
+# 35:69,73:75,147:149, with a minimum peak width of 0.7 seconds.
 
 ex.dec.par <- setDecPar(min.peak.width=0.7, min.peak.height=5000, 
                        noise.threshold=500, avoid.processing.mz=c(35:69,73:75,147:149), 
