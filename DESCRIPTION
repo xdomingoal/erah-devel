@@ -5,13 +5,10 @@ Author: Xavier Domingo-Almenara [aut, cre, cph], Jasen P. Finch [ctb], Sara Sami
 Title: Automated Spectral Deconvolution, Alignment, and Metabolite Identification in GC/MS-Based Untargeted Metabolomics
 Depends: R (>= 3.4)
 Imports: osd,  
-    caTools, 
-    nnls, 
     HiClimR, 
     igraph, 
     signal, 
     quantreg, 
-    XML, 
     methods,
     parallel,
     tibble,
