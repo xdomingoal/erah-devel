@@ -5,3 +5,5 @@
 ^\.travis\.yml$
 LICENSE
 ^\.github$
+^doc$
+^Meta$

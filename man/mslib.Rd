@@ -4,7 +4,9 @@
 \name{mslib}
 \alias{mslib}
 \title{MassBank Spectral Library}
-\format{An object of class \code{eRah_DB} of length 1.}
+\format{
+An object of class \code{eRah_DB} of length 1.
+}
 \usage{
 data(mslib)
 }
