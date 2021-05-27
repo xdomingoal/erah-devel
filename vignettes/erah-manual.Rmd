@@ -227,7 +227,6 @@ Although those masses are also the most intense m/z in the compounds spectra, eR
 
 **eRah** also supports parallel processing at this step using the [future](https://CRAN.R-project.org/package=future) package. 
 This enables the faster processing of large sample sets.
-This requires a list containing two options:
 
 By default, deconvolution will be done on each file sequentially. However, parallel processing can be activated prior to to this by specifying a parallel backend using `plan()`. The following example specifies using the `multisession` backend (muliple background R sessions) with two worker processes.
 
