@@ -202,7 +202,7 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
             
             names(Experiment@Data@FactorList) <- metaData(Experiment)$sampleID
             Experiment <- scansPerSecond(Experiment)
-            cat("\n Compounds deconvolved \n")
+            message("Compounds deconvolved")
             Experiment	
           }
 )

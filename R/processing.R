@@ -267,7 +267,6 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
   Chrm.RawData.a <- rbind(ZeroPaddingMat,Chrm.RawData,ZeroPaddingMat)
   mz.index.vector <- (k.span+1):(nrow(Chrm.RawData)-k.span)
   
-  pb <- txtProgressBar(min=1,max=length(mz.index.vector)*3, width=50, style=3)
   mf <- vector()
   for(i in (k.span+1):(nrow(Chrm.RawData)-k.span))
   {
@@ -293,7 +292,6 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
     }
     
     mf[i] <- sum((t(as.matrix(local.kernel)) %*% solv.m %*% as.matrix(local.matrix)) )
-    setTxtProgressBar(pb, i)
   }
   
   Cmp.SetPoints <- which(diff(sign(diff(mf, na.pad = FALSE)), na.pad = FALSE) > 0) + 1
@@ -337,17 +335,13 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
   #ini.pb.val <- length(Cmp.SetPoints)/2
   iteration <- length(Cmp.SetPoints)
   if(iteration<=1) {
-    setTxtProgressBar(pb, length(mz.index.vector)*3)
     feature.list <- data.frame(matrix(nrow=0, ncol=6))
     colnames(feature.list) <- c("ID","RT","Area","Peak Height","Spectra","Profile")	
     return(feature.list)
   } 
-  pb <- txtProgressBar(min=1,max=length(Cmp.SetPoints)*3, width=50, style=3)
-  setTxtProgressBar(pb, iteration)
   
   for(k in Cmp.SetPoints)
   {
-    setTxtProgressBar(pb, iteration)
     iteration <- iteration + 1
     
     span.len <- k.span*2
@@ -396,15 +390,12 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
   }	
   
   iteration <- ncol(C.matrix)*2
-  pb <- txtProgressBar(min=1,max=ncol(C.matrix)*3.05, width=50, style=3)
-  setTxtProgressBar(pb, iteration)
   
   CorGen <- suppressWarnings(cor(C.matrix))
   
   C.out.inds <- vector()
   for(j in 1:ncol(C.matrix))
   {	
-    setTxtProgressBar(pb, iteration)
     iteration <- iteration + 1
     
     if(j %in% C.out.inds) next
@@ -502,8 +493,6 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
   feature.list[,1] <- seq(1,nrow(feature.list))
   feature.list[,2] <- round((as.numeric(as.vector((feature.list[,2])))/sampleRD@scans.per.second)/60 + (sampleRD@start.time/60), digits=4)	
   colnames(feature.list) <- c("ID","RT","Area","Peak Height","Spectra","Profile")	
-  
-  setTxtProgressBar(pb, ncol(C.matrix)*3.05)
   
   feature.list
   
