@@ -10,9 +10,9 @@ Imports: osd,
     signal, 
     quantreg, 
     methods,
-    parallel,
     tibble,
-    progress
+    progress,
+    future
 Suggests:
     ncdf4,
     mzR,
