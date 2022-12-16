@@ -7,6 +7,7 @@ load.file <- function(filename)
   if(file.type=="cdf") sampleRD <- load.ncdf4(filename)
   if(file.type=="CDF") sampleRD <- load.ncdf4(filename)
   if(file.type=="mzXML" || file.type=="xml") sampleRD <- load.xml(filename)
+  if(file.type=="mzML") sampleRD <- load.xml(filename)
   if(file.type=="rdata") sampleRD <- load.erahrd(filename)
   if(is.null(sampleRD)) stop("File extension not recognized. Avalible extensions are: .cdf, .mzXML and .xml")
   
