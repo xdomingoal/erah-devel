@@ -98,44 +98,93 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 #' @seealso \code{\link{createInstrumentalTable}} \code{\link{createPhenoTable}} \code{\link{setDecPar}} \code{\link{setAlPar}}
 #' @export
 
-newExp  <- function(instrumental, phenotype=NULL, info=character()){
-  
+newExp<- function (instrumental, phenotype = NULL, info = character()) 
+{ 
   if (is.null(phenotype)) {
+    instrumental<-read.csv(instrumental, sep=";")
     phenotype = as.data.frame(NULL)
-    warning("No phenotype data have been attached to this experiment.")
+    factors.list <- lapply(1:nrow(instrumental), function(x) {
+      as.data.frame(NULL)
+    })
+    names(factors.list) <- as.vector(instrumental$sampleID)
+    ident.list <- as.data.frame(matrix(0, ncol = 7, dimnames = list(row = 0, 
+                                                                    col = c("AlignID", "tmean", "Name", "MatchFactor", "CAS", 
+                                                                            "Formula", "DB.Id"))))
+    uni.stats <- as.data.frame(matrix(0, ncol = 3, dimnames = list(row = 0, 
+                                                                   col = c("Id", "FoldChangue", "pvalue"))))
+    multi.stats <- as.data.frame(matrix(0, ncol = 3, dimnames = list(row = 0, 
+                                                                     col = c("Id", "CompoundsInvolved", "pvalue"))))
+    al.par <- list()
+    id.par <- list()
+    soft.par <- list()
+    stat.parameters <- new("MSResultsParameters", Alignment = al.par, 
+                           Identification = id.par)
+    statistics <- new("Statistics", Univariate = uni.stats, 
+                      Multivariate = multi.stats)
+    MS.Results <- new("Results", Parameters = stat.parameters, 
+                      Identification = ident.list, Statistics = statistics)
+    MS.Data <- new("Data", FeatureList = list(NULL), FactorList = factors.list, 
+                   Parameters = list(NULL))
+    MS.MetaData <- new("MetaData", Instrumental = instrumental, 
+                       Phenotype = phenotype, DataDirectory = "")
+    col.correct <- c("sampleID", "filename", "date", "time")
+    for (i in 1:length(col.correct)) if (length(apply(as.matrix(colnames(MS.MetaData@Instrumental)), 
+                                                      1, function(x) grep(col.correct[i], x))) == 0) 
+      stop("Invalid instrumental file. The file must contain at least the following columns: ", 
+           paste(col.correct, collapse = ", "))
+    if (!is.null(MS.MetaData@Phenotype)) 
+      col.correct <- c("sampleID", "class")
+    for (i in 1:length(col.correct)) if (length(apply(as.matrix(colnames(MS.MetaData@Phenotype)), 
+                                                      1, function(x) grep(col.correct[i], x))) == 0) 
+      sample.container <- new("MetaboSet", Info = info, Data = MS.Data, 
+                              MetaData = MS.MetaData, Results = MS.Results)
+    sample.container
+    
+  } else if (!is.null(phenotype)){
+    instrumental<-read.csv(instrumental, sep=";")
+    phenotype<-read.csv(phenotype, sep=";")
+
+    factors.list <- lapply(1:nrow(instrumental), function(x) {
+      as.data.frame(NULL)
+    })
+    names(factors.list) <- as.vector(instrumental$sampleID)
+    ident.list <- as.data.frame(matrix(0, ncol = 7, dimnames = list(row = 0, 
+                                                                    col = c("AlignID", "tmean", "Name", "MatchFactor", "CAS", 
+                                                                            "Formula", "DB.Id"))))
+    uni.stats <- as.data.frame(matrix(0, ncol = 3, dimnames = list(row = 0, 
+                                                                   col = c("Id", "FoldChangue", "pvalue"))))
+    multi.stats <- as.data.frame(matrix(0, ncol = 3, dimnames = list(row = 0, 
+                                                                     col = c("Id", "CompoundsInvolved", "pvalue"))))
+    al.par <- list()
+    id.par <- list()
+    soft.par <- list()
+    stat.parameters <- new("MSResultsParameters", Alignment = al.par, 
+                           Identification = id.par)
+    statistics <- new("Statistics", Univariate = uni.stats, 
+                      Multivariate = multi.stats)
+    MS.Results <- new("Results", Parameters = stat.parameters, 
+                      Identification = ident.list, Statistics = statistics)
+    MS.Data <- new("Data", FeatureList = list(NULL), FactorList = factors.list, 
+                   Parameters = list(NULL))
+    MS.MetaData <- new("MetaData", Instrumental = instrumental, 
+                       Phenotype = phenotype, DataDirectory = "")
+    col.correct <- c("sampleID", "filename", "date", "time")
+    for (i in 1:length(col.correct)) if (length(apply(as.matrix(colnames(MS.MetaData@Instrumental)), 
+                                                      1, function(x) grep(col.correct[i], x))) == 0) 
+      stop("Invalid instrumental file. The file must contain at least the following columns: ", 
+           paste(col.correct, collapse = ", "))
+    if (!is.null(MS.MetaData@Phenotype)) {
+      col.correct <- c("sampleID", "class")
+      for (i in 1:length(col.correct)) if (length(apply(as.matrix(colnames(MS.MetaData@Phenotype)), 
+                                                        1, function(x) grep(col.correct[i], x))) == 0) 
+        stop("Invalid phenotype file. The file must contain at least the following columns: ", 
+             paste(col.correct, collapse = ", "))
+    }
+    sample.container <- new("MetaboSet", Info = info, Data = MS.Data, 
+                            MetaData = MS.MetaData, Results = MS.Results)
+    sample.container
   }
   
-  factors.list <- lapply(1:nrow(instrumental), function(x){as.data.frame(NULL)})
-  
-  names(factors.list) <- as.vector(instrumental$sampleID)
-  ident.list <- as.data.frame(matrix(0,ncol=7, dimnames=list(row=0,col= c("AlignID", "tmean", "Name", "MatchFactor", "CAS", "Formula", "DB.Id"))))
-  uni.stats <- as.data.frame(matrix(0,ncol=3, dimnames=list(row=0,col= c("Id", "FoldChangue", "pvalue"))))
-  multi.stats <- as.data.frame(matrix(0,ncol=3, dimnames=list(row=0,col= c("Id", "CompoundsInvolved", "pvalue"))))
-  
-  al.par <- list()
-  id.par <- list()
-  soft.par <- list()
-  
-  stat.parameters <- new("MSResultsParameters", Alignment=al.par, Identification=id.par)
-  statistics <- new("Statistics", Univariate = uni.stats, Multivariate = multi.stats)
-  MS.Results <- new("Results", Parameters = stat.parameters, Identification = ident.list, Statistics = statistics )
-  MS.Data <- new("Data", FeatureList = list(NULL), FactorList = factors.list, Parameters = list(NULL))
-  MS.MetaData <- new("MetaData", Instrumental = instrumental, Phenotype = phenotype, DataDirectory='')
-  
-  # Instrumental Slots validation:
-  col.correct <- c("sampleID","filename","date","time")
-  for(i in 1:length(col.correct))
-    if(length(apply(as.matrix(colnames(MS.MetaData@Instrumental)),1,function(x) grep(col.correct[i],x)))==0) stop("Invalid instrumental file. The file must contain at least the following columns: ", paste(col.correct, collapse=", "))
-  
-  # Phenotype Slots validation:
-  if(!is.null(MS.MetaData@Phenotype))
-  {
-    col.correct <- c("sampleID","class")
-    for(i in 1:length(col.correct))
-      if(length(apply(as.matrix(colnames(MS.MetaData@Phenotype)),1,function(x) grep(col.correct[i],x)))==0) stop("Invalid phenotype file. The file must contain at least the following columns: ", paste(col.correct, collapse=", "))
-  }
-  sample.container <- new("MetaboSet", Info = info, Data = MS.Data, MetaData = MS.MetaData, Results = MS.Results)
-  sample.container
 }
 
 
@@ -399,7 +448,6 @@ processSample <- function(Experiment, index, plotting, down.sample, virtual.scan
   factor.list		
 }
 
-
 scansPerSecond <- function(Experiment){
   if (Experiment@MetaData@DataDirectory=="") {
     filename <- as.character(Experiment@MetaData@Instrumental$filename[1])
@@ -410,10 +458,3 @@ scansPerSecond <- function(Experiment){
   Experiment@Data@Parameters$scans.per.second <- sampleObject@scans.per.second
   return(Experiment)
 }
-
-
-
-
-
-
-
