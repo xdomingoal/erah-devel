@@ -140,9 +140,12 @@ setMethod('alignList',signature = 'MetaboSet',
               # area.list <- cbind(object@Results@Alignment[,c("AlignID","Factor","tmean","FoundIn")],align.area)
               # colnames(area.list) <- colnames(object@Results@Alignment[,-del.in])
               # return(area.list)
-              
+              empty.samples <- which(lapply(object@Data@FactorList,nrow)==0)
+	            if(length(empty.samples)!=0) object@Data@FactorList <- object@Data@FactorList[-empty.samples]
+	            factors.list <- object@Data@FactorList
+
               align.inds <- as.numeric(as.vector(object@Results@Alignment[,"AlignID"]))
-              align.area <- lapply(object@Data@FactorList,function(x) {
+              align.area <- lapply(factors.list,function(x) {
                 #search.for <- which(x$"AlignID" %in% align.inds)
                 search.for <- (sapply(align.inds, function(i) which(as.numeric(as.vector(x$"AlignID"))==i)))
                 if(class(search.for)=="list") 
@@ -287,4 +290,3 @@ setMethod('phenoData',signature = 'MetaboSet',
             object@MetaData@Phenotype
           }
 )
-
