@@ -141,8 +141,8 @@ setMethod('alignList',signature = 'MetaboSet',
               # colnames(area.list) <- colnames(object@Results@Alignment[,-del.in])
               # return(area.list)
               empty.samples <- which(lapply(object@Data@FactorList,nrow)==0)
-	            if(length(empty.samples)!=0) object@Data@FactorList <- object@Data@FactorList[-empty.samples]
-	            factors.list <- object@Data@FactorList
+	      if(length(empty.samples)!=0) object@Data@FactorList <- object@Data@FactorList[-empty.samples]
+	      factors.list <- object@Data@FactorList
 
               align.inds <- as.numeric(as.vector(object@Results@Alignment[,"AlignID"]))
               align.area <- lapply(factors.list,function(x) {
