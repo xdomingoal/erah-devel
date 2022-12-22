@@ -84,5 +84,96 @@ computeRIerror <- function(Experiment, id.database=mslib, reference.list, ri.err
   Experiment
 }
 
+#' @name showRTRICurve
+#' @aliases showRTRICurve
+#' @title RTRI CURVE
+#' @description This function uses RI of mslib database and RT of the identified compounds to discrimine proper compound identification.
+#' @param Experiment S4 object with experiment Data, Metadata and Results. Results of experiment are used to extract RT and Compound DB Id.
+#' @param reference.list List with the compounds and their attributes (AlignId...)
+#' @param nAnchors The desired equivalent number of degrees of freedom for the smooth.spline function
+#' @param ri.thrs Retention Index treshold given by the user to discrimine bewteen identification results
+#' @param id.database Name of the preloaded database, in this case the regular db used by erah mslib
+#' @details See eRah vignette for more details. To open the vignette, execute the following code in R:
+#' vignette("eRahManual", package="erah")
+#' @references [1] Xavier Domingo-Almenara, et al., eRah: A Computational Tool Integrating Spectral Deconvolution and Alignment with Quantification and Identification of Metabolites in GC-MS-Based Metabolomics. Analytical Chemistry (2016). DOI: 10.1021/acs.analchem.6b02927 
+#' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
+#' @seealso \code{\link{ComputeRIerror}} 
+#' @examples \dontrun{
+#' The following set erah to determine which indetified compounds are in RI treshold
+#' RTRICurve <- showRTRICurve(ex, list, nAnchors=4, ri.thrs='1R', id.database = mslib)
+#' }
+#' @export
 
+showRTRICurve <- function(Experiment, reference.list, nAnchors=4, ri.thrs='1R', id.database = mslib){
+	 if (class(reference.list) != "list") 
+        stop("The parameter reference.list must be a list")
+    if (is.null(reference.list)) 
+        stop("A reference list must be provided")
+    if (!is.null(reference.list$AlignID) & !(is.null(reference.list$RT) | 
+        is.null(reference.list$RI))) 
+        stop("reference.list must contain a) user-defined RT and RI  values, or b) the AlignID of the compounds to be used as a reference")
+    if (is.null(reference.list$AlignID) & (is.null(reference.list$RT) | 
+        is.null(reference.list$RI))) 
+        stop("reference.list must contain a) user-defined RT and RI  values, or b) the AlignID of the compounds to be used as a reference")
+    if (!is.null(reference.list$RT)) 
+        if (length(reference.list$RT) != length(reference.list$RI)) 
+            stop("Both RI and RT vectors in reference list must have the same length! (You provided a different number of RT and RI values, they must have the same length)")
+    if (is.null(id.database)) 
+        stop("A database is needed for spectra comparison. Select a database or set 'compare' parameter to 'False'")
+    if (nrow(Experiment@Results@Identification) == 0) 
+        stop("Factors must be identified first")
+    if (Experiment@Results@Parameters@Identification$database.name != 
+        id.database@name) {
+        error.msg <- paste("This experiment was not processed with the database selected. Please use ", 
+            Experiment@Results@Parameters@Identification$database.name, 
+            sep = "")
+        stop(error.msg)
+    }
 
+	idlist <- idList(object = Experiment, id.database = id.database)
+	
+	if (!is.null(reference.list$AlignID)) {
+        refInd <- which(Experiment@Results@Identification$AlignID %in% 
+            reference.list$AlignID)
+        riVect.std <- sapply(as.numeric(as.vector(Experiment@Results@Identification$DB.Id.1[refInd])), 
+            function(i) id.database@database[[i]]$RI.VAR5.ALK)
+        rtVect.std <- as.numeric(as.vector(Experiment@Results@Identification$tmean[refInd]))
+    }
+    else {
+        riVect.std <- reference.list$RI
+        rtVect.std <- reference.list$RT
+    }   
+    		
+	relativeThr <- NULL
+	if(length(grep('r', tolower(ri.thrs)))==1) {
+		relativeThr <- TRUE
+		riThrs <- as.numeric(as.vector(gsub('r','', tolower(ri.thrs))))
+	}	
+	if(length(grep('a', tolower(ri.thrs)))==1) {
+		relativeThr <- FALSE
+		riThrs <- as.numeric(as.vector(gsub('a','', tolower(ri.thrs))))
+	}	
+	if(is.null(relativeThr)) stop('Incorrect "ri.thrs" value, please check the documentation for assinging "ri.thrs" values.')
+	
+	sSp <- smooth.spline(rtVect.std , riVect.std,df=nAnchors)
+	riError <- abs(sSp$y - riVect.std)
+	if(relativeThr) riError <- 100*(riError/sSp$y)
+
+	plot(rtVect.std, riVect.std, type='n', main='RT/RI curve', xlab='RT (min)', ylab='RI')
+	points(rtVect.std[which(riError<riThrs)], riVect.std[which(riError<riThrs)], pch=19)
+	if(length(which(riError>riThrs))!=0) points(rtVect.std[which(riError>riThrs)], riVect.std[which(riError>riThrs)], pch=19, col='red2')
+	lines(sSp)
+	
+	if(length(which(riError>riThrs))!=0){
+		
+		if (!is.null(reference.list$AlignID)) {
+			cat('The points outside the RI threshold are: ')
+			cat(paste0(Experiment@Results@Identification$AlignID[refInd][which(riError>riThrs)], collapse=', '))
+      }else{
+      	cat('The points outside the RI threshold are: \n')
+      	#cbind(reference.list$RI[which(riError>riThrs)],reference.list$RT[which(riError>riThrs)])
+      }
+	}else{
+		cat('No points outside the selected RI threshold')
+	}	
+}
