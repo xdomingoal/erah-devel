@@ -268,6 +268,7 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
   mz.index.vector <- (k.span+1):(nrow(Chrm.RawData)-k.span)
   
   mf <- vector()
+  mf1 <- vector()
   for(i in (k.span+1):(nrow(Chrm.RawData)-k.span))
   {
     local.kernel <- local.kernel.o
@@ -360,7 +361,7 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
     S.cl <- SubModel.Spectra 
     #C.mod <- getC.tP(Cmp.Matrix, S.cl)
     #C.mod <- getC.rq(Cmp.Matrix, S.cl)
-    C.mod <- try(getC.rq(Cmp.Matrix, S.cl), silent=T)
+    suppressWarnings(C.mod <- try(getC.rq(Cmp.Matrix, S.cl), silent=T))
     if(class(C.mod)=="try-error") next
     
     #matplot(Cmp.Matrix, type="l", col="gray", lty=1)	
@@ -498,5 +499,3 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
   
   
 }	
-
-
