@@ -1,7 +1,7 @@
 Package: erah
 Type: Package
 Version: 2.0.0
-Author: Xavier Domingo-Almenara [aut, cre, cph], Jasen P. Finch [ctb], Sara Samino [aut], Maria Vinaixa [aut], Alexandre Perera [aut, ths], Jesus Brezmes [aut, ths], Oscar Yanes [aut, ths]
+Author: Xavier Domingo-Almenara [aut, cre, cph], Jasen P. Finch [ctb], Adria Olomi [ctb], Sara Samino [aut], Maria Vinaixa [aut], Alexandre Perera [aut, ths], Jesus Brezmes [aut, ths], Oscar Yanes [aut, ths]
 Title: Automated Spectral Deconvolution, Alignment, and Metabolite Identification in GC/MS-Based Untargeted Metabolomics
 Depends: R (>= 3.4)
 Imports: osd,  
@@ -32,5 +32,5 @@ biocViews: MassSpectrometry, Metabolomics
 LazyData: yes
 NeedsCompilation: yes
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Encoding: UTF-8

@@ -5,7 +5,7 @@
 \alias{plotProfile,MetaboSet-method}
 \title{Plotting chromatographic profile}
 \usage{
-plotProfile(Experiment, AlignId, per.class = T, xlim = NULL)
+plotProfile(Experiment, AlignId, per.class = T, xlim = NULL, cols = NULL)
 
 plotProfile(Experiment,AlignId, per.class = T, xlim = NULL)
 }
@@ -14,9 +14,11 @@ plotProfile(Experiment,AlignId, per.class = T, xlim = NULL)
 
 \item{AlignId}{the Id identificator for the compound to be shown.}
 
-\item{per.class}{logical. if TRUE the profiles are shown one color per class, if FALSE one color per sample.}
+\item{per.class}{logical. if TRUE (by default) the profiles are shown one color per class, if FALSE one color per sample.}
 
 \item{xlim}{x axsis (retention time) limits (see \code{\link{plot.default}}).}
+
+\item{cols}{vector of colors. Colors are used cyclically.}
 }
 \description{
 Plots the chromatophic profiles of the compounds found by eRah.
