@@ -60,3 +60,11 @@ test_that('recMissComp works',{
 test_that('identifyComp works',{
   expect_true(class(identifiedEx) == 'MetaboSet')
 })
+
+test_that('plotProfile works', {
+  expect_no_error(plotProfile(identifiedEx, 84))
+})
+
+test_that('plotSpectra works', {
+  expect_no_error(plotSpectra(identifiedEx, 84))
+})
