@@ -26,6 +26,12 @@
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotProfile}} \code{\link{plotAlign}}
 #' @export
+
+setGeneric('plotSpectra',function(Experiment, AlignId, n.putative=1, compare=T, id.database=mslib, comp.db=NULL, return.spectra=F, draw.color="purple", xlim=NULL){
+  standardGeneric('plotSpectra')
+})
+
+#' @rdname plotSpectra
 #' @importFrom graphics text lines
 
 setMethod(plotSpectra,signature = 'MetaboSet',

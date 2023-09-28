@@ -1,11 +1,5 @@
 
 
-#' @rdname plotSpectra
-
-setGeneric('plotSpectra',function(Experiment, AlignId, n.putative=1, compare=T, id.database=mslib, comp.db=NULL, return.spectra=F, draw.color="purple", xlim=NULL){
-  standardGeneric('plotSpectra')
-})
-
 #' @rdname plotProfile
 
 setGeneric('plotProfile',function(Experiment, AlignId, per.class=T, xlim=NULL, cols=NULL){
