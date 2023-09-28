@@ -1,11 +1,5 @@
 
 
-#' @rdname plotAlign
-
-setGeneric('plotAlign',function(Experiment, AlignId, per.class=T, xlim=NULL){
-  standardGeneric('plotAlign')
-})
-
 #' @rdname plotChr
 
 setGeneric('plotChr',function(Experiment, N.sample=1, type=c("BIC","TIC","EIC"), xlim=NULL, mz=NULL){

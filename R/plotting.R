@@ -234,6 +234,12 @@ setMethod('plotProfile',signature = 'MetaboSet',
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotSpectra}} \code{\link{plotProfile}}
 #' @export
+
+setGeneric('plotAlign',function(Experiment, AlignId, per.class=T, xlim=NULL){
+  standardGeneric('plotAlign')
+})
+
+#' @rdname plotAlign
 #' @importFrom graphics par matplot legend
 
 setMethod('plotAlign',signature = 'MetaboSet',
