@@ -55,7 +55,7 @@ setGeneric('plotSpectra',function(Experiment, AlignId, n.putative=1, compare=T, 
 
 #' @rdname plotProfile
 
-setGeneric('plotProfile',function(Experiment,AlignId, per.class=T, xlim=NULL){
+setGeneric('plotProfile',function(Experiment, AlignId, per.class=T, xlim=NULL, cols=NULL){
   standardGeneric('plotProfile')
 })
 

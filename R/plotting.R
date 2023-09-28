@@ -112,14 +112,16 @@ setMethod(plotSpectra,signature = 'MetaboSet',
 #' @usage plotProfile(Experiment,AlignId, per.class = T, xlim = NULL)
 #' @param Experiment A 'MetaboSet' S4 object containing the experiment after being deconolved, aligned and (optionally) identified.
 #' @param AlignId the Id identificator for the compound to be shown.
-#' @param per.class logical. if TRUE the profiles are shown one color per class, if FALSE one color per sample.
+#' @param per.class logical. if TRUE (by default) the profiles are shown one color per class, if FALSE one color per sample.
 #' @param xlim x axsis (retention time) limits (see \code{\link{plot.default}}).
+#' @param cols vector of colors. Colors are used cyclically.
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotSpectra}} \code{\link{plotAlign}}
 #' @export
 
 setMethod('plotProfile',signature = 'MetaboSet',
-          function(Experiment,AlignId, per.class=T, xlim=NULL){	
+          function(Experiment, AlignId, per.class=T, xlim=NULL, cols=NULL)
+          {	
             if(!(any(unlist(lapply(Experiment@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned first")
             
             if(nrow(Experiment@MetaData@Phenotype)==0) 
@@ -136,7 +138,7 @@ setMethod('plotProfile',signature = 'MetaboSet',
             N.groups <- max(unique(unlist(alignId)))	
             N.samples <- length(Experiment@Data@FactorList)
             
-            samples.name <- metaData(Experiment)$sampleID		
+            samples.name <- names(Experiment@Data@FactorList)		
             for(i in 1:N.samples) samples.name[i] <- strsplit(as.character(samples.name[i]), split="\\.")[[1]][1]
             
             profile.list <- lapply(Experiment@Data@FactorList,function(x) {
@@ -145,7 +147,7 @@ setMethod('plotProfile',signature = 'MetaboSet',
               int <- NA
               if(length(outp)!=0)
               {
-                output <- sparse.to.vector(outp)
+                output <- erah:::sparse.to.vector(outp)
                 time <- output$time
                 int <- output$int*as.numeric(as.character(x[which(x$AlignID==AlignId),"Peak Height"]))
               }
@@ -178,8 +180,7 @@ setMethod('plotProfile',signature = 'MetaboSet',
             compound.name <- as.character(Experiment@Results@Identification[which(Experiment@Results@Identification$AlignID==AlignId),"Name"])
             
             if(per.class==F)
-            {
-              
+            {	
               matplot(profile.time, profile.int, type="l", lty=1, col=(1:length(samples.name)), main=paste("Profile Comparison \n",compound.name), xlab="time (min)", ylab="Intensity", xlim=xlim)
               par(font=2)
               legend("topright",legend=samples.name, pch=19, col=(1:length(samples.name)), title="Samples")
@@ -188,17 +189,25 @@ setMethod('plotProfile',signature = 'MetaboSet',
               pn <- Experiment@MetaData@Phenotype
               indx <- apply(as.matrix(samples.name),1,function(x) which(pn[,"sampleID"]==x))		
               class.names <- pn[indx,"class"]
+              ssCC <- split(1:length(indx), pn[indx,"class"])
               
-              samples.class.type <- levels(factor(pn$class))
+              class.colors <- unlist(sapply(1:length(ssCC), function(x) rep(x,length(ssCC[[x]]))))
+              if(!is.null(cols)){
+                if(!(length(cols)==length(ssCC))) stop('The length of the specified colors does not match the number of classes used in this experiment (',length(ssCC),')')
+                class.colors <- sapply(class.colors, function(x) cols[x])
+              }	
               
-              matplot(profile.time,profile.int, type="l", lty=1, col=1:length(samples.class.type), main=paste("Profile Comparison \n",compound.name), xlab="time (min)", ylab="Intensity", xlim=xlim)
+              samples.class.type <- unique(pn$class)
+              
+              matplot(profile.time,profile.int, type="l", lty=1, col=class.colors, main=paste("Profile Comparison \n",compound.name), xlab="time (min)", ylab="Intensity", xlim=xlim, lwd=2)
               par(font=2)
-              legend("topright",legend=samples.class.type, pch=19, col=1:length(samples.class.type), title="Classes")
+              legend("topright",legend=samples.class.type, pch=19, col=unique(class.colors), title="Classes")
               par(font=1)
               
             }
             
           }
+
 )
 
 #' @rdname plotAlign
