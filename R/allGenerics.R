@@ -1,9 +1,4 @@
 
-#' @rdname identifyComp
-
-setGeneric('identifyComp',function(Experiment, id.database=mslib, mz.range=NULL, n.putative=3){
-  standardGeneric('identifyComp')
-})
 
 #' @rdname plotSpectra
 

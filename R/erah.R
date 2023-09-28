@@ -400,6 +400,12 @@ setMethod('alignComp',signature = 'MetaboSet',
 #' @seealso \code{\link{newExp}} \code{\link{alignComp}} \code{\link{setAlPar}} \code{\link{setDecPar}}
 #' @export
 
+setGeneric('identifyComp',function(Experiment, id.database=mslib, mz.range=NULL, n.putative=3){
+  standardGeneric('identifyComp')
+})
+
+#' @rdname identifyComp
+
 setMethod('identifyComp',signature = 'MetaboSet',
           function(Experiment, id.database=mslib, mz.range=NULL, n.putative=3){
             #if(!(any(unlist(lapply(Experiment@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned first")
