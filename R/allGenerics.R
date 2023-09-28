@@ -1,10 +1,4 @@
 
-#' @rdname recMissComp
-
-setGeneric('recMissComp',function(Experiment, min.samples, free.model=F){
-  standardGeneric('recMissComp')
-})
-
 #' @rdname identifyComp
 
 setGeneric('identifyComp',function(Experiment, id.database=mslib, mz.range=NULL, n.putative=3){

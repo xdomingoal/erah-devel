@@ -16,6 +16,12 @@
 #' @seealso \code{\link{newExp}} \code{\link{alignComp}} \code{\link{setAlPar}} \code{\link{setDecPar}}
 #' @export
 
+setGeneric('recMissComp',function(Experiment, min.samples, free.model=F){
+  standardGeneric('recMissComp')
+})
+
+#' @rdname recMissComp
+
 setMethod('recMissComp',signature = 'MetaboSet',
           function(Experiment, min.samples, free.model=F){
             
