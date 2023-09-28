@@ -101,7 +101,15 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 newExp<- function (instrumental, phenotype = NULL, info = character()) 
 { 
   if (is.null(phenotype)) {
-    instrumental<-read.csv(instrumental, sep=";")
+    
+    if (is.data.frame(instrumental)){
+      instrumental <- instrumental
+    } 
+    else if (is.character(instrumental) && file.exists(instrumental)){
+      instrumental<-read.csv(instrumental, sep=";")
+    }
+    else stop("Instrumental file format not valid.")
+    
     phenotype = as.data.frame(NULL)
     factors.list <- lapply(1:nrow(instrumental), function(x) {
       as.data.frame(NULL)
@@ -141,8 +149,24 @@ newExp<- function (instrumental, phenotype = NULL, info = character())
     sample.container
     
   } else if (!is.null(phenotype)){
-    instrumental<-read.csv(instrumental, sep=";")
-    phenotype<-read.csv(phenotype, sep=";")
+    
+    
+    if (is.data.frame(instrumental)){
+      instrumental <- instrumental
+    } 
+    else if (is.character(instrumental) && file.exists(instrumental)){
+      instrumental<-read.csv(instrumental, sep=";")
+    }
+    else stop("Instrumental file format not valid.")
+    
+    
+    if (is.data.frame(phenotype)){
+      phenotype <- phenotype
+    } 
+    else if (is.character(phenotype) && file.exists(phenotype)){
+      phenotype <- read.csv(phenotype, sep=";")
+    }
+    else stop("Phenotype file format not valid.")
 
     factors.list <- lapply(1:nrow(instrumental), function(x) {
       as.data.frame(NULL)

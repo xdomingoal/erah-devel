@@ -109,7 +109,7 @@ setMethod(plotSpectra,signature = 'MetaboSet',
 #' @rdname plotProfile
 #' @title Plotting chromatographic profile
 #' @description Plots the chromatophic profiles of the compounds found by eRah.
-#' @usage plotProfile(Experiment,AlignId, per.class = T, xlim = NULL)
+#' @usage plotProfile(Experiment,AlignId, per.class = T, xlim = NULL, cols=NULL)
 #' @param Experiment A 'MetaboSet' S4 object containing the experiment after being deconolved, aligned and (optionally) identified.
 #' @param AlignId the Id identificator for the compound to be shown.
 #' @param per.class logical. if TRUE (by default) the profiles are shown one color per class, if FALSE one color per sample.

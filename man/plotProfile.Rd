@@ -7,7 +7,7 @@
 \usage{
 plotProfile(Experiment, AlignId, per.class = T, xlim = NULL, cols = NULL)
 
-plotProfile(Experiment,AlignId, per.class = T, xlim = NULL)
+plotProfile(Experiment,AlignId, per.class = T, xlim = NULL, cols=NULL)
 }
 \arguments{
 \item{Experiment}{A 'MetaboSet' S4 object containing the experiment after being deconolved, aligned and (optionally) identified.}
