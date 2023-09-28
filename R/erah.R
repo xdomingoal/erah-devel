@@ -101,7 +101,6 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 newExp<- function (instrumental, phenotype = NULL, info = character()) 
 { 
   if (is.null(phenotype)) {
-    instrumental<-read.csv(instrumental, sep=";")
     phenotype = as.data.frame(NULL)
     factors.list <- lapply(1:nrow(instrumental), function(x) {
       as.data.frame(NULL)
@@ -141,8 +140,6 @@ newExp<- function (instrumental, phenotype = NULL, info = character())
     sample.container
     
   } else if (!is.null(phenotype)){
-    instrumental<-read.csv(instrumental, sep=";")
-    phenotype<-read.csv(phenotype, sep=";")
 
     factors.list <- lapply(1:nrow(instrumental), function(x) {
       as.data.frame(NULL)
