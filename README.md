@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/xdomingoal/erah-devel/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/xdomingoal/erah-devel/actions/workflows/R-CMD-check.yaml)
-[![Coverage status](https://codecov.io/gh/xdomingoal/erah-devel/branch/master/graph/badge.svg)](https://codecov.io/github/xdomingoal/erah-devel?branch=devel)
+[![Codecov test coverage](https://codecov.io/gh/xdomingoal/erah-devel/branch/master/graph/badge.svg)](https://app.codecov.io/gh/xdomingoal/erah-devel?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/erah)](https://cran.r-project.org/package=erah)
 [![](http://cranlogs.r-pkg.org/badges/erah)](http://cran.rstudio.com/web/packages/erah/index.html)
 <!-- badges: end -->
