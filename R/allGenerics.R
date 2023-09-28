@@ -1,11 +1,5 @@
 
 
-#' @rdname expClasses
-
-setGeneric('expClasses',function(object){
-  standardGeneric('expClasses')
-})
-
 #' @rdname sampleInfo
 
 setGeneric('sampleInfo',function(Experiment, N.sample=1){

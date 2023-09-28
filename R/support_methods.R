@@ -218,6 +218,12 @@ setMethod('dataList',signature = 'MetaboSet',
 #' @seealso metaData phenoData
 #' @export
 
+setGeneric('expClasses',function(object){
+  standardGeneric('expClasses')
+})
+
+#' @rdname expClasses
+
 setMethod('expClasses',signature = 'MetaboSet',
           function(object){
             if(nrow(object@MetaData@Phenotype)==0) stop("No Phenotype data has been attached to this experiment.")
