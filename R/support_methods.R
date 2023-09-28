@@ -212,6 +212,12 @@ setMethod('alignList',signature = 'MetaboSet',
 #' @seealso \code{\link{idList}} \code{\link{alignList}}
 #' @export
 
+setGeneric('dataList',function(Experiment, id.database=mslib, by.area=TRUE){
+  standardGeneric('dataList')
+})
+
+#' @rdname dataList
+
 setMethod('dataList',signature = 'MetaboSet',
           function(Experiment, id.database=mslib, by.area=TRUE){
             ID.table <- idList(Experiment, id.database)	
