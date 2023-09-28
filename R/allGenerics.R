@@ -1,9 +1,4 @@
 
-#' @rdname phenoData
-
-setGeneric('phenoData',function(object){
-  standardGeneric('phenoData')
-})
 
 #' @rdname expClasses
 

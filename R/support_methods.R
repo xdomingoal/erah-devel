@@ -291,6 +291,12 @@ setMethod('metaData',signature = 'MetaboSet',
 #' @seealso \code{\link{metaData}}
 #' @export
 
+setGeneric('phenoData',function(object){
+  standardGeneric('phenoData')
+})
+
+#' @rdname phenoData
+
 setMethod('phenoData',signature = 'MetaboSet',
           function(object) {
             object@MetaData@Phenotype
