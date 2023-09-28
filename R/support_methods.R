@@ -18,6 +18,12 @@
 #' @importFrom tibble as_tibble
 #' @export
 
+setGeneric('idList',function(object, id.database=mslib){
+  standardGeneric('idList')
+})
+
+#' @rdname idList
+
 setMethod('idList',signature = 'MetaboSet',
           function(object, id.database=mslib) {
             #if(!(any(unlist(lapply(object@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned and identified first")
