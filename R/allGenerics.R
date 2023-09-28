@@ -1,11 +1,5 @@
 
 
-#' @rdname sampleInfo
-
-setGeneric('sampleInfo',function(Experiment, N.sample=1){
-  standardGeneric('sampleInfo')
-})
-
 #' @rdname deconvolveComp
 
 setGeneric('deconvolveComp',function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE, virtualScansPerSecond=NULL){

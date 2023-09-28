@@ -259,6 +259,12 @@ setMethod('expClasses',signature = 'MetaboSet',
 #' @seealso \code{\link{plotChr}}
 #' @export
 
+setGeneric('sampleInfo',function(Experiment, N.sample=1){
+  standardGeneric('sampleInfo')
+})
+
+#' @rdname sampleInfo
+
 setMethod('sampleInfo',signature = 'MetaboSet',
           function(Experiment, N.sample=1){
             sampleRD <- load.file(paste(Experiment@MetaData@DataDirectory, Experiment@MetaData@Instrumental$filename[[N.sample]], sep="/"))
