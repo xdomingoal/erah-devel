@@ -272,6 +272,12 @@ setMethod('sampleInfo',signature = 'MetaboSet',
 #' @seealso \code{\link{phenoData}}
 #' @export
 
+setGeneric('metaData',function(object){
+  standardGeneric('metaData')
+})
+
+#' @rdname metaData
+
 setMethod('metaData',signature = 'MetaboSet',
           function(object){
             object@MetaData@Instrumental

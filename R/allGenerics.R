@@ -1,10 +1,4 @@
 
-#' @rdname metaData
-
-setGeneric('metaData',function(object){
-  standardGeneric('metaData')
-})
-
 #' @rdname phenoData
 
 setGeneric('phenoData',function(object){
