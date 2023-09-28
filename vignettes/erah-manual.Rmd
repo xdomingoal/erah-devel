@@ -175,13 +175,11 @@ If the folder ’PCOS’ contains files (for example, already created .csv files
 
 * Note that if you have an specific question about a function, you can always access to the help of the function with a question mark before the name of the function: `?createdt`
 
-The new experiment can then be created by loading the instrumental and phenotypic file paths into the workspace and supplying these to `newExp()` as below:
+The new experiment can then be created by loading the instrumental and phenotypic tables into the workspace and supplying these to `newExp()` as below:
 
 ```{r experimentSetup,eval=FALSE}
-#You may include the sep properly
-
-instrumental <- 'experiment_path/PCOS/PCOS_inst.csv'
-phenotype <- 'experiment_path/PCOS/PCOS_pheno.csv'
+instrumental <- read.csv('experiment_path/PCOS/PCOS_inst.csv')
+phenotype <- read.csv('experiment_path/PCOS/PCOS_pheno.csv')
 
 ex <- newExp(instrumental = instrumental,
              phenotype = phenotype,
