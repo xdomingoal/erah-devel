@@ -359,6 +359,12 @@ setMethod('plotAlign',signature = 'MetaboSet',
 #' }
 #' @seealso \code{\link{sampleInfo}}
 #' @export
+
+setGeneric('plotChr',function(Experiment, N.sample=1, type=c("BIC","TIC","EIC"), xlim=NULL, mz=NULL){
+  standardGeneric('plotChr')
+})
+
+#' @rdname plotChr
 #' @importFrom graphics plot
 
 setMethod('plotChr',signature = 'MetaboSet',
