@@ -217,6 +217,12 @@ newExp<- function (instrumental, phenotype = NULL, info = character())
 #' # ex <- deconvolveComp(ex, decParameters=ex.dec.par)
 #' }
 #' @export
+
+setGeneric('deconvolveComp',function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE, virtualScansPerSecond=NULL){
+  standardGeneric('deconvolveComp')
+})
+
+#' @rdname deconvolveComp
 #' @importFrom furrr future_map furrr_options
 
 setMethod('deconvolveComp',signature = 'MetaboSet',
