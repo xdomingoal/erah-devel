@@ -278,6 +278,12 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
 #' @seealso \code{\link{newExp}} \code{\link{setDecPar}} \code{\link{deconvolveComp}}
 #' @export
 
+setGeneric('alignComp',function(Experiment, alParameters, blocks.size=NULL){
+  standardGeneric('alignComp')
+})
+
+#' @rdname alignComp
+
 setMethod('alignComp',signature = 'MetaboSet',
           function(Experiment, alParameters, blocks.size=NULL){
             al.par <- list(alignment.algorithm=alParameters@algorithm, min.spectra.cor=alParameters@min.spectra.cor, max.time.dist=alParameters@max.time.dist, mz.range=alParameters@mz.range)

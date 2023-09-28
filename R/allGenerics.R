@@ -1,11 +1,4 @@
 
-
-#' @rdname alignComp
-
-setGeneric('alignComp',function(Experiment, alParameters, blocks.size=NULL){
-  standardGeneric('alignComp')
-})
-
 #' @rdname recMissComp
 
 setGeneric('recMissComp',function(Experiment, min.samples, free.model=F){
