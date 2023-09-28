@@ -125,6 +125,12 @@ setMethod(plotSpectra,signature = 'MetaboSet',
 #' @seealso \code{\link{plotSpectra}} \code{\link{plotAlign}}
 #' @export
 
+setGeneric('plotProfile',function(Experiment, AlignId, per.class=T, xlim=NULL, cols=NULL){
+  standardGeneric('plotProfile')
+})
+
+#' @rdname plotProfile
+
 setMethod('plotProfile',signature = 'MetaboSet',
           function(Experiment, AlignId, per.class=T, xlim=NULL, cols=NULL)
           {	
