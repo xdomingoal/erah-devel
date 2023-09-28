@@ -114,6 +114,12 @@ setMethod('idList',signature = 'MetaboSet',
 #' @seealso \code{\link{idList}} \code{\link{dataList}}
 #' @export
 
+setGeneric('alignList',function(object, by.area=TRUE){
+  standardGeneric('alignList')
+})
+
+#' @rdname alignList
+
 setMethod('alignList',signature = 'MetaboSet',
           function(object, by.area=TRUE) {
             
