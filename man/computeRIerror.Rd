@@ -32,7 +32,12 @@ vignette("eRahManual", package="erah")
 }
 \examples{
 \dontrun{
-ex <- computeRIerror(ex, mslib, reference.list=list(AlignID = c(45,67,92,120)), ri.error.type = "relative")
+ex <- computeRIerror(
+  ex, 
+  mslib, 
+  reference.list=list(AlignID = c(45,67,92,120)), 
+  ri.error.type = "relative"
+)
 }
 }
 \references{
