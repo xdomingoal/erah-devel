@@ -159,7 +159,7 @@ setMethod('plotProfile',signature = 'MetaboSet',
               int <- NA
               if(length(outp)!=0)
               {
-                output <- erah:::sparse.to.vector(outp)
+                output <- sparse.to.vector(outp)
                 time <- output$time
                 int <- output$int*as.numeric(as.character(x[which(x$AlignID==AlignId),"Peak Height"]))
               }
