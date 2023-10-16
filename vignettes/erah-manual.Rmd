@@ -42,7 +42,7 @@ install.packages('erah')
 Or from GitHub:
 
 ```{r install-github,eval=FALSE}
-devtools::install_github('xdomingoal/erah-devel', build_vignettes = FALSE)
+remotes::install_github('xdomingoal/erah-devel')
 ```
 
 Then loaded using:
