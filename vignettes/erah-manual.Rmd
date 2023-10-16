@@ -35,7 +35,13 @@ methods.
 
 **eRah** can be installed from any **CRAN** repository, by:
 
-```{r install,eval=FALSE}
+```{r, eval=FALSE}
+install.packages('erah')
+```
+
+Or from GitHub:
+
+```{r install-github,eval=FALSE}
 devtools::install_github('xdomingoal/erah-devel', build_vignettes = FALSE)
 ```
 
@@ -47,7 +53,7 @@ library(erah)
 
 #### Support
 
-Any enquiries, bug reports or suggestions are welcome and they should be addressed to xdomingo@scripps.edu.
+Any enquiries, bug reports or suggestions are welcome and they should be addressed to xavier.domingoa@eurecat.org. Alternatively, please file an issue (and, if possible, a reproducible example) at <https://github.com/xdomingoal/erah-devel/issues>.
 
 ## Introduction
 
