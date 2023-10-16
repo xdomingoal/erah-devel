@@ -160,7 +160,7 @@ setMethod('alignList',signature = 'MetaboSet',
               align.area <- lapply(factors.list,function(x) {
                 #search.for <- which(x$"AlignID" %in% align.inds)
                 search.for <- (sapply(align.inds, function(i) which(as.numeric(as.vector(x$"AlignID"))==i)))
-                if(class(search.for)=="list") 
+                if(inherits(search.for,"list")) 
                 {
                   fill.inds <- unlist(lapply(search.for, length))
                   fill.vector <- rep(0,length(align.inds))

@@ -484,7 +484,7 @@ processSample <- function(Experiment, index, plotting, down.sample, virtual.scan
   
   sampleObject <- avoid.processing(sampleObject)
   factor.list <- try(get.factor.list(sampleObject, analysis.window=Experiment@Data@Parameters$analysis.time, plotting, down.sample, virtual.scans.ps), silent=F)
-  if(class(factor.list)=="try-error") {factor.list <- as.data.frame(NULL); warning("Unable to extract factors from ", Experiment@MetaData@Instrumental$filename[index], ". Data may be corrupted.", sep="")}
+  if(inherits(factor.list,"try-error")) {factor.list <- as.data.frame(NULL); warning("Unable to extract factors from ", Experiment@MetaData@Instrumental$filename[index], ". Data may be corrupted.", sep="")}
   
   factor.list		
 }
