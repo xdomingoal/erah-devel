@@ -40,7 +40,7 @@ RTRICurve <- showRTRICurve(ex, list, nAnchors=4, ri.thrs='1R')
 [1] Xavier Domingo-Almenara, et al., eRah: A Computational Tool Integrating Spectral Deconvolution and Alignment with Quantification and Identification of Metabolites in GC-MS-Based Metabolomics. Analytical Chemistry (2016). DOI: 10.1021/acs.analchem.6b02927
 }
 \seealso{
-\code{\link{ComputeRIerror}}
+\code{\link{computeRIerror}}
 }
 \author{
 Xavier Domingo-Almenara. xavier.domingo@urv.cat

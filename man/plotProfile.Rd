@@ -5,7 +5,7 @@
 \alias{plotProfile,MetaboSet-method}
 \title{Plotting chromatographic profile}
 \usage{
-plotProfile(Experiment,AlignId, per.class = T, xlim = NULL)
+plotProfile(Experiment,AlignId, per.class = T, xlim = NULL, cols=NULL)
 
 \S4method{plotProfile}{MetaboSet}(Experiment, AlignId, per.class = T, xlim = NULL, cols = NULL)
 }

@@ -36,7 +36,7 @@ methods.
 **eRah** can be installed from any **CRAN** repository, by:
 
 ```{r install,eval=FALSE}
-install.packages("erah")
+devtools::install_github('xdomingoal/erah-devel', build_vignettes = FALSE)
 ```
 
 Then loaded using:
