@@ -96,6 +96,7 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 #' phenotype = phenotype, info = "DEMO Experiment")
 #' }
 #' @seealso \code{\link{createInstrumentalTable}} \code{\link{createPhenoTable}} \code{\link{setDecPar}} \code{\link{setAlPar}}
+#' @importFrom utils read.csv
 #' @export
 
 newExp<- function (instrumental, phenotype = NULL, info = character()) 
