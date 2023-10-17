@@ -26,6 +26,12 @@
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotProfile}} \code{\link{plotAlign}}
 #' @export
+
+setGeneric('plotSpectra',function(Experiment, AlignId, n.putative=1, compare=T, id.database=mslib, comp.db=NULL, return.spectra=F, draw.color="purple", xlim=NULL){
+  standardGeneric('plotSpectra')
+})
+
+#' @rdname plotSpectra
 #' @importFrom graphics text lines
 
 setMethod(plotSpectra,signature = 'MetaboSet',
@@ -119,6 +125,12 @@ setMethod(plotSpectra,signature = 'MetaboSet',
 #' @seealso \code{\link{plotSpectra}} \code{\link{plotAlign}}
 #' @export
 
+setGeneric('plotProfile',function(Experiment, AlignId, per.class=T, xlim=NULL, cols=NULL){
+  standardGeneric('plotProfile')
+})
+
+#' @rdname plotProfile
+
 setMethod('plotProfile',signature = 'MetaboSet',
           function(Experiment, AlignId, per.class=T, xlim=NULL, cols=NULL)
           {	
@@ -147,7 +159,7 @@ setMethod('plotProfile',signature = 'MetaboSet',
               int <- NA
               if(length(outp)!=0)
               {
-                output <- erah:::sparse.to.vector(outp)
+                output <- sparse.to.vector(outp)
                 time <- output$time
                 int <- output$int*as.numeric(as.character(x[which(x$AlignID==AlignId),"Peak Height"]))
               }
@@ -222,6 +234,12 @@ setMethod('plotProfile',signature = 'MetaboSet',
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{plotSpectra}} \code{\link{plotProfile}}
 #' @export
+
+setGeneric('plotAlign',function(Experiment, AlignId, per.class=T, xlim=NULL){
+  standardGeneric('plotAlign')
+})
+
+#' @rdname plotAlign
 #' @importFrom graphics par matplot legend
 
 setMethod('plotAlign',signature = 'MetaboSet',
@@ -341,6 +359,12 @@ setMethod('plotAlign',signature = 'MetaboSet',
 #' }
 #' @seealso \code{\link{sampleInfo}}
 #' @export
+
+setGeneric('plotChr',function(Experiment, N.sample=1, type=c("BIC","TIC","EIC"), xlim=NULL, mz=NULL){
+  standardGeneric('plotChr')
+})
+
+#' @rdname plotChr
 #' @importFrom graphics plot
 
 setMethod('plotChr',signature = 'MetaboSet',

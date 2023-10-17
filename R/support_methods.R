@@ -18,6 +18,12 @@
 #' @importFrom tibble as_tibble
 #' @export
 
+setGeneric('idList',function(object, id.database=mslib){
+  standardGeneric('idList')
+})
+
+#' @rdname idList
+
 setMethod('idList',signature = 'MetaboSet',
           function(object, id.database=mslib) {
             #if(!(any(unlist(lapply(object@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned and identified first")
@@ -108,6 +114,12 @@ setMethod('idList',signature = 'MetaboSet',
 #' @seealso \code{\link{idList}} \code{\link{dataList}}
 #' @export
 
+setGeneric('alignList',function(object, by.area=TRUE){
+  standardGeneric('alignList')
+})
+
+#' @rdname alignList
+
 setMethod('alignList',signature = 'MetaboSet',
           function(object, by.area=TRUE) {
             
@@ -148,7 +160,7 @@ setMethod('alignList',signature = 'MetaboSet',
               align.area <- lapply(factors.list,function(x) {
                 #search.for <- which(x$"AlignID" %in% align.inds)
                 search.for <- (sapply(align.inds, function(i) which(as.numeric(as.vector(x$"AlignID"))==i)))
-                if(class(search.for)=="list") 
+                if(inherits(search.for,"list")) 
                 {
                   fill.inds <- unlist(lapply(search.for, length))
                   fill.vector <- rep(0,length(align.inds))
@@ -200,6 +212,12 @@ setMethod('alignList',signature = 'MetaboSet',
 #' @seealso \code{\link{idList}} \code{\link{alignList}}
 #' @export
 
+setGeneric('dataList',function(Experiment, id.database=mslib, by.area=TRUE){
+  standardGeneric('dataList')
+})
+
+#' @rdname dataList
+
 setMethod('dataList',signature = 'MetaboSet',
           function(Experiment, id.database=mslib, by.area=TRUE){
             ID.table <- idList(Experiment, id.database)	
@@ -217,6 +235,12 @@ setMethod('dataList',signature = 'MetaboSet',
 #' @details Returns the classes details of the experiment.
 #' @seealso metaData phenoData
 #' @export
+
+setGeneric('expClasses',function(object){
+  standardGeneric('expClasses')
+})
+
+#' @rdname expClasses
 
 setMethod('expClasses',signature = 'MetaboSet',
           function(object){
@@ -253,6 +277,12 @@ setMethod('expClasses',signature = 'MetaboSet',
 #' @seealso \code{\link{plotChr}}
 #' @export
 
+setGeneric('sampleInfo',function(Experiment, N.sample=1){
+  standardGeneric('sampleInfo')
+})
+
+#' @rdname sampleInfo
+
 setMethod('sampleInfo',signature = 'MetaboSet',
           function(Experiment, N.sample=1){
             sampleRD <- load.file(paste(Experiment@MetaData@DataDirectory, Experiment@MetaData@Instrumental$filename[[N.sample]], sep="/"))
@@ -272,6 +302,12 @@ setMethod('sampleInfo',signature = 'MetaboSet',
 #' @seealso \code{\link{phenoData}}
 #' @export
 
+setGeneric('metaData',function(object){
+  standardGeneric('metaData')
+})
+
+#' @rdname metaData
+
 setMethod('metaData',signature = 'MetaboSet',
           function(object){
             object@MetaData@Instrumental
@@ -284,6 +320,12 @@ setMethod('metaData',signature = 'MetaboSet',
 #' @param object A 'MetaboSet' S4 object ciontaining the experiment.
 #' @seealso \code{\link{metaData}}
 #' @export
+
+setGeneric('phenoData',function(object){
+  standardGeneric('phenoData')
+})
+
+#' @rdname phenoData
 
 setMethod('phenoData',signature = 'MetaboSet',
           function(object) {

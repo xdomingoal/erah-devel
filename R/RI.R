@@ -13,7 +13,12 @@
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{showRTRICurve}} 
 #' @examples \dontrun{
-#' ex <- computeRIerror(ex, mslib, reference.list=list(AlignID = c(45,67,92,120)), ri.error.type = "relative")
+#' ex <- computeRIerror(
+#'   ex, 
+#'   mslib, 
+#'   reference.list=list(AlignID = c(45,67,92,120)), 
+#'   ri.error.type = "relative"
+#' )
 #' }
 #' @export
 #' @importFrom stats smooth.spline predict 
@@ -21,7 +26,7 @@
 
 computeRIerror <- function(Experiment, id.database=mslib, reference.list, ri.error.type=c('relative','absolute'), plot.results=TRUE){
   
-  if(class(reference.list)!='list') stop('The parameter reference.list must be a list')
+  if(!inherits(reference.list,'list')) stop('The parameter reference.list must be a list')
   if(is.null(reference.list)) stop('A reference list must be provided')
   if(!is.null(reference.list$AlignID) & !(is.null(reference.list$RT) | is.null(reference.list$RI))) stop('reference.list must contain a) user-defined RT and RI  values, or b) the AlignID of the compounds to be used as a reference')
   if(is.null(reference.list$AlignID) & (is.null(reference.list$RT) | is.null(reference.list$RI))) stop('reference.list must contain a) user-defined RT and RI  values, or b) the AlignID of the compounds to be used as a reference')
@@ -123,7 +128,7 @@ computeRIerror <- function(Experiment, id.database=mslib, reference.list, ri.err
 #' @export
 
 showRTRICurve <- function(Experiment, reference.list, nAnchors=4, ri.thrs='1R', id.database = mslib){
-  if (class(reference.list) != "list") 
+  if (!inherits(reference.list,"list")) 
     stop("The parameter reference.list must be a list")
   if (is.null(reference.list)) 
     stop("A reference list must be provided")

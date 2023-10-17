@@ -35,8 +35,14 @@ methods.
 
 **eRah** can be installed from any **CRAN** repository, by:
 
-```{r install,eval=FALSE}
-devtools::install_github('xdomingoal/erah-devel', build_vignettes = FALSE)
+```{r, eval=FALSE}
+install.packages('erah')
+```
+
+Or from GitHub:
+
+```{r install-github,eval=FALSE}
+remotes::install_github('xdomingoal/erah-devel')
 ```
 
 Then loaded using:
@@ -47,7 +53,7 @@ library(erah)
 
 #### Support
 
-Any enquiries, bug reports or suggestions are welcome and they should be addressed to xdomingo@scripps.edu.
+Any enquiries, bug reports or suggestions are welcome and they should be addressed to xavier.domingoa@eurecat.org. Alternatively, please file an issue (and, if possible, a reproducible example) at <https://github.com/xdomingoal/erah-devel/issues>.
 
 ## Introduction
 
@@ -175,13 +181,11 @@ If the folder ’PCOS’ contains files (for example, already created .csv files
 
 * Note that if you have an specific question about a function, you can always access to the help of the function with a question mark before the name of the function: `?createdt`
 
-The new experiment can then be created by loading the instrumental and phenotypic file paths into the workspace and supplying these to `newExp()` as below:
+The new experiment can then be created by loading the instrumental and phenotypic tables into the workspace and supplying these to `newExp()` as below:
 
 ```{r experimentSetup,eval=FALSE}
-#You may include the sep properly
-
-instrumental <- 'experiment_path/PCOS/PCOS_inst.csv'
-phenotype <- 'experiment_path/PCOS/PCOS_pheno.csv'
+instrumental <- read.csv('experiment_path/PCOS/PCOS_inst.csv')
+phenotype <- read.csv('experiment_path/PCOS/PCOS_pheno.csv')
 
 ex <- newExp(instrumental = instrumental,
              phenotype = phenotype,

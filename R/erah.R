@@ -96,12 +96,12 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 #' phenotype = phenotype, info = "DEMO Experiment")
 #' }
 #' @seealso \code{\link{createInstrumentalTable}} \code{\link{createPhenoTable}} \code{\link{setDecPar}} \code{\link{setAlPar}}
+#' @importFrom utils read.csv
 #' @export
 
 newExp<- function (instrumental, phenotype = NULL, info = character()) 
 { 
   if (is.null(phenotype)) {
-    
     if (is.data.frame(instrumental)){
       instrumental <- instrumental
     } 
@@ -149,8 +149,7 @@ newExp<- function (instrumental, phenotype = NULL, info = character())
     sample.container
     
   } else if (!is.null(phenotype)){
-    
-    
+
     if (is.data.frame(instrumental)){
       instrumental <- instrumental
     } 
@@ -244,6 +243,12 @@ newExp<- function (instrumental, phenotype = NULL, info = character())
 #' # ex <- deconvolveComp(ex, decParameters=ex.dec.par)
 #' }
 #' @export
+
+setGeneric('deconvolveComp',function(Experiment, decParameters, samples.to.process=NULL, down.sample=FALSE, virtualScansPerSecond=NULL){
+  standardGeneric('deconvolveComp')
+})
+
+#' @rdname deconvolveComp
 #' @importFrom furrr future_map furrr_options
 
 setMethod('deconvolveComp',signature = 'MetaboSet',
@@ -298,6 +303,12 @@ setMethod('deconvolveComp',signature = 'MetaboSet',
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{newExp}} \code{\link{setDecPar}} \code{\link{deconvolveComp}}
 #' @export
+
+setGeneric('alignComp',function(Experiment, alParameters, blocks.size=NULL){
+  standardGeneric('alignComp')
+})
+
+#' @rdname alignComp
 
 setMethod('alignComp',signature = 'MetaboSet',
           function(Experiment, alParameters, blocks.size=NULL){
@@ -415,6 +426,12 @@ setMethod('alignComp',signature = 'MetaboSet',
 #' @seealso \code{\link{newExp}} \code{\link{alignComp}} \code{\link{setAlPar}} \code{\link{setDecPar}}
 #' @export
 
+setGeneric('identifyComp',function(Experiment, id.database=mslib, mz.range=NULL, n.putative=3){
+  standardGeneric('identifyComp')
+})
+
+#' @rdname identifyComp
+
 setMethod('identifyComp',signature = 'MetaboSet',
           function(Experiment, id.database=mslib, mz.range=NULL, n.putative=3){
             #if(!(any(unlist(lapply(Experiment@Data@FactorList,function(x) {is.null(x$AlignID)} ))==FALSE))) stop("Factors must be aligned first")
@@ -467,7 +484,7 @@ processSample <- function(Experiment, index, plotting, down.sample, virtual.scan
   
   sampleObject <- avoid.processing(sampleObject)
   factor.list <- try(get.factor.list(sampleObject, analysis.window=Experiment@Data@Parameters$analysis.time, plotting, down.sample, virtual.scans.ps), silent=F)
-  if(class(factor.list)=="try-error") {factor.list <- as.data.frame(NULL); warning("Unable to extract factors from ", Experiment@MetaData@Instrumental$filename[index], ". Data may be corrupted.", sep="")}
+  if(inherits(factor.list,"try-error")) {factor.list <- as.data.frame(NULL); warning("Unable to extract factors from ", Experiment@MetaData@Instrumental$filename[index], ". Data may be corrupted.", sep="")}
   
   factor.list		
 }

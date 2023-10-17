@@ -94,7 +94,7 @@ getS.OSD <- function(mod.c, D, ref.response=NULL, beta=2,cutoff=0.05)
   comp.m <- an.win^(1/beta)
   if(any(is.na(comp.m))) comp.m[is.na(comp.m)] <- 0
   pr.an <- try(prcomp(comp.m), silent=T)
-  if(class(pr.an)=="try-error") {return(rep(0,ncol(D)))}
+  if(inherits(pr.an,"try-error")) {return(rep(0,ncol(D)))}
   
   if(is.null(ref.response))
   {
@@ -362,7 +362,7 @@ get.factor.list <- function(sampleRD, analysis.window, plotting=FALSE, down.samp
     #C.mod <- getC.tP(Cmp.Matrix, S.cl)
     #C.mod <- getC.rq(Cmp.Matrix, S.cl)
     suppressWarnings(C.mod <- try(getC.rq(Cmp.Matrix, S.cl), silent=T))
-    if(class(C.mod)=="try-error") next
+    if(inherits(C.mod,"try-error")) next
     
     #matplot(Cmp.Matrix, type="l", col="gray", lty=1)	
     #matplot(C.mod, type="l", lty=1, add=T)

@@ -16,6 +16,12 @@
 #' @seealso \code{\link{newExp}} \code{\link{alignComp}} \code{\link{setAlPar}} \code{\link{setDecPar}}
 #' @export
 
+setGeneric('recMissComp',function(Experiment, min.samples, free.model=F){
+  standardGeneric('recMissComp')
+})
+
+#' @rdname recMissComp
+
 setMethod('recMissComp',signature = 'MetaboSet',
           function(Experiment, min.samples, free.model=F){
             
@@ -162,7 +168,7 @@ fit.model.in.data.tosd <- function(sampleRD, Experiment, lost.factor.alignId, fr
   #C.model <- getC.tP(analysis.window, lost.spectra)
   #C.model <- getC.rq(analysis.window, lost.spectra)
   C.model <- try(getC.rq(analysis.window, lost.spectra), silent=T)
-  if(class(C.model)=="try-error") C.model <- rep(0, nrow(analysis.window))
+  if(inherits(C.model,"try-error")) C.model <- rep(0, nrow(analysis.window))
   
   C.model <- chrom.isoreg(C.model)
   
