@@ -73,8 +73,6 @@ lagFFT <- function(x,y, corr.coef=F)
   lag
 }
 
-log.error <- function(w,x,y) {sum(log(abs(x-w*y)+1))}
-
 break.vector <- function(x)
 {
   x.vect <- x
