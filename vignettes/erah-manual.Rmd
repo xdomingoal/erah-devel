@@ -72,7 +72,7 @@ A mean spectra from each group of aligned compounds is compared with a reference
 
 ## GC–MS Data Processing with eRah: a tutorial
 
-In this section we show the processing of example samples from a spike-in experiment designed for interrogating data processing methods from the **[gcspikelite](http://bioconductor.org/packages/release/data/experiment/html/gcspikelite.html)** data package [@robinson2018] that were analyzed using GC–MS. 
+In this section we show the processing of example samples from a spike-in experiment designed for interrogating data processing methods from the **[gcspikelite](https://bioconductor.org/packages/release/data/experiment/html/gcspikelite.html)** data package [@robinson2018] that were analyzed using GC–MS. 
 This sample set consists of nine samples with three triplicate classes.
 
 The **gcspikelite** package can be installed from bioconductor using the **BiocManager** package:
