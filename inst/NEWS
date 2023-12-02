@@ -1,3 +1,7 @@
+erah v2.0.0 (Release date: 2023-01-12)
+==============
+* Introduced changes in the workflow, correction of bugs and adaptation of the package to newer R versions.
+* New function showRTRIcurve added to support RI-based metabolite annotation.
 
 erah v1.1.1 (Release date: 2019-01-01)
 ==============
