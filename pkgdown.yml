@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   erah-manual: erah-manual.html
-last_built: 2023-12-02T09:53Z
+last_built: 2023-12-02T09:57Z
 urls:
   reference: http://xdomingoal.github.io/erah-devel/reference
   article: http://xdomingoal.github.io/erah-devel/articles
