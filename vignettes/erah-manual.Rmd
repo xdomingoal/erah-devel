@@ -21,6 +21,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r echo = FALSE, message = TRUE}
+data_available <- requireNamespace("gcspikelite", quietly = TRUE) 
+
+if (!data_available) {
+knitr::opts_chunk$set(eval = FALSE) 
+  
+message("Note: The examples in this vignette require the `gcspikelite` package to be installed. The system currently running this vignette does not have that package installed, so the code examples will not be evaluated.")
+}
+```
+
 This vignette presents **eRah**, an R package with an integrated design that allows for an innovative deconvolution of GC–MS chromatograms using multivariate techniques based on blind source separation (BSS), alignment of spectra across samples, and automatic identification of metabolites by spectral library matching. 
 **eRah** outputs a table with compound names, matching scores and the area of the compound for each sample. 
 **eRah** is designed in an open-structure, where researchers can integrate different algorithms for each step of the pipeline, i.e., compound deconvolution, alignment, identification or statistical analysis. 

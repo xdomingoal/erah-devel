@@ -122,7 +122,7 @@ computeRIerror <- function(Experiment, id.database=mslib, reference.list, ri.err
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
 #' @seealso \code{\link{computeRIerror}} 
 #' @examples \dontrun{
-#' The following set erah to determine which indetified compounds are in RI treshold
+#' # The following set erah to determine which indetified compounds are in RI treshold
 #' RTRICurve <- showRTRICurve(ex, list, nAnchors=4, ri.thrs='1R')
 #' }
 #' @export
