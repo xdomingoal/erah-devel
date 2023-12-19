@@ -182,7 +182,7 @@ createdt <- function(path)
 #' @description Create table containing instrumental information such as sample IDs and file names.
 #' @param files File paths to experiment samples.
 #' @details Creates instrumental information table based on experiment sample file paths. Columns containing further information can also be added to this. 
-#' @examples \donttest{
+#' @examples \dontrun{
 #' library(gcspikelite)
 #' 
 #' files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRUE)
@@ -220,7 +220,7 @@ createInstrumentalTable <- function(files){
 #' @param files File paths to experiment samples.
 #' @param cls Character vector containing sample classes.
 #' @details Creates phenotype information table based on experiment sample file paths and sample classes. Columns containing further information can also be added to this. 
-#' @examples \donttest{
+#' @examples \dontrun{
 #' library(gcspikelite)
 #' data(targets)
 #' 

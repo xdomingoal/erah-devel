@@ -82,7 +82,7 @@ setAlPar <- function(min.spectra.cor, max.time.dist, mz.range=c(70:600))
 #' @return \code{newExp} returns an S4 object of the class 'MetaboSet'.
 #' @references [1] Xavier Domingo-Almenara, et al., eRah: A Computational Tool Integrating Spectral Deconvolution and Alignment with Quantification and Identification of Metabolites in GC-MS-Based Metabolomics. Analytical Chemistry (2016). DOI: 10.1021/acs.analchem.6b02927
 #' @author Xavier Domingo-Almenara. xavier.domingo@urv.cat
-#' @examples \donttest{
+#' @examples \dontrun{
 #' library(gcspikelite)
 #' data(targets)
 #' 

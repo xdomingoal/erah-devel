@@ -18,7 +18,7 @@ Create table containing sample meta information such as as sample ID and class.
 Creates phenotype information table based on experiment sample file paths and sample classes. Columns containing further information can also be added to this.
 }
 \examples{
-\donttest{
+\dontrun{
 library(gcspikelite)
 data(targets)
 

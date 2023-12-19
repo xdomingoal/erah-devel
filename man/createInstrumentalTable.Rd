@@ -16,7 +16,7 @@ Create table containing instrumental information such as sample IDs and file nam
 Creates instrumental information table based on experiment sample file paths. Columns containing further information can also be added to this.
 }
 \examples{
-\donttest{
+\dontrun{
 library(gcspikelite)
 
 files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRUE)
