@@ -32,7 +32,7 @@ vignette("eRahManual", package="erah")
 }
 \examples{
 \dontrun{
-The following set erah to determine which indetified compounds are in RI treshold
+# The following set erah to determine which indetified compounds are in RI treshold
 RTRICurve <- showRTRICurve(ex, list, nAnchors=4, ri.thrs='1R')
 }
 }
