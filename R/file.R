@@ -182,13 +182,14 @@ createdt <- function(path)
 #' @description Create table containing instrumental information such as sample IDs and file names.
 #' @param files File paths to experiment samples.
 #' @details Creates instrumental information table based on experiment sample file paths. Columns containing further information can also be added to this. 
-#' @examples 
+#' @examples \donttest{
 #' library(gcspikelite)
 #' 
 #' files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRUE)
 #' files <- files[sapply(files,grepl,pattern = 'CDF')]
 #' 
 #' instrumental <- createInstrumentalTable(files)
+#' }
 #' @seealso \code{\link{newExp}} \code{\link{createPhenoTable}}
 #' @importFrom tibble tibble
 #' @export
@@ -219,7 +220,7 @@ createInstrumentalTable <- function(files){
 #' @param files File paths to experiment samples.
 #' @param cls Character vector containing sample classes.
 #' @details Creates phenotype information table based on experiment sample file paths and sample classes. Columns containing further information can also be added to this. 
-#' @examples 
+#' @examples \donttest{
 #' library(gcspikelite)
 #' data(targets)
 #' 
@@ -227,6 +228,7 @@ createInstrumentalTable <- function(files){
 #' files <- files[sapply(files,grepl,pattern = 'CDF')]
 #' 
 #' phenotype <- createPhenoTable(files,as.character(targets$Group[order(targets$FileName)]))
+#' }
 #' @seealso \code{\link{newExp}} \code{\link{createInstrumentalTable}}
 #' @importFrom tibble tibble
 #' @export

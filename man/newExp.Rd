@@ -24,7 +24,7 @@ See eRah vignette for more details. To open the vignette, execute the following 
 vignette("eRahManual", package="erah")
 }
 \examples{
-\dontrun{
+\donttest{
 library(gcspikelite)
 data(targets)
 
