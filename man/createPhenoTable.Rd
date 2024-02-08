@@ -18,6 +18,7 @@ Create table containing sample meta information such as as sample ID and class.
 Creates phenotype information table based on experiment sample file paths and sample classes. Columns containing further information can also be added to this.
 }
 \examples{
+\dontrun{
 library(gcspikelite)
 data(targets)
 
@@ -25,6 +26,7 @@ files <- list.files(system.file('data',package = 'gcspikelite'),full.names = TRU
 files <- files[sapply(files,grepl,pattern = 'CDF')]
 
 phenotype <- createPhenoTable(files,as.character(targets$Group[order(targets$FileName)]))
+}
 }
 \seealso{
 \code{\link{newExp}} \code{\link{createInstrumentalTable}}
