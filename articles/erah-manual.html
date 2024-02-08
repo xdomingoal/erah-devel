@@ -73,7 +73,7 @@
                         <h4 data-toc-skip class="author">Xavier
 Domingo–Almenara</h4>
             
-            <h4 data-toc-skip class="date">19 December, 2023</h4>
+            <h4 data-toc-skip class="date">08 February, 2024</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/xdomingoal/erah-devel/blob/HEAD/vignettes/erah-manual.Rmd" class="external-link"><code>vignettes/erah-manual.Rmd</code></a></small>
       <div class="d-none name"><code>erah-manual.Rmd</code></div>
@@ -131,10 +131,7 @@ repository, by:</p>
 <p>Any enquiries, bug reports or suggestions are welcome and they should
 be addressed to <a href="mailto:xavier.domingoa@eurecat.org" class="email">xavier.domingoa@eurecat.org</a>. Alternatively, please
 file an issue (and, if possible, a reproducible example) at <a href="https://github.com/xdomingoal/erah-devel/issues" class="external-link uri">https://github.com/xdomingoal/erah-devel/issues</a>.</p>
-</div>
-<div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
+<p>##1. Introduction</p>
 <p><strong>eRah</strong> automatically detects and deconvolves the
 spectra of the compounds appearing in GC–MS chromatograms.
 <strong>eRah</strong> processes the raw data files (netCDF or mzXML) of
@@ -158,10 +155,7 @@ reference library. <strong>eRah</strong> includes a custom version of
 MassBank repository. Other libraries can imported with eRah (e.g., Golm
 Metabolome Database), and eRah’s deconvolved spectra can be exported for
 further comparison with NIST library.</p>
-</div>
-<div class="section level2">
-<h2 id="gcms-data-processing-with-erah-a-tutorial">GC–MS Data Processing with eRah: a tutorial<a class="anchor" aria-label="anchor" href="#gcms-data-processing-with-erah-a-tutorial"></a>
-</h2>
+<p>##2. GC–MS Data Processing with eRah: a tutorial</p>
 <p>In this section we show the processing of example samples from a
 spike-in experiment designed for interrogating data processing methods
 from the <strong><a href="https://bioconductor.org/packages/release/data/experiment/html/gcspikelite.html" class="external-link">gcspikelite</a></strong>
@@ -185,9 +179,7 @@ to reproduce the following demo can by found by executing:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"erah"</span><span class="op">)</span></span></code></pre></div>
 <p>and then click on User guides, package vignettes and other
 documentation and on source from the ’eRah Manual’.</p>
-<div class="section level3">
-<h3 id="creating-a-new-experiment">Creating a new experiment<a class="anchor" aria-label="anchor" href="#creating-a-new-experiment"></a>
-</h3>
+<p>###2.1 Creating a new experiment</p>
 <p>Prior to deconvolution, alignment and compound identification, we
 first need to setup a new experiment where the sample meta information
 is defined, such as file paths and class types. <strong>eRah</strong>
@@ -196,9 +188,7 @@ requires only sample file paths and further sample class information is
 then added manually. The second derives sample class information and
 file paths from the underlying directory structure of a given experiment
 directory path.</p>
-<div class="section level4">
-<h4 id="using-file-paths-only">Using file paths only<a class="anchor" aria-label="anchor" href="#using-file-paths-only"></a>
-</h4>
+<p>####2.1.1 Using file paths only</p>
 <p>Using this input method we first load the file paths of the given
 data set. For our example data set from the <strong>gcspikelite</strong>
 package we can do this by:</p>
@@ -231,10 +221,7 @@ additional sample instrumental information can also be added.</p>
 <p>Where an experiment name can be defined using the <code>info</code>
 argument. This creates a new <code>MetaboSet</code> object used for
 storing the sample metadata and processing results.</p>
-</div>
-<div class="section level4">
-<h4 id="using-file-directory-structure">Using file directory structure<a class="anchor" aria-label="anchor" href="#using-file-directory-structure"></a>
-</h4>
+<p>####2.1.2 Using file directory structure</p>
 <p>Alternatively, the structure of an experiment directory can be used
 to define the instrument and class information. The experiment directory
 should be organized as follows: all the samples related to each class
@@ -294,10 +281,7 @@ and phenotypic tables into the workspace and supplying these to
 <span>             info <span class="op">=</span> <span class="st">'PCOS Experiment'</span><span class="op">)</span></span></code></pre></div>
 <p>This creates a new <code>MetaboSet</code> object used for storing the
 sample metadata and processing results.</p>
-</div>
-<div class="section level4">
-<h4 id="accessing-sample-metadata">Accessing sample metadata<a class="anchor" aria-label="anchor" href="#accessing-sample-metadata"></a>
-</h4>
+<p>####2.1.3 Accessing sample metadata</p>
 <p>With <code><a href="../reference/metaData.html">metaData()</a></code>, <code><a href="../reference/phenoData.html">phenoData()</a></code> and
 <code><a href="../reference/expClasses.html">expClasses()</a></code> we can retrieve the instrumental data and the
 experiment classes and the processing status:</p>
@@ -306,15 +290,15 @@ experiment classes and the processing status:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 9 × 4</span></span></span>
 <span><span class="co">##   sampleID filename                                                  date  time </span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0709_468 /home/runner/work/_temp/Library/gcspikelite/data/0709_46… 2023… 17:0…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0709_470 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2023… 17:0…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0709_471 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2023… 17:0…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> 0709_474 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2023… 17:0…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> 0709_475 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2023… 17:0…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> 0709_479 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2023… 17:0…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">7</span> 0709_485 /home/runner/work/_temp/Library/gcspikelite/data/0709_48… 2023… 17:0…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">8</span> 0709_493 /home/runner/work/_temp/Library/gcspikelite/data/0709_49… 2023… 17:0…</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">9</span> 0709_496 /home/runner/work/_temp/Library/gcspikelite/data/0709_49… 2023… 17:0…</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0709_468 /home/runner/work/_temp/Library/gcspikelite/data/0709_46… 2024… 08:4…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0709_470 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2024… 08:4…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0709_471 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2024… 08:4…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> 0709_474 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2024… 08:4…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> 0709_475 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2024… 08:4…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> 0709_479 /home/runner/work/_temp/Library/gcspikelite/data/0709_47… 2024… 08:4…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">7</span> 0709_485 /home/runner/work/_temp/Library/gcspikelite/data/0709_48… 2024… 08:4…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">8</span> 0709_493 /home/runner/work/_temp/Library/gcspikelite/data/0709_49… 2024… 08:4…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">9</span> 0709_496 /home/runner/work/_temp/Library/gcspikelite/data/0709_49… 2024… 08:4…</span></span></code></pre>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/phenoData.html">phenoData</a></span><span class="op">(</span><span class="va">ex</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 9 × 2</span></span></span>
@@ -343,11 +327,7 @@ experiment classes and the processing status:</p>
 <span><span class="co">## 7  0709_485        mmC     Not processed</span></span>
 <span><span class="co">## 8  0709_493        mmC     Not processed</span></span>
 <span><span class="co">## 9  0709_496        mmC     Not processed</span></span></code></pre>
-</div>
-</div>
-<div class="section level3">
-<h3 id="compound-deconvolution">Compound deconvolution<a class="anchor" aria-label="anchor" href="#compound-deconvolution"></a>
-</h3>
+<p>###2.2 Compound deconvolution</p>
 <p>The compounds in data are deconvolved using
 <code><a href="../reference/deconvolveComp.html">deconvolveComp()</a></code>. This function requires a
 <code>Deconvolution parameters</code> object, that can be created with
@@ -434,10 +414,7 @@ available.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">ex</span>, file <span class="op">=</span> <span class="st">"testPCOS.rda"</span><span class="op">)</span></span>
 <span><span class="co"># Load</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"testPCOS.rda"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="alignment">Alignment<a class="anchor" aria-label="anchor" href="#alignment"></a>
-</h3>
+<p>###2.3 Alignment</p>
 <p>Alignment is executed with <code><a href="../reference/alignComp.html">alignComp()</a></code>. The parameters
 also have to be set prior to this.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
@@ -482,10 +459,7 @@ in certain samples) or also identify the compounds without applying
 <code><a href="../reference/recMissComp.html">recMissComp()</a></code>. In other words, the missing compound
 recovery step is optional. Here, we apply the missing recovery step to
 later identify the compounds.</p>
-</div>
-<div class="section level3">
-<h3 id="missing-compound-recovery">Missing compound recovery<a class="anchor" aria-label="anchor" href="#missing-compound-recovery"></a>
-</h3>
+<p>###2.4 Missing compound recovery</p>
 <p>The missing compound recovery step only requires to indicate the
 number of minimum values for which a compound wants to be ’re-searched’
 in the samples. If a compound appears in at least the same or more
@@ -519,10 +493,7 @@ we always have to re-identify the compounds after executing the missing
 compound recovery step, by<code><a href="../reference/identifyComp.html">identifyComp()</a></code>, as explained in
 the following sections.</li>
 </ul>
-</div>
-<div class="section level3">
-<h3 id="identification">Identification<a class="anchor" aria-label="anchor" href="#identification"></a>
-</h3>
+<p>###2.5 Identification</p>
 <p>The final processing step is to identify the previously aligned
 compounds and assign them a putative name. <strong>eRah</strong>
 compares all the spectra found against a reference database. This
@@ -551,10 +522,7 @@ idList as follows:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">6</span>      35  6.36       9 DL-2,3-Diaminopropionic acid (2TMS)</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">7</span>      39  6.50       9 (R)-(-)-Phenylephrine (2TMS)       </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">8</span>      44  6.63       9 Malonic acid (2TMS)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="results-and-visualization">Results and visualization<a class="anchor" aria-label="anchor" href="#results-and-visualization"></a>
-</h3>
+<p>###2.6 Results and visualization</p>
 <p>The identification list can be obtained using:</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/idList.html">idList</a></span><span class="op">(</span><span class="va">ex</span><span class="op">)</span></span></code></pre></div>
@@ -659,14 +627,8 @@ found, with the second most similar metabolite from the database (in
 this case pyridoxamine). From the figure, it is clear that eRah returned
 the first hit correctly, as this spectra is more similar to gallic acid
 than to pyridoxamine.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="importing-and-customizing-mass-spectral-libraries">Importing and customizing mass spectral libraries<a class="anchor" aria-label="anchor" href="#importing-and-customizing-mass-spectral-libraries"></a>
-</h2>
-<div class="section level3">
-<h3 id="using-the-golm-metabolome-database">Using the Golm Metabolome Database<a class="anchor" aria-label="anchor" href="#using-the-golm-metabolome-database"></a>
-</h3>
+<p>##3. Importing and customizing mass spectral libraries</p>
+<p>###3.1 Using the Golm Metabolome Database</p>
 <p>Users may import their own mass spectral libraries. We strongly
 recommend using the Golm Metabolome Database (GMD) with eRah. To use the
 GMD, first, we have to download it from its <a href="http://gmd.mpimp-golm.mpg.de/download/" class="external-link">webpage</a>, by
@@ -704,42 +666,28 @@ library (in this case <code>golm.database</code>) in all the functions,
 for example:</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/findComp.html">findComp</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"phenol"</span>, id.database <span class="op">=</span> <span class="va">golm.database</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="using-in-house-libraries">Using in-house libraries<a class="anchor" aria-label="anchor" href="#using-in-house-libraries"></a>
-</h3>
+<p>###3.2 Using in-house libraries</p>
 <p>Other MSP-formatted libraries can be also imported. The procedure is
 the same as for the GMD database, with the only exception is that the
 function is <code>importMSP</code> instead of <code>importGMD</code>.
 Access to specific <code>importMSP</code> help in R
 (<code><a href="../reference/importMSP.html">?importMSP</a></code>) for details on database MSP input format.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="exporting-spectra-comparison-with-nist">Exporting spectra: comparison with NIST<a class="anchor" aria-label="anchor" href="#exporting-spectra-comparison-with-nist"></a>
-</h2>
+<p>##4 Exporting spectra: comparison with NIST</p>
 <p>Users may export their results to MSP format or CEF format for
 comparison with NIST MS Search software (MSP), or to compare spectra
 with NIST through the MassHunter workstation (CEF). Users are referred
 to <code>exportMSP</code> and <code>exportCEF</code> functions help for
 more details.</p>
-</div>
-<div class="section level2">
-<h2 id="final-summary">Final Summary<a class="anchor" aria-label="anchor" href="#final-summary"></a>
-</h2>
-<p>To complement the given tutorial, the user may access to the
-particular help for each function, as shown before. Also, and for more
-details, please read the original article. Here, we show a figure
-(Figure 5) with all the available functions.</p>
+<p>##5. Final Summary To complement the given tutorial, the user may
+access to the particular help for each function, as shown before. Also,
+and for more details, please read the original article. Here, we show a
+figure (Figure 5) with all the available functions.</p>
 <div class="figure" style="text-align: center">
 <img src="figures/functionSummary.png" alt="**Figure 5:** **eRah** summary of functions."><p class="caption">
 <strong>Figure 5:</strong> <strong>eRah</strong> summary of functions.
 </p>
 </div>
-</div>
-<div class="section level2 unnumbered">
-<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h2>
+<p>##6. References</p>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-domingo2016" class="csl-entry">
 Domingo-Almenara, Xavier, Jesus Brezmes, Maria Vinaixa, Sara Samino,
