@@ -332,7 +332,11 @@ setMethod('alignComp',signature = 'MetaboSet',
               
               #blocks.size <- 15
               max.mz <- maxMZ
+              
+              # Divide the number of samples by the blocks.size
               Itrt <- length(Experiment@Data@FactorList)/blocks.size
+              
+              # Create blocks depending on the previous value
               sequs <- trunc(seq(1, length(Experiment@Data@FactorList), length.out=Itrt))
               sequs[1] <- 0
               
@@ -340,8 +344,11 @@ setMethod('alignComp',signature = 'MetaboSet',
               block.list <- list()
               #i <- 1
               
+              # Deal with each block
               for(i in 1:(length(sequs)-1))	
               {
+                
+                # Perform the alignment within the samples in the same block
                 cat("Aligning block ", i, " of ", length(sequs)-1, "... \n", sep="")
                 ghost.object <- Experiment
                 ghost.object@Data@FactorList <- Experiment@Data@FactorList[(sequs[i]+1):sequs[(i+1)]]
@@ -355,18 +362,20 @@ setMethod('alignComp',signature = 'MetaboSet',
               
               cat("Aligning factors across blocks... \n")
               full.factorlist <- align.factors(block.list, min.spectra.cor, max.time.dist, max.mz, mz.range)
-              
+
               #MaxALID <- max(unlist(lapply(full.factorlist, function(x) x$AlignID)))
               factors.list <- Experiment@Data@FactorList
               if(!(any(unlist(lapply(factors.list,function(x) {is.null(x$AlignID)}))==FALSE)))
               {	
                 factors.list <- lapply(factors.list, function(x){
+                  if(length(x$ID) == 0) return(cbind(x,matrix(0,nrow=0,ncol=0))) # ADDED
                   outp <- cbind(x,matrix(0,nrow=length(x$ID)))
                   colnames(outp)[ncol(outp)] <- "AlignID"
                   outp
                 })
               }else{
                 factors.list <- lapply(factors.list, function(x){
+                  if(length(x$ID) == 0) return(rep(0,0)) # ADDED
                   x$AlignID <- rep(0,length(x$ID))
                   x
                 })
