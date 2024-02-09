@@ -99,7 +99,13 @@ setMethod('recMissComp',signature = 'MetaboSet',
                   k.it <- k.it+1
                   
                   lost.FactorID <-  as.numeric(as.vector(align.list[re.analyze[j],"AlignID"]))
-                  lost.factor <- fit.model.in.data.tosd(sampleRD, Experiment,lost.FactorID, free.model)
+                  
+                  lost.factor <- tryCatch({
+                    fit.model.in.data.tosd(sampleRD, Experiment,lost.FactorID, free.model)
+                  }, error = function(e) {
+                    cat("Compound recovery could not be done in ", sample)
+                    lost.factor <- NULL
+                  })
                   
                   if(is.null(lost.factor)) next
                   
